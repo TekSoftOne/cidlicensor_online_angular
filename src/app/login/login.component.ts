@@ -2,7 +2,7 @@ import {AfterViewInit, Component} from '@angular/core';
 import * as scripts from './scripts.js';
 
 @Component({
-  selector: 'tr-login',
+  selector: 'ot-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })

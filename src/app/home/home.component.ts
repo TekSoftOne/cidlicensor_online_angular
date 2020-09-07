@@ -2,7 +2,7 @@ import {AfterViewInit, Component} from '@angular/core';
 import * as scripts from './scripts.js';
 
 @Component({
-  selector: 'tr-home',
+  selector: 'ot-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
