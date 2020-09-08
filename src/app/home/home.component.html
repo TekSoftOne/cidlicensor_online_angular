@@ -129,10 +129,11 @@
       </div>
       <div class="form-content">
         <div class="form-items">
-          <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-            <div class="row">
-              <ng-container [ngSwitch]="currentStep$ | async">
-                <ng-template #mainDiv ngSwitchCase="mainDiv">
+          <ng-container [ngSwitch]="currentStep$ | async">
+            <!-- phone number -->
+            <ng-template #mainDiv ngSwitchCase="mainDiv">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12" id="main-div">
                     <div class="row" id="testdiv">
                       <div class="col-lg-12 col-12 col-sm-12 tp">
@@ -152,7 +153,7 @@
                               ngModel
                               name="mobileNumber"
                               required
-                              pattern="[0-9]{8}[0-9]*"
+                              pattern="[0-9]{5}[0-9]*"
                               [ngClass]="{
                                 'form-control': true,
                                 'is-invalid': isFormValid(membershipForm)
@@ -164,8 +165,14 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
-                <ng-template #mainDiv2 ngSwitchCase="mainDiv2">
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
+            <!-- verify number -->
+            <ng-template #mainDiv2 ngSwitchCase="mainDiv2">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12" id="main-div2">
                     <div class="row" id="testdiv">
                       <div class="col-lg-12 col-12 col-sm-12 tp">
@@ -195,8 +202,18 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
-                <ng-template #ftDiv ngSwitchCase="ftDiv">
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
+            <!-- type of customer -->
+            <ng-template #ftDiv ngSwitchCase="ftDiv">
+              <form
+                #membershipForm="ngForm"
+                [formGroup]="formCustomerType"
+                (ngSubmit)="next(membershipForm)"
+              >
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12 flush" id="ft-div">
                     <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
                       <div class="row">
@@ -206,11 +223,11 @@
                       </div>
                       <div class="row tp">
                         <div class="col-lg-12 col-12 col-sm-12">
-                          <div class="row">
+                          <div class="row" formGroupName="cbGroupCustomerType">
                             <div
                               class="col-lg-4 la text-center col-12 col-sm-4"
                             >
-                              <label name="typeofrequest">
+                              <label name="typeOfCustomer">
                                 <div
                                   class="col-lg-12 bg-label col-sm-12 col-xs-12"
                                 >
@@ -221,8 +238,9 @@
                                   <h6>Tourist</h6>
                                 </div>
                                 <input
+                                  formControlName="typeOfCustomer"
                                   class="check"
-                                  name="typeofrequest"
+                                  name="typeOfCustomer"
                                   type="radio"
                                   value="tourist"
                                 />
@@ -231,7 +249,7 @@
                             <div
                               class="col-lg-4 la text-center col-12 col-sm-4"
                             >
-                              <label name="typeofrequest">
+                              <label name="typeOfCustomer">
                                 <div
                                   class="col-lg-12 bg-label col-sm-12 col-xs-12"
                                 >
@@ -243,16 +261,17 @@
                                 </div>
                                 <input
                                   class="check"
-                                  name="typeofrequest"
+                                  name="typeOfCustomer"
                                   type="radio"
                                   value="diplomat"
+                                  formControlName="typeOfCustomer"
                                 />
                               </label>
                             </div>
                             <div
                               class="col-lg-4 la text-center col-12 col-sm-4"
                             >
-                              <label name="typeofrequest">
+                              <label name="typeOfCustomer">
                                 <div
                                   class="col-lg-12 bg-label col-sm-12 col-xs-12"
                                 >
@@ -264,19 +283,40 @@
                                 </div>
                                 <input
                                   class="check"
-                                  name="typeofrequest"
+                                  name="typeOfCustomer"
                                   type="radio"
                                   value="resident"
+                                  formControlName="typeOfCustomer"
                                 />
                               </label>
                             </div>
                           </div>
                         </div>
+                        <!-- <div
+                          class="invalid-feedback"
+                          *ngIf="
+                            form.controls['myCheckboxGroup'].errors &&
+                            form.controls['myCheckboxGroup'].errors
+                              .requireCheckboxesToBeChecked
+                          "
+                        >
+                          At least one checkbox is required to check
+                        </div> -->
                       </div>
                     </div>
                   </div>
-                </ng-template>
-                <ng-template #ftDiv2 ngSwitchCase="ftDiv2">
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
+            <!-- type of request -->
+            <ng-template #ftDiv2 ngSwitchCase="ftDiv2">
+              <form
+                #membershipForm="ngForm"
+                [formGroup]="formRequestType"
+                (ngSubmit)="next(membershipForm)"
+              >
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12 flush" id="ft-div-2">
                     <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
                       <div class="row">
@@ -286,7 +326,7 @@
                       </div>
                       <div class="row tp">
                         <div class="col-lg-12 col-12 col-sm-12">
-                          <div class="row">
+                          <div class="row" formGroupName="cbGroupRequestType">
                             <div
                               class="col-lg-4 la text-center col-12 col-sm-4"
                             >
@@ -302,10 +342,10 @@
                                 </div>
                                 <input
                                   class="check"
-                                  id="new-check"
-                                  name="type"
+                                  name="typeOfRequest"
                                   type="radio"
                                   value="new"
+                                  formControlName="typeOfRequest"
                                 />
                               </label>
                             </div>
@@ -324,10 +364,10 @@
                                 </div>
                                 <input
                                   class="check"
-                                  id="renewal-check"
-                                  name="type"
+                                  name="typeOfRequest"
                                   type="radio"
                                   value="renewal"
+                                  formControlName="typeOfRequest"
                                 />
                               </label>
                             </div>
@@ -346,10 +386,10 @@
                                 </div>
                                 <input
                                   class="check"
-                                  id="replacement-check"
-                                  name="type"
+                                  name="typeOfRequest"
                                   type="radio"
                                   value="replacement"
+                                  formControlName="typeOfRequest"
                                 />
                               </label>
                             </div>
@@ -358,9 +398,14 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
 
-                <ng-template #serDiv1 ngSwitchCase="serDiv1">
+            <ng-template #serDiv1 ngSwitchCase="serDiv1">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12 flush" id="ser-div-1">
                     <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
                       <div class="row">
@@ -384,9 +429,14 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
 
-                <ng-template #ftDiv3 ngSwitchCase="ftDiv3">
+            <ng-template #ftDiv3 ngSwitchCase="ftDiv3">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div
                     class="col-lg-12 old col-12 col-sm-12 flush"
                     id="ft-div-3"
@@ -470,9 +520,14 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
 
-                <ng-template #ftDiv4 ngSwitchCase="ftDiv4">
+            <ng-template #ftDiv4 ngSwitchCase="ftDiv4">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div
                     class="col-lg-12 old col-12 col-sm-12 flush"
                     id="ft-div-4"
@@ -642,9 +697,14 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
 
-                <ng-template #sdDiv ngSwitchCase="sdDiv">
+            <ng-template #sdDiv ngSwitchCase="sdDiv">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12" id="sd-div">
                     <div class="row">
                       <div class="col-lg-12 text-center col-12 col-sm-12">
@@ -676,9 +736,14 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
 
-                <ng-template #tdDiv ngSwitchCase="tdDiv">
+            <ng-template #tdDiv ngSwitchCase="tdDiv">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12" id="td-div">
                     <div class="row">
                       <div class="col-lg-12 col-12 col-sm-12">
@@ -839,9 +904,14 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
 
-                <ng-template #lastDiv ngSwitchCase="lastDiv">
+            <ng-template #lastDiv ngSwitchCase="lastDiv">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12" id="last-div">
                     <div class="row">
                       <div class="col-lg-12 col-12 col-sm-12">
@@ -917,9 +987,14 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
 
-                <ng-template #lastDiv2 ngSwitchCase="lastDiv2">
+            <ng-template #lastDiv2 ngSwitchCase="lastDiv2">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12" id="last-div-2">
                     <div class="row">
                       <div class="col-lg-12 col-12 col-sm-12 text-center">
@@ -983,9 +1058,14 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
 
-                <ng-template #lastDiv3 ngSwitchCase="lastDiv3">
+            <ng-template #lastDiv3 ngSwitchCase="lastDiv3">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12" id="last-div-3">
                     <div class="row">
                       <div class="col-lg-12 col-12 col-sm-12 text-center">
@@ -1005,9 +1085,14 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
 
-                <ng-template #lastDiv4 ngSwitchCase="lastDiv4">
+            <ng-template #lastDiv4 ngSwitchCase="lastDiv4">
+              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+                <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12" id="last-div-4">
                     <div class="row">
                       <div class="col-lg-12 col-12 col-sm-12 text-center">
@@ -1015,42 +1100,45 @@
                       </div>
                     </div>
                   </div>
-                </ng-template>
-              </ng-container>
-            </div>
-            <ng-container #divButtons>
-              <div class="row">
-                <div class="actions col-lg-12 col-12 col-sm-12" id="generic-ul">
-                  <ul aria-label="Pagination" role="menu">
-                    <li>
-                      <a
-                        class=""
-                        id="prev-btn"
-                        *ngIf="isPreviousButtonShowed | async"
-                        (click)="previous()"
-                        >Previous</a
-                      >
-                    </li>
-                    <li>
-                      <!-- <a
+                </div>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+              </form>
+            </ng-template>
+          </ng-container>
+          <!-- </div> from parent form -->
+          <ng-template #divButtons>
+            <div class="row">
+              <div class="actions col-lg-12 col-12 col-sm-12" id="generic-ul">
+                <ul aria-label="Pagination" role="menu">
+                  <li>
+                    <a
+                      class=""
+                      id="prev-btn"
+                      *ngIf="isPreviousButtonShowed | async"
+                      (click)="previous()"
+                      >Previous</a
+                    >
+                  </li>
+                  <li>
+                    <!-- <a
                         id="next-btn"
                         *ngIf="isNextButtonShowed | async"
                         (click)="next()"
                         >Next</a
                       > -->
-                      <button
-                        type="submit"
-                        id="next-btn"
-                        *ngIf="isNextButtonShowed | async"
-                      >
-                        Next
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+                    <button
+                      type="submit"
+                      id="next-btn"
+                      *ngIf="isNextButtonShowed | async"
+                    >
+                      Next
+                    </button>
+                  </li>
+                </ul>
               </div>
-            </ng-container>
-            <!-- <div class="row">
+            </div>
+          </ng-template>
+          <!-- <div class="row">
               <div class="actions col-lg-12 col-12 col-sm-12  " id="ft-ul">
                 <ul aria-label="Pagination" role="menu">
                   <li><a class=" "></a></li>
@@ -1127,7 +1215,7 @@
                 </ul>
               </div>
             </div> -->
-          </form>
+          <!-- </form>  from parent form  -->
         </div>
       </div>
     </div>

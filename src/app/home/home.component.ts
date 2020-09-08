@@ -4,13 +4,40 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, pipe, of } from 'rxjs';
 import { map, tap, switchMap, switchMapTo, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormControl } from '@angular/forms';
 import {
   steps,
   showPreviousButtonScreens,
   showNextButtonScreens,
   showStepsFlowScreens,
 } from '../constants';
+
+import { FormGroup, ValidatorFn } from '@angular/forms';
+
+export function requireCheckboxesToBeCheckedValidator(
+  minRequired = 1
+): ValidatorFn {
+  // tslint:disable-next-line: typedef
+  return function validate(formGroup: FormGroup) {
+    let checked = 0;
+
+    Object.keys(formGroup.controls).forEach((key) => {
+      const control = formGroup.controls[key];
+
+      if (control.value !== false) {
+        checked++;
+      }
+    });
+
+    if (checked < minRequired) {
+      return {
+        requireCheckboxesToBeChecked: true,
+      };
+    }
+
+    return null;
+  };
+}
 
 @Component({
   selector: 'ot-home',
@@ -34,6 +61,28 @@ export class HomeComponent implements AfterViewInit {
   public currentStep$ = new BehaviorSubject<string>('mainDiv');
   public isMobileSend = false;
   public googleApiLoad: any;
+
+  public formCustomerType = new FormGroup({
+    // ...more form controls...
+    cbGroupCustomerType: new FormGroup(
+      {
+        typeOfCustomer: new FormControl(false),
+      },
+      requireCheckboxesToBeCheckedValidator()
+    ),
+    // ...more form controls...
+  });
+
+  public formRequestType = new FormGroup({
+    // ...more form controls...
+    cbGroupRequestType: new FormGroup(
+      {
+        typeOfRequest: new FormControl(false),
+      },
+      requireCheckboxesToBeCheckedValidator()
+    ),
+    // ...more form controls...
+  });
 
   constructor(
     private translate: TranslateService,
