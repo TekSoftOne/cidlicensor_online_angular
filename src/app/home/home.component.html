@@ -30,7 +30,7 @@
           </div>
           <div class="vertical">
             <div class="steps">
-              <ul class="hide" id="sds-ul" role="tablist">
+              <ul class=" " id="sds-ul" role="tablist">
                 <li
                   aria-disabled="false"
                   aria-selected="true"
@@ -101,7 +101,7 @@
                 data-toggle="dropdown"
                 href="#"
               >
-                <span class="hide">User</span>
+                <span class=" ">User</span>
 
                 <img
                   alt="User Image"
@@ -127,772 +127,901 @@
         <div class="form-items">
           <form>
             <div class="row">
-              <div class="col-lg-12 col-12 col-sm-12" id="main-div">
-                <div class="row" id="testdiv">
-                  <div class="col-lg-12 col-12 col-sm-12 tp">
-                    <h3>Enter your Mobile Number to get started</h3>
-                  </div>
-                  <div class="col-lg-12 col-12 col-sm-12">
-                    <p class="desc"></p>
-                  </div>
-                  <div class="col-lg-12 flush col-12 col-sm-12">
-                    <div class="col-12 flush" id="mobi">
-                      <div class="form-group full flush">
-                        <label class="form-label">Mobile Number:</label>
-                        <input
-                          id="mobile-number"
-                          placeholder="e.g. +1 702 123 4567"
-                          type="tel"
-                        />
-                        <!--<input class="flag" type="text" name="" >-->
+              <ng-container [ngSwitch]="currentStep">
+                <ng-template #mainDiv ngSwitchCase="mainDiv">
+                  <div class="col-lg-12 col-12 col-sm-12" id="main-div">
+                    <div class="row" id="testdiv">
+                      <div class="col-lg-12 col-12 col-sm-12 tp">
+                        <h3>Enter your Mobile Number to get started</h3>
                       </div>
-                      <div class="col-lg-12 col-12 col-sm-12 text-right">
-                        <a class="btn-next" id="veri-btn">Next</a>
+                      <div class="col-lg-12 col-12 col-sm-12">
+                        <p class="desc"></p>
+                      </div>
+                      <div class="col-lg-12 flush col-12 col-sm-12">
+                        <div class="col-12 flush" id="mobi">
+                          <div class="form-group full flush">
+                            <label class="form-label">Mobile Number:</label>
+                            <input
+                              id="mobile-number"
+                              placeholder="e.g. +1 702 123 4567"
+                              type="tel"
+                            />
+                            <!--<input class="flag" type="text" name="" >-->
+                          </div>
+                          <!-- <div class="col-lg-12 col-12 col-sm-12 text-right">
+                            <a class="btn-next" id="veri-btn">Next</a>
+                          </div> -->
+                        </div>
+                        <div class="col-12 flush" id="veri">
+                          <div class="form-group full col-12 flush">
+                            <label class="form-label">Verification:</label>
+                            <input name="" type="text" />
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-12 hide flush" id="veri">
-                      <div class="form-group full col-12 flush">
-                        <label class="form-label">Verification:</label>
-                        <input name="" type="text" />
-                      </div>
-                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-lg-12 col-12 col-sm-12 hide flush" id="ft-div">
-                <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-                  <div class="row">
-                    <div class="col-lg-12 text-center col-12 col-sm-12">
-                      <h3>Type of Request:</h3>
-                    </div>
-                  </div>
-                  <div class="row tp">
-                    <div class="col-lg-12 col-12 col-sm-12">
+                </ng-template>
+                <ng-template #ftDiv ngSwitchCase="ftDiv">
+                  <div class="col-lg-12 col-12 col-sm-12 flush" id="ft-div">
+                    <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
                       <div class="row">
-                        <div class="col-lg-4 la text-center col-12 col-sm-4">
-                          <label name="typeofrequest">
-                            <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                              <img alt="" src="/assets/images/img-new-1.png" />
-                              <h6>Tourist</h6>
-                            </div>
-                            <input
-                              class="check"
-                              name="typeofrequest"
-                              type="radio"
-                              value="tourist"
-                            />
-                          </label>
-                        </div>
-                        <div class="col-lg-4 la text-center col-12 col-sm-4">
-                          <label name="typeofrequest">
-                            <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                              <img alt="" src="/assets/images/img-new-2.png" />
-                              <h6>Diplomat</h6>
-                            </div>
-                            <input
-                              class="check"
-                              name="typeofrequest"
-                              type="radio"
-                              value="diplomat"
-                            />
-                          </label>
-                        </div>
-                        <div class="col-lg-4 la text-center col-12 col-sm-4">
-                          <label name="typeofrequest">
-                            <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                              <img alt="" src="/assets/images/img-new-3.png" />
-                              <h6>Resident</h6>
-                            </div>
-                            <input
-                              class="check"
-                              name="typeofrequest"
-                              type="radio"
-                              value="resident"
-                            />
-                          </label>
+                        <div class="col-lg-12 text-center col-12 col-sm-12">
+                          <h3>Type of Request:</h3>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12 col-12 col-sm-12 hide flush" id="ft-div-2">
-                <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-                  <div class="row">
-                    <div class="col-lg-12 text-center col-12 col-sm-12">
-                      <h3>Type of Request:</h3>
-                    </div>
-                  </div>
-                  <div class="row tp">
-                    <div class="col-lg-12 col-12 col-sm-12">
-                      <div class="row">
-                        <div class="col-lg-4 la text-center col-12 col-sm-4">
-                          <label name="">
-                            <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                              <img alt="" src="/assets/images/img-new-1.png" />
-                              <h6>New</h6>
-                            </div>
-                            <input
-                              class="check"
-                              id="new-check"
-                              name="type"
-                              type="radio"
-                              value="new"
-                            />
-                          </label>
-                        </div>
-                        <div class="col-lg-4 la text-center col-12 col-sm-4">
-                          <label name="">
-                            <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                              <img alt="" src="/assets/images/img-new-2.png" />
-                              <h6>Renewal</h6>
-                            </div>
-                            <input
-                              class="check"
-                              id="renewal-check"
-                              name="type"
-                              type="radio"
-                              value="renewal"
-                            />
-                          </label>
-                        </div>
-                        <div class="col-lg-4 la text-center col-12 col-sm-4">
-                          <label name="">
-                            <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                              <img alt="" src="/assets/images/img-new-3.png" />
-                              <h6>Replacement</h6>
-                            </div>
-                            <input
-                              class="check"
-                              id="replacement-check"
-                              name="type"
-                              type="radio"
-                              value="replacement"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12 col-12 hide col-sm-12 flush" id="ser-div-1">
-                <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-                  <div class="row">
-                    <div class="col-lg-12 text-center col-12 col-sm-12">
-                      <h3>Enter Membership Number:</h3>
-                    </div>
-                  </div>
-                  <div class="row tp">
-                    <div class="col-lg-12 text-center col-12 col-sm-12">
-                      <input name="" placeholder="Enter request" type="text" />
-                    </div>
-                    <div class="col-lg-12 text-center col-12 col-sm-12">
-                      <a class="btn-next">Search</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="col-lg-12 old col-12 col-sm-12 hide flush"
-                id="ft-div-3"
-              >
-                <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-                  <div class="row">
-                    <div class="col-lg-12 text-center col-12 col-sm-12">
-                      <h3>Please Enter your Personal Information:</h3>
-                    </div>
-                  </div>
-                  <div class="row tp">
-                    <div class="col-lg-12 col-12 col-sm-12">
-                      <div class="row">
-                        <!--<div class="col-lg-6 col-12 col-sm-6">
-                          <label class="form-label">You are:</label>
-                          <select class="sel">
-                            <option>I am Tourist</option>
-                            <option>Diplomat</option>
-                            <option>Resident</option>
-                          </select>
-                        </div>-->
-                        <div class="col-lg-6 col-12 col-sm-6">
-                          <label class="form-label">Full Name:</label>
-                          <input
-                            name=""
-                            placeholder="Enter your name"
-                            type="text"
-                          />
-                        </div>
-                        <div class="col-lg-6 col-12 col-sm-6">
-                          <label class="form-label">Email Address:</label>
-                          <input
-                            name=""
-                            placeholder="Enter your Email Address"
-                            type="text"
-                          />
-                        </div>
-                      </div>
-                      <div class="row">
+                      <div class="row tp">
                         <div class="col-lg-12 col-12 col-sm-12">
-                          <label class="form-label">Your Location: </label>
+                          <div class="row">
+                            <div
+                              class="col-lg-4 la text-center col-12 col-sm-4"
+                            >
+                              <label name="typeofrequest">
+                                <div
+                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
+                                >
+                                  <img
+                                    alt=""
+                                    src="/assets/images/img-new-1.png"
+                                  />
+                                  <h6>Tourist</h6>
+                                </div>
+                                <input
+                                  class="check"
+                                  name="typeofrequest"
+                                  type="radio"
+                                  value="tourist"
+                                />
+                              </label>
+                            </div>
+                            <div
+                              class="col-lg-4 la text-center col-12 col-sm-4"
+                            >
+                              <label name="typeofrequest">
+                                <div
+                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
+                                >
+                                  <img
+                                    alt=""
+                                    src="/assets/images/img-new-2.png"
+                                  />
+                                  <h6>Diplomat</h6>
+                                </div>
+                                <input
+                                  class="check"
+                                  name="typeofrequest"
+                                  type="radio"
+                                  value="diplomat"
+                                />
+                              </label>
+                            </div>
+                            <div
+                              class="col-lg-4 la text-center col-12 col-sm-4"
+                            >
+                              <label name="typeofrequest">
+                                <div
+                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
+                                >
+                                  <img
+                                    alt=""
+                                    src="/assets/images/img-new-3.png"
+                                  />
+                                  <h6>Resident</h6>
+                                </div>
+                                <input
+                                  class="check"
+                                  name="typeofrequest"
+                                  type="radio"
+                                  value="resident"
+                                />
+                              </label>
+                            </div>
+                          </div>
                         </div>
-                        <div class="col-lg-12 bt-form col-12 col-sm-12">
-                          <!--<div class="col-lg-12 input-space o-hidden flush col-12 col-sm-12">
-                             <input id="pac-input" class="controls" type="text" placeholder="Your Address" />
-                             <div id="map"></div>
-                          </div>-->
-                          <div
-                            class="col-lg-12 o-hidden flush col-12 col-sm-12"
-                          >
-                            <div class="map" id="meta_data_container">
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template #ftDiv2 ngSwitchCase="ftDiv2">
+                  <div class="col-lg-12 col-12 col-sm-12 flush" id="ft-div-2">
+                    <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
+                      <div class="row">
+                        <div class="col-lg-12 text-center col-12 col-sm-12">
+                          <h3>Type of Request:</h3>
+                        </div>
+                      </div>
+                      <div class="row tp">
+                        <div class="col-lg-12 col-12 col-sm-12">
+                          <div class="row">
+                            <div
+                              class="col-lg-4 la text-center col-12 col-sm-4"
+                            >
+                              <label name="">
+                                <div
+                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
+                                >
+                                  <img
+                                    alt=""
+                                    src="/assets/images/img-new-1.png"
+                                  />
+                                  <h6>New</h6>
+                                </div>
+                                <input
+                                  class="check"
+                                  id="new-check"
+                                  name="type"
+                                  type="radio"
+                                  value="new"
+                                />
+                              </label>
+                            </div>
+                            <div
+                              class="col-lg-4 la text-center col-12 col-sm-4"
+                            >
+                              <label name="">
+                                <div
+                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
+                                >
+                                  <img
+                                    alt=""
+                                    src="/assets/images/img-new-2.png"
+                                  />
+                                  <h6>Renewal</h6>
+                                </div>
+                                <input
+                                  class="check"
+                                  id="renewal-check"
+                                  name="type"
+                                  type="radio"
+                                  value="renewal"
+                                />
+                              </label>
+                            </div>
+                            <div
+                              class="col-lg-4 la text-center col-12 col-sm-4"
+                            >
+                              <label name="">
+                                <div
+                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
+                                >
+                                  <img
+                                    alt=""
+                                    src="/assets/images/img-new-3.png"
+                                  />
+                                  <h6>Replacement</h6>
+                                </div>
+                                <input
+                                  class="check"
+                                  id="replacement-check"
+                                  name="type"
+                                  type="radio"
+                                  value="replacement"
+                                />
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+
+                <ng-template #serDiv1 ngSwitchCase="serDiv1">
+                  <div class="col-lg-12 col-12 col-sm-12 flush" id="ser-div-1">
+                    <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
+                      <div class="row">
+                        <div class="col-lg-12 text-center col-12 col-sm-12">
+                          <h3>Enter Membership Number:</h3>
+                        </div>
+                      </div>
+                      <div class="row tp">
+                        <div class="col-lg-12 text-center col-12 col-sm-12">
+                          <input
+                            name=""
+                            placeholder="Enter request"
+                            type="text"
+                          />
+                        </div>
+                        <div class="col-lg-12 text-center col-12 col-sm-12">
+                          <a class="btn-next" (click)="searchRequest()">Search</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+
+                <ng-template #ftDiv3 ngSwitchCase="ftDiv3">
+                  <div
+                    class="col-lg-12 old col-12 col-sm-12 flush"
+                    id="ft-div-3"
+                  >
+                    <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
+                      <div class="row">
+                        <div class="col-lg-12 text-center col-12 col-sm-12">
+                          <h3>Please Enter your Personal Information:</h3>
+                        </div>
+                      </div>
+                      <div class="row tp">
+                        <div class="col-lg-12 col-12 col-sm-12">
+                          <div class="row">
+                            <!--<div class="col-lg-6 col-12 col-sm-6">
+                <label class="form-label">You are:</label>
+                <select class="sel">
+                  <option>I am Tourist</option>
+                  <option>Diplomat</option>
+                  <option>Resident</option>
+                </select>
+              </div>-->
+                            <div class="col-lg-6 col-12 col-sm-6">
+                              <label class="form-label">Full Name:</label>
                               <input
-                                class="controls"
-                                id="map_address_input"
-                                placeholder="Your Address"
+                                name=""
+                                placeholder="Enter your name"
                                 type="text"
                               />
                             </div>
-                            <div class="map" id="map_with_google_api"></div>
+                            <div class="col-lg-6 col-12 col-sm-6">
+                              <label class="form-label">Email Address:</label>
+                              <input
+                                name=""
+                                placeholder="Enter your Email Address"
+                                type="text"
+                              />
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-12 col-12 col-sm-12">
+                              <label class="form-label">Your Location: </label>
+                            </div>
+                            <div class="col-lg-12 bt-form col-12 col-sm-12">
+                              <!--<div class="col-lg-12 input-space o-hidden flush col-12 col-sm-12">
+                   <input id="pac-input" class="controls" type="text" placeholder="Your Address" />
+                   <div id="map"></div>
+                </div>-->
+                              <div
+                                class="col-lg-12 o-hidden flush col-12 col-sm-12"
+                              >
+                                <div class="map" id="meta_data_container">
+                                  <input
+                                    class="controls"
+                                    id="map_address_input"
+                                    placeholder="Your Address"
+                                    type="text"
+                                  />
+                                </div>
+                                <div class="map" id="map_with_google_api"></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-12 col-12 col-sm-12">
+                              <label class="form-label"
+                                >Complete Address:
+                              </label>
+                              <textarea
+                                class="ht"
+                                placeholder="Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum "
+                              ></textarea>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </ng-template>
+
+                <ng-template #ftDiv4 ngSwitchCase="ftDiv4">
+                  <div
+                    class="col-lg-12 old col-12 col-sm-12 flush"
+                    id="ft-div-4"
+                  >
+                    <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
                       <div class="row">
-                        <div class="col-lg-12 col-12 col-sm-12">
-                          <label class="form-label">Complete Address: </label>
-                          <textarea
-                            class="ht"
-                            placeholder="Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum "
-                          ></textarea>
+                        <div class="col-lg-12 text-center col-12 col-sm-12">
+                          <h3>Please Enter your Personal Information:</h3>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="col-lg-12 old col-12 col-sm-12 hide flush"
-                id="ft-div-4"
-              >
-                <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-                  <div class="row">
-                    <div class="col-lg-12 text-center col-12 col-sm-12">
-                      <h3>Please Enter your Personal Information:</h3>
-                    </div>
-                  </div>
-                  <div class="row tp">
-                    <div class="col-lg-12 col-12 col-sm-12">
-                      <div class="row">
-                        <div class="col-lg-6 col-12 col-sm-6">
-                          <label class="form-label">Nationality:</label>
-                          <select class="sel">
-                            <option>Philiphines</option>
-                            <option>Diplomat</option>
-                            <option>Resident</option>
-                          </select>
-                        </div>
-                        <div class="col-lg-6 col-12 col-sm-6">
-                          <label class="form-label">Religion:</label>
-                          <select class="sel">
-                            <option>Islam</option>
-                            <option>Kristian</option>
-                            <option>Hindu</option>
-                          </select>
-                        </div>
-                        <div class="col-lg-6 col-12 col-sm-6">
-                          <label class="form-label">Emirates ID Number:</label>
-                          <input
-                            name=""
-                            placeholder="Enter your Emirates ID Number"
-                            type="text"
-                          />
-                        </div>
-                        <div class="col-lg-6 col-12 col-sm-6">
-                          <label class="form-label">Passport Number:</label>
-                          <input
-                            name=""
-                            placeholder="Enter your Passport Number"
-                            type="text"
-                          />
-                        </div>
-                        <div class="col-lg-6 col-12 col-sm-6">
-                          <label class="form-label"
-                            >Attach your Profice Picture</label
-                          >
-                          <div class="div-cirlce">
-                            <div class="circle">
-                              <!-- User Profile Image -->
-                              <img
-                                alt=""
-                                class="profile-pic"
-                                src="/assets/img/user.png"
-                              />
-
-                              <!-- Default Image -->
-                              <!-- <i class="fa fa-user fa-5x"></i> -->
+                      <div class="row tp">
+                        <div class="col-lg-12 col-12 col-sm-12">
+                          <div class="row">
+                            <div class="col-lg-6 col-12 col-sm-6">
+                              <label class="form-label">Nationality:</label>
+                              <select class="sel">
+                                <option>Philiphines</option>
+                                <option>Diplomat</option>
+                                <option>Resident</option>
+                              </select>
                             </div>
-                            <div class="p-image">
-                              <i class="fa fa-camera upload-button"></i>
+                            <div class="col-lg-6 col-12 col-sm-6">
+                              <label class="form-label">Religion:</label>
+                              <select class="sel">
+                                <option>Islam</option>
+                                <option>Kristian</option>
+                                <option>Hindu</option>
+                              </select>
+                            </div>
+                            <div class="col-lg-6 col-12 col-sm-6">
+                              <label class="form-label"
+                                >Emirates ID Number:</label
+                              >
                               <input
-                                accept="image/*"
-                                class="file-upload"
+                                name=""
+                                placeholder="Enter your Emirates ID Number"
+                                type="text"
+                              />
+                            </div>
+                            <div class="col-lg-6 col-12 col-sm-6">
+                              <label class="form-label">Passport Number:</label>
+                              <input
+                                name=""
+                                placeholder="Enter your Passport Number"
+                                type="text"
+                              />
+                            </div>
+                            <div class="col-lg-6 col-12 col-sm-6">
+                              <label class="form-label"
+                                >Attach your Profice Picture</label
+                              >
+                              <div class="div-cirlce">
+                                <div class="circle">
+                                  <!-- User Profile Image -->
+                                  <img
+                                    alt=""
+                                    class="profile-pic"
+                                    src="/assets/img/user.png"
+                                  />
+
+                                  <!-- Default Image -->
+                                  <!-- <i class="fa fa-user fa-5x"></i> -->
+                                </div>
+                                <div class="p-image">
+                                  <i class="fa fa-camera upload-button"></i>
+                                  <input
+                                    accept="image/*"
+                                    class="file-upload"
+                                    type="file"
+                                  />
+                                </div>
+                              </div>
+                              <!--<input type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1  " data-multiple-caption="{count} files selected" multiple />
+                <label for="file-1">
+                <span>Upload File – png only Max Size 2 MB</span></label>-->
+                            </div>
+                            <div class="col-lg-6 flush col-12 col-sm-6">
+                              <div class="col-lg-12 col-12 col-sm-12">
+                                <label class="form-label"
+                                  >Attach Emirates ID Back</label
+                                >
+                                <input
+                                  class="inputfile inputfile-1"
+                                  data-multiple-caption="{count} files selected"
+                                  id="file-1"
+                                  multiple
+                                  name="file-1[]"
+                                  type="file"
+                                />
+                                <label for="file-1">
+                                  <span
+                                    >Upload File – png only Max Size 2 MB</span
+                                  ></label
+                                >
+                              </div>
+                              <div class="col-lg-12 col-12 col-sm-12">
+                                <label class="form-label"
+                                  >Attach Emirates ID Front</label
+                                >
+                                <input
+                                  class="inputfile inputfile-1"
+                                  data-multiple-caption="{count} files selected"
+                                  id="file-1"
+                                  multiple
+                                  name="file-1[]"
+                                  type="file"
+                                />
+                                <label for="file-1">
+                                  <span
+                                    >Upload File – png only Max Size 2 MB</span
+                                  ></label
+                                >
+                              </div>
+                              <div class="col-lg-12 col-12 col-sm-12">
+                                <label class="form-label">Gender: </label>
+                                <input name="" placeholder="MALE" type="text" />
+                              </div>
+                            </div>
+                            <div class="col-lg-6 col-12 col-sm-6">
+                              <label class="form-label"
+                                >Attach Passport Copy</label
+                              >
+                              <input
+                                class="inputfile inputfile-1"
+                                data-multiple-caption="{count} files selected"
+                                id="file-1"
+                                multiple
+                                name="file-1[]"
                                 type="file"
                               />
+                              <label for="file-1">
+                                <span
+                                  >Upload File – png only Max Size 2 MB</span
+                                ></label
+                              >
+                            </div>
+                            <div class="col-lg-6 col-12 col-sm-6">
+                              <label class="form-label"
+                                >Attach Authorization Letter</label
+                              >
+                              <input
+                                class="inputfile inputfile-1"
+                                data-multiple-caption="{count} files selected"
+                                id="file-1"
+                                multiple
+                                name="file-1[]"
+                                type="file"
+                              />
+                              <label for="file-1">
+                                <span
+                                  >Upload File – png only Max Size 2 MB</span
+                                ></label
+                              >
+                            </div>
+                            <div class="col-lg-6 col-12 col-sm-6">
+                              <label class="form-label">Birthdate:</label>
+                              <input
+                                class="date"
+                                id="datepickertwo"
+                                name=""
+                                placeholder="Enter your Birthdate  "
+                                type="text"
+                              />
                             </div>
                           </div>
-                          <!--<input type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1 hide" data-multiple-caption="{count} files selected" multiple />
-                          <label for="file-1">
-                          <span>Upload File – png only Max Size 2 MB</span></label>-->
-                        </div>
-                        <div class="col-lg-6 flush col-12 col-sm-6">
-                          <div class="col-lg-12 col-12 col-sm-12">
-                            <label class="form-label"
-                              >Attach Emirates ID Back</label
-                            >
-                            <input
-                              class="inputfile inputfile-1 hide"
-                              data-multiple-caption="{count} files selected"
-                              id="file-1"
-                              multiple
-                              name="file-1[]"
-                              type="file"
-                            />
-                            <label for="file-1">
-                              <span
-                                >Upload File – png only Max Size 2 MB</span
-                              ></label
-                            >
-                          </div>
-                          <div class="col-lg-12 col-12 col-sm-12">
-                            <label class="form-label"
-                              >Attach Emirates ID Front</label
-                            >
-                            <input
-                              class="inputfile inputfile-1 hide"
-                              data-multiple-caption="{count} files selected"
-                              id="file-1"
-                              multiple
-                              name="file-1[]"
-                              type="file"
-                            />
-                            <label for="file-1">
-                              <span
-                                >Upload File – png only Max Size 2 MB</span
-                              ></label
-                            >
-                          </div>
-                          <div class="col-lg-12 col-12 col-sm-12">
-                            <label class="form-label">Gender: </label>
-                            <input name="" placeholder="MALE" type="text" />
-                          </div>
-                        </div>
-                        <div class="col-lg-6 hide col-12 col-sm-6">
-                          <label class="form-label">Attach Passport Copy</label>
-                          <input
-                            class="inputfile inputfile-1 hide"
-                            data-multiple-caption="{count} files selected"
-                            id="file-1"
-                            multiple
-                            name="file-1[]"
-                            type="file"
-                          />
-                          <label for="file-1">
-                            <span
-                              >Upload File – png only Max Size 2 MB</span
-                            ></label
-                          >
-                        </div>
-                        <div class="col-lg-6 col-12 col-sm-6">
-                          <label class="form-label"
-                            >Attach Authorization Letter</label
-                          >
-                          <input
-                            class="inputfile inputfile-1 hide"
-                            data-multiple-caption="{count} files selected"
-                            id="file-1"
-                            multiple
-                            name="file-1[]"
-                            type="file"
-                          />
-                          <label for="file-1">
-                            <span
-                              >Upload File – png only Max Size 2 MB</span
-                            ></label
-                          >
-                        </div>
-                        <div class="col-lg-6 col-12 col-sm-6">
-                          <label class="form-label">Birthdate:</label>
-                          <input
-                            class="date"
-                            id="datepickertwo"
-                            name=""
-                            placeholder="Enter your Birthdate  "
-                            type="text"
-                          />
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-lg-12 col-12 col-sm-12 hide" id="sd-div">
-                <div class="row">
-                  <div class="col-lg-12 text-center col-12 col-sm-12">
-                    <h3>Please Enter your Work Information:</h3>
-                  </div>
-                </div>
-                <div class="row tp">
-                  <div class="col-lg-12 col-12 col-sm-12">
+                </ng-template>
+
+                <ng-template #sdDiv ngSwitchCase="sdDiv">
+                  <div class="col-lg-12 col-12 col-sm-12" id="sd-div">
                     <div class="row">
-                      <div class="col-lg-6 col-12 col-sm-6">
-                        <label class="form-label">Your Monthly Salary:</label>
-                        <input name="" placeholder="5000 DHS" type="text" />
-                      </div>
-                      <div class="col-lg-6 col-12 col-sm-6">
-                        <label class="form-label"
-                          >How much Monthly Quota you need:</label
-                        >
-                        <input name="" placeholder="2000 DHS" type="text" />
+                      <div class="col-lg-12 text-center col-12 col-sm-12">
+                        <h3>Please Enter your Work Information:</h3>
                       </div>
                     </div>
+                    <div class="row tp">
+                      <div class="col-lg-12 col-12 col-sm-12">
+                        <div class="row">
+                          <div class="col-lg-6 col-12 col-sm-6">
+                            <label class="form-label"
+                              >Your Monthly Salary:</label
+                            >
+                            <input name="" placeholder="5000 DHS" type="text" />
+                          </div>
+                          <div class="col-lg-6 col-12 col-sm-6">
+                            <label class="form-label"
+                              >How much Monthly Quota you need:</label
+                            >
+                            <input name="" placeholder="2000 DHS" type="text" />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-12 col-12 col-sm-12">
+                            <label class="form-label">Any comments: </label>
+                            <textarea placeholder="FDFDF"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+
+                <ng-template #tdDiv ngSwitchCase="tdDiv">
+                  <div class="col-lg-12 col-12 col-sm-12" id="td-div">
                     <div class="row">
                       <div class="col-lg-12 col-12 col-sm-12">
-                        <label class="form-label">Any comments: </label>
-                        <textarea placeholder="FDFDF"></textarea>
+                        <label class="form-label">YOUR AREA </label>
+                        <select>
+                          <option>Business Bay</option>
+                        </select>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12 col-12 col-sm-12 hide" id="td-div">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12">
-                    <label class="form-label">YOUR AREA </label>
-                    <select>
-                      <option>Business Bay</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-12 tps2 col-12 col-sm-12">
-                    <h2>LOCATION:</h2>
-                  </div>
-                  <div class="col-lg-12 tp col-12 col-sm-12">
-                    <p class="desc">
-                      Please select any of our nearest Branch office from your
-                      location, and we will process your application there
-                    </p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12 multi">
-                    <div class="table">
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#1:<br />
-                          Shop 202 , Business Bay Branch , AE , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#2:<br />
-                          Shop 302 , Jumirah Branch , MMI , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#3:<br />
-                          Shop 302 , Jumirah Branch , AE , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#4:<br />
-                          Shop 202 , Business Bay Branch , AE , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#5:<br />
-                          Shop 302 , Jumirah Branch , MMI , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#6:<br />
-                          Shop 302 , Jumirah Branch , AE , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#7:<br />
-                          Shop 202 , Business Bay Branch , AE , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#8:<br />
-                          Shop 302 , Jumirah Branch , MMI , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#9:<br />
-                          Shop 302 , Jumirah Branch , AE , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#10:<br />
-                          Shop 202 , Business Bay Branch , AE , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label class="bt">
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#11:<br />
-                          Shop 302 , Jumirah Branch , MMI , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                      <label>
-                        <input
-                          class="check"
-                          name="location"
-                          type="radio"
-                        /><span>
-                          Location#12:<br />
-                          Shop 302 , Jumirah Branch , AE , Dubai
-                          <a href="#">X</a></span
-                        >
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12 col-12 col-sm-12 hide" id="last-div">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12">
-                    <h3>Review & Submit</h3>
-                  </div>
-                  <div class="col-lg-12 table-inf col-12 col-sm-12 text-center">
-                    <div class="table-responsive">
-                      <table class="table">
-                        <tbody>
-                          <tr>
-                            <td>Full Name</td>
-                            <td>James D</td>
-                          </tr>
-                          <tr>
-                            <td>Email Address</td>
-                            <td>james@gmail.com</td>
-                          </tr>
-                          <tr>
-                            <td>Type Of Request</td>
-                            <td>020 XXX XXX XXX</td>
-                          </tr>
-                          <tr>
-                            <td>Type Of Request 2</td>
-                            <td>Renewal</td>
-                          </tr>
-                          <tr>
-                            <td>Complete Address</td>
-                            <td>AE , Dubai</td>
-                          </tr>
-                          <tr>
-                            <td>Gender</td>
-                            <td>Male</td>
-                          </tr>
-                          <tr>
-                            <td>Birthdate</td>
-                            <td>02/02/1980</td>
-                          </tr>
-                          <tr>
-                            <td>Enter Membership Number</td>
-                            <td>XXXXXXXXXXX</td>
-                          </tr>
-                          <tr>
-                            <td>Nationality</td>
-                            <td>Philiphines</td>
-                          </tr>
-                          <tr>
-                            <td>Religion</td>
-                            <td>Islam</td>
-                          </tr>
-                          <tr>
-                            <td>Month Salary</td>
-                            <td>5000 DHS</td>
-                          </tr>
-                          <tr>
-                            <td>Month Quota Need</td>
-                            <td>2000 DHS</td>
-                          </tr>
-                          <tr>
-                            <td>Comment</td>
-                            <td>Hi James</td>
-                          </tr>
-                          <tr>
-                            <td>Location</td>
-                            <td>Shop 202 , Business Bay Branch , AE , Dubai</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12 col-12 col-sm-12 hide" id="last-div-2">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12 text-center">
-                    <h3>Review & Submit</h3>
-                  </div>
-                  <div class="col-lg-12 tp col-12 col-sm-12 text-center">
-                    <p>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five
-                      centuries
-                    </p>
-                  </div>
-                </div>
-                <div class="row tp">
-                  <div class="col-lg-12 col-12 col-sm-12">
                     <div class="row">
-                      <div
-                        class="col-lg-4 m-left la text-center col-12 col-sm-6"
-                      >
-                        <label name="">
-                          <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                            <img alt="" src="/assets/images/img-new-1.png" />
-                            <h6>Pay Online</h6>
-                          </div>
-                          <input
-                            class="check"
-                            name="payment"
-                            type="radio"
-                            value="payonline"
-                          />
-                        </label>
+                      <div class="col-lg-12 tps2 col-12 col-sm-12">
+                        <h2>LOCATION:</h2>
                       </div>
-                      <div class="col-lg-4 la text-center col-12 col-sm-6">
-                        <label name="">
-                          <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                            <img alt="" src="/assets/images/img-new-2.png" />
-                            <h6>Cash</h6>
-                          </div>
-                          <input
-                            class="check"
-                            name="payment"
-                            type="radio"
-                            value="cash"
-                          />
-                        </label>
+                      <div class="col-lg-12 tp col-12 col-sm-12">
+                        <p class="desc">
+                          Please select any of our nearest Branch office from
+                          your location, and we will process your application
+                          there
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 col-12 col-sm-12 multi">
+                        <div class="table">
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#1:<br />
+                              Shop 202 , Business Bay Branch , AE , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#2:<br />
+                              Shop 302 , Jumirah Branch , MMI , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#3:<br />
+                              Shop 302 , Jumirah Branch , AE , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#4:<br />
+                              Shop 202 , Business Bay Branch , AE , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#5:<br />
+                              Shop 302 , Jumirah Branch , MMI , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#6:<br />
+                              Shop 302 , Jumirah Branch , AE , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#7:<br />
+                              Shop 202 , Business Bay Branch , AE , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#8:<br />
+                              Shop 302 , Jumirah Branch , MMI , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#9:<br />
+                              Shop 302 , Jumirah Branch , AE , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#10:<br />
+                              Shop 202 , Business Bay Branch , AE , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label class="bt">
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#11:<br />
+                              Shop 302 , Jumirah Branch , MMI , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                          <label>
+                            <input
+                              class="check"
+                              name="location"
+                              type="radio"
+                            /><span>
+                              Location#12:<br />
+                              Shop 302 , Jumirah Branch , AE , Dubai
+                              <a href="#">X</a></span
+                            >
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-lg-12 col-12 col-sm-12 hide" id="last-div-3">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12 text-center">
-                    <h3>Review & Submit</h3>
+                </ng-template>
+
+                <ng-template #lastDiv ngSwitchCase="lastDiv">
+                  <div class="col-lg-12 col-12 col-sm-12" id="last-div">
+                    <div class="row">
+                      <div class="col-lg-12 col-12 col-sm-12">
+                        <h3>Review & Submit</h3>
+                      </div>
+                      <div
+                        class="col-lg-12 table-inf col-12 col-sm-12 text-center"
+                      >
+                        <div class="table-responsive">
+                          <table class="table">
+                            <tbody>
+                              <tr>
+                                <td>Full Name</td>
+                                <td>James D</td>
+                              </tr>
+                              <tr>
+                                <td>Email Address</td>
+                                <td>james@gmail.com</td>
+                              </tr>
+                              <tr>
+                                <td>Type Of Request</td>
+                                <td>020 XXX XXX XXX</td>
+                              </tr>
+                              <tr>
+                                <td>Type Of Request 2</td>
+                                <td>Renewal</td>
+                              </tr>
+                              <tr>
+                                <td>Complete Address</td>
+                                <td>AE , Dubai</td>
+                              </tr>
+                              <tr>
+                                <td>Gender</td>
+                                <td>Male</td>
+                              </tr>
+                              <tr>
+                                <td>Birthdate</td>
+                                <td>02/02/1980</td>
+                              </tr>
+                              <tr>
+                                <td>Enter Membership Number</td>
+                                <td>XXXXXXXXXXX</td>
+                              </tr>
+                              <tr>
+                                <td>Nationality</td>
+                                <td>Philiphines</td>
+                              </tr>
+                              <tr>
+                                <td>Religion</td>
+                                <td>Islam</td>
+                              </tr>
+                              <tr>
+                                <td>Month Salary</td>
+                                <td>5000 DHS</td>
+                              </tr>
+                              <tr>
+                                <td>Month Quota Need</td>
+                                <td>2000 DHS</td>
+                              </tr>
+                              <tr>
+                                <td>Comment</td>
+                                <td>Hi James</td>
+                              </tr>
+                              <tr>
+                                <td>Location</td>
+                                <td>
+                                  Shop 202 , Business Bay Branch , AE , Dubai
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="row tp">
-                  <div class="col-lg-12 text-center col-12 col-sm-12">
-                    <p>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five
-                      centuries
-                    </p>
+                </ng-template>
+
+                <ng-template #lastDiv2 ngSwitchCase="lastDiv2">
+                  <div class="col-lg-12 col-12 col-sm-12" id="last-div-2">
+                    <div class="row">
+                      <div class="col-lg-12 col-12 col-sm-12 text-center">
+                        <h3>Review & Submit</h3>
+                      </div>
+                      <div class="col-lg-12 tp col-12 col-sm-12 text-center">
+                        <p>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry. Lorem Ipsum has been the
+                          industry's standard dummy text ever since the 1500s,
+                          when an unknown printer took a galley of type and
+                          scrambled it to make a type specimen book. It has
+                          survived not only five centuries
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row tp">
+                      <div class="col-lg-12 col-12 col-sm-12">
+                        <div class="row">
+                          <div
+                            class="col-lg-4 m-left la text-center col-12 col-sm-6"
+                          >
+                            <label name="">
+                              <div
+                                class="col-lg-12 bg-label col-sm-12 col-xs-12"
+                              >
+                                <img
+                                  alt=""
+                                  src="/assets/images/img-new-1.png"
+                                />
+                                <h6>Pay Online</h6>
+                              </div>
+                              <input
+                                class="check"
+                                name="payment"
+                                type="radio"
+                                value="payonline"
+                              />
+                            </label>
+                          </div>
+                          <div class="col-lg-4 la text-center col-12 col-sm-6">
+                            <label name="">
+                              <div
+                                class="col-lg-12 bg-label col-sm-12 col-xs-12"
+                              >
+                                <img
+                                  alt=""
+                                  src="/assets/images/img-new-2.png"
+                                />
+                                <h6>Cash</h6>
+                              </div>
+                              <input
+                                class="check"
+                                name="payment"
+                                type="radio"
+                                value="cash"
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-lg-12 col-12 col-sm-12 hide" id="last-div-4">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12 text-center">
-                    <h3>Your Application Number is: XXXXXX</h3>
+                </ng-template>
+
+                <ng-template #lastDiv3 ngSwitchCase="lastDiv3">
+                  <div class="col-lg-12 col-12 col-sm-12" id="last-div-3">
+                    <div class="row">
+                      <div class="col-lg-12 col-12 col-sm-12 text-center">
+                        <h3>Review & Submit</h3>
+                      </div>
+                    </div>
+                    <div class="row tp">
+                      <div class="col-lg-12 text-center col-12 col-sm-12">
+                        <p>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry. Lorem Ipsum has been the
+                          industry's standard dummy text ever since the 1500s,
+                          when an unknown printer took a galley of type and
+                          scrambled it to make a type specimen book. It has
+                          survived not only five centuries
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </ng-template>
+
+                <ng-template #lastDiv4 ngSwitchCase="lastDiv4">
+                  <div class="col-lg-12 col-12 col-sm-12" id="last-div-4">
+                    <div class="row">
+                      <div class="col-lg-12 col-12 col-sm-12 text-center">
+                        <h3>Your Application Number is: XXXXXX</h3>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-container>
             </div>
-            <div class="row">
-              <div class="actions col-lg-12 col-12 col-sm-12 hide" id="ft-ul">
+            <ng-container #divButtons>
+              <div class="row">
+                <div class="actions col-lg-12 col-12 col-sm-12" id="generic-ul">
+                  <ul aria-label="Pagination" role="menu">
+                    <li>
+                      <a
+                        class=""
+                        id="prev-btn"
+                        *ngIf="isPreviousButtonShowed()"
+                        (click)="previous()"
+                        >Previous</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        id="next-btn"
+                        *ngIf="isNextButtonShowed()"
+                        (click)="next()"
+                        >Next</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </ng-container>
+            <!-- <div class="row">
+              <div class="actions col-lg-12 col-12 col-sm-12  " id="ft-ul">
                 <ul aria-label="Pagination" role="menu">
-                  <li><a class="hide"></a></li>
+                  <li><a class=" "></a></li>
                   <li><a id="next-btn">Next</a></li>
                 </ul>
               </div>
-              <div class="actions hide col-lg-12 col-12 col-sm-12" id="sd-ul">
+              <div class="actions col-lg-12 col-12 col-sm-12" id="sd-ul">
                 <ul aria-label="Pagination" role="menu">
                   <li><a class="" id="prev-btn">Previous</a></li>
                   <li><a id="next-btn">Next</a></li>
                 </ul>
               </div>
-              <div class="actions hide col-lg-12 col-12 col-sm-12" id="sd-ul-2">
+              <div class="actions col-lg-12 col-12 col-sm-12" id="sd-ul-2">
                 <ul aria-label="Pagination" role="menu">
                   <li><a class="" id="prev-btn">Previous</a></li>
                   <li><a id="next-btn">Next</a></li>
                 </ul>
               </div>
               <div
-                class="actions hide col-lg-12 col-12 col-sm-12"
+                class="actions col-lg-12 col-12 col-sm-12"
                 id="renewal-ul"
               >
                 <ul aria-label="Pagination" role="menu">
@@ -900,38 +1029,38 @@
                   <li><a id="next-btn">Next</a></li>
                 </ul>
               </div>
-              <div class="actions hide col-lg-12 col-12 col-sm-12" id="td-ul">
+              <div class="actions col-lg-12 col-12 col-sm-12" id="td-ul">
                 <ul aria-label="Pagination" role="menu">
                   <li><a class="" id="prev-btn">Previous</a></li>
                   <li><a id="next-btn">Next</a></li>
                 </ul>
               </div>
-              <div class="actions hide col-lg-12 col-12 col-sm-12" id="td-ul-2">
+              <div class="actions col-lg-12 col-12 col-sm-12" id="td-ul-2">
                 <ul aria-label="Pagination" role="menu">
                   <li><a class="" id="prev-btn">Previous</a></li>
                   <li><a id="next-btn">Next</a></li>
                 </ul>
               </div>
-              <div class="actions hide col-lg-12 col-12 col-sm-12" id="fd-ul">
+              <div class="actions col-lg-12 col-12 col-sm-12" id="fd-ul">
                 <ul aria-label="Pagination" role="menu">
                   <li><a class="" id="prev-btn">Previous</a></li>
                   <li><a id="next-btn">Next</a></li>
                 </ul>
               </div>
-              <div class="actions hide col-lg-12 col-12 col-sm-12" id="loca-ul">
+              <div class="actions col-lg-12 col-12 col-sm-12" id="loca-ul">
                 <ul aria-label="Pagination" role="menu">
                   <li><a class="" id="prev-btn">Previous</a></li>
                   <li><a id="next-btn">Next</a></li>
                 </ul>
               </div>
-              <div class="actions hide col-lg-12 col-12 col-sm-12" id="sub-ul">
+              <div class="actions col-lg-12 col-12 col-sm-12" id="sub-ul">
                 <ul aria-label="Pagination" role="menu">
                   <li><a class="" id="prev-btn">Previous</a></li>
                   <li><a id="next-btn">Next</a></li>
                 </ul>
               </div>
               <div
-                class="actions hide col-lg-12 col-12 col-sm-12"
+                class="actions col-lg-12 col-12 col-sm-12"
                 id="sub-ul-2"
               >
                 <ul aria-label="Pagination" role="menu">
@@ -940,7 +1069,7 @@
                 </ul>
               </div>
               <div
-                class="actions hide col-lg-12 col-12 col-sm-12"
+                class="actions col-lg-12 col-12 col-sm-12"
                 id="sub-ul-3"
               >
                 <ul aria-label="Pagination" role="menu">
@@ -948,7 +1077,7 @@
                   <li><a id="next-btn">Next</a></li>
                 </ul>
               </div>
-            </div>
+            </div> -->
           </form>
         </div>
       </div>
