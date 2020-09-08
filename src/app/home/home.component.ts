@@ -1,6 +1,15 @@
+import { showHomeScreens } from './../constants';
 import { AfterViewInit, Component } from '@angular/core';
-// import * as scripts from './scripts.js';
 import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, Observable, pipe, of } from 'rxjs';
+import { map, tap, switchMap, switchMapTo, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import {
+  steps,
+  showPreviousButtonScreens,
+  showNextButtonScreens,
+  showStepsFlowScreens,
+} from '../constants';
 
 @Component({
   selector: 'ot-home',
@@ -8,91 +17,65 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements AfterViewInit {
-  constructor(private translate: TranslateService) {}
-  public language = 'en';
+  options = {
+    center: { lat: 40, lng: -20 },
+    zoom: 4,
+  };
 
-  public steps = [
-    'mainDiv',
-    'ftDiv',
-    'ftDiv2',
-    'serDiv1',
-    'ftDiv3',
-    'ftDiv4',
-    'sdDiv',
-    'tdDiv',
-    'lastDiv',
-    'lastDiv2',
-    'lastDiv3',
-    'lastDiv4',
-  ];
+  public isNextButtonShowed: Observable<boolean>;
+  public isPreviousButtonShowed: Observable<boolean>;
+  public isStepsFlowShowed: Observable<boolean>;
+  public isHomeShowed: Observable<boolean>;
+  private language = 'en';
 
-  public currentStep = 'mainDiv';
+  public currentStep$ = new BehaviorSubject<string>('mainDiv');
+  public isMobileSend = false;
+  public googleApiLoad: any;
 
-  // private static createGoogleMapsScript(): void {
-  //   if (document.getElementById('google-apis')) {
-  //     return;
-  //   }
-  //   const script = document.createElement('script');
-  //   script.src =
-  //     'https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBHpAmimxTn6JfSP_-1PavnZ9WvAE6eCtc&libraries=places&callback=initAutocomplete';
-  //   script.async = true;
-  //   script.defer = true;
-  //   script.id = 'google-apis';
-  //   document.body.insertAdjacentElement('beforeend', script);
-  // }
+  constructor(
+    private translate: TranslateService,
+    private httpClient: HttpClient
+  ) {
+    this.isNextButtonShowed = this.currentStep$.pipe(
+      map((s) => showNextButtonScreens.includes(s))
+    );
 
-  private showPreviousButtonScreens = [
-    // 'mainDiv',
-    'ftDiv',
-    'ftDiv2',
-    // 'serDiv1',
-    'ftDiv3',
-    'ftDiv4',
-    'sdDiv',
-    'tdDiv',
-    'lastDiv',
-    'lastDiv2',
-    'lastDiv3',
-    'lastDiv4',
-  ];
+    this.isPreviousButtonShowed = this.currentStep$.pipe(
+      map((s) => showPreviousButtonScreens.includes(s))
+    );
 
-  private showNextButtonScreens = [
-    'mainDiv',
-    'ftDiv',
-    'ftDiv2',
-    // 'serDiv1', --search
-    'ftDiv3',
-    'ftDiv4',
-    'sdDiv',
-    'tdDiv',
-    'lastDiv',
-    'lastDiv2',
-    'lastDiv3',
-    'lastDiv4',
-  ];
+    this.isStepsFlowShowed = this.currentStep$.pipe(
+      map((s) => showStepsFlowScreens.includes(s))
+    );
+    this.isHomeShowed = this.currentStep$.pipe(
+      map((s) => showHomeScreens.includes(s))
+    );
+  }
 
   public searchRequest(): void {
-    this.currentStep = 'ftDiv3';
+    this.setCurrentStep('ftDiv3');
   }
 
-  public isNextButtonShowed(): boolean {
-    return this.showNextButtonScreens.includes(this.currentStep);
-  }
-
-  public isPreviousButtonShowed(): boolean {
-    return this.showPreviousButtonScreens.includes(this.currentStep);
+  public sendMobile(): void {
+    this.isMobileSend = true;
   }
 
   public next(): void {
-    this.currentStep = this.steps[this.getCurrentStepIndex() + 1];
+    const index = this.getIndex(this.currentStep$.value);
+    this.currentStep$.next(steps[index + 1]);
   }
 
-  private getCurrentStepIndex(): number {
-    return this.steps.findIndex((x) => x === this.currentStep);
+  private getIndex(value: string): number {
+    return steps.findIndex((x) => x === value);
   }
 
   public previous(): void {
-    this.currentStep = this.steps[this.getCurrentStepIndex() - 1];
+    const index = this.getIndex(this.currentStep$.value);
+    this.currentStep$.next(steps[index - 1]);
+  }
+
+  private setCurrentStep(step: string): void {
+    this.currentStep$.next(step);
   }
 
   public changeLanguage(e: Event): void {
@@ -110,11 +93,17 @@ export class HomeComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    try {
-      // scripts();
-    } catch (e) {
-      console.warn(e);
-    }
-    // setTimeout(HomeComponent.createGoogleMapsScript);
+    this.googleApiLoad = this.httpClient
+      .jsonp(
+        'https://maps.googleapis.com/maps/api/js?key=AIzaSyBgSPoq80yJ1txKlNgTgIAxvsBKTOaUGIY',
+        'callback'
+      )
+      .pipe(
+        map(() => true),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
   }
 }

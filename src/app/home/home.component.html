@@ -11,7 +11,11 @@
       <div class="bg"></div>
       <div class="tablerow">
         <div class="tablecell">
-          <div class="col-12 flush col-sm-12" id="first-bg">
+          <div
+            class="col-12 flush col-sm-12"
+            id="first-bg"
+            *ngIf="isHomeShowed | async"
+          >
             <div class="info-holder simple-info">
               <div><img alt="" src="/assets/images/graphic6.svg" /></div>
               <div>
@@ -28,7 +32,7 @@
               </div>
             </div>
           </div>
-          <div class="vertical">
+          <div class="vertical" *ngIf="isStepsFlowShowed | async">
             <div class="steps">
               <ul class=" " id="sds-ul" role="tablist">
                 <li
@@ -127,7 +131,7 @@
         <div class="form-items">
           <form>
             <div class="row">
-              <ng-container [ngSwitch]="currentStep">
+              <ng-container [ngSwitch]="currentStep$ | async">
                 <ng-template #mainDiv ngSwitchCase="mainDiv">
                   <div class="col-lg-12 col-12 col-sm-12" id="main-div">
                     <div class="row" id="testdiv">
@@ -148,10 +152,21 @@
                             />
                             <!--<input class="flag" type="text" name="" >-->
                           </div>
-                          <!-- <div class="col-lg-12 col-12 col-sm-12 text-right">
-                            <a class="btn-next" id="veri-btn">Next</a>
-                          </div> -->
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template #mainDiv2 ngSwitchCase="mainDiv2">
+                  <div class="col-lg-12 col-12 col-sm-12" id="main-div2">
+                    <div class="row" id="testdiv">
+                      <div class="col-lg-12 col-12 col-sm-12 tp">
+                        <h3>Enter your Mobile Number to get started</h3>
+                      </div>
+                      <div class="col-lg-12 col-12 col-sm-12">
+                        <p class="desc"></p>
+                      </div>
+                      <div class="col-lg-12 flush col-12 col-sm-12">
                         <div class="col-12 flush" id="veri">
                           <div class="form-group full col-12 flush">
                             <label class="form-label">Verification:</label>
@@ -343,7 +358,9 @@
                           />
                         </div>
                         <div class="col-lg-12 text-center col-12 col-sm-12">
-                          <a class="btn-next" (click)="searchRequest()">Search</a>
+                          <a class="btn-next" (click)="searchRequest()"
+                            >Search</a
+                          >
                         </div>
                       </div>
                     </div>
@@ -409,7 +426,13 @@
                                     type="text"
                                   />
                                 </div>
-                                <div class="map" id="map_with_google_api"></div>
+                                <div
+                                  class="map"
+                                  id="map_with_google_api"
+                                  *ngIf="googleApiLoad | async"
+                                >
+                                  <google-map [options]="options"></google-map>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -984,7 +1007,7 @@
                       <a
                         class=""
                         id="prev-btn"
-                        *ngIf="isPreviousButtonShowed()"
+                        *ngIf="isPreviousButtonShowed | async"
                         (click)="previous()"
                         >Previous</a
                       >
@@ -992,7 +1015,7 @@
                     <li>
                       <a
                         id="next-btn"
-                        *ngIf="isNextButtonShowed()"
+                        *ngIf="isNextButtonShowed | async"
                         (click)="next()"
                         >Next</a
                       >
