@@ -35,7 +35,7 @@ body {
   background: #222;
   position: relative;
   padding: 0px;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 h2 {
@@ -59,7 +59,6 @@ p.desc {
   margin-bottom: 40px;
   color: #555;
 }
-
 
 input.flag {
   padding-left: 55px;
@@ -95,7 +94,7 @@ input.flag {
   border: 0;
   padding: 6px 28px;
   background-color: #fff;
-  color: #29A4FF;
+  color: #29a4ff;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
@@ -107,7 +106,7 @@ input.flag {
   -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
   margin-right: 0;
-  background-color: #4FD5D6;
+  background-color: #4fd5d6;
   -webkit-box-shadow: 0 3px 6px rgba(74, 120, 247, 0.33);
   box-shadow: 0 3px 6px rgba(74, 120, 247, 0.33);
   line-height: 44px;
@@ -139,7 +138,7 @@ input.flag {
   border: 0;
   padding: 6px 28px;
   background-color: #fff;
-  color: #29A4FF;
+  color: #29a4ff;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
@@ -151,7 +150,7 @@ input.flag {
   -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
   margin-right: 0;
-  background-color: #4FD5D6;
+  background-color: #4fd5d6;
   -webkit-box-shadow: 0 3px 6px rgba(74, 120, 247, 0.33);
   box-shadow: 0 3px 6px rgba(74, 120, 247, 0.33);
   line-height: 44px;
@@ -164,20 +163,52 @@ input.flag {
   color: #999 !important;
 }
 
+.actions ul li button {
+  display: inline-block;
+  font-size: 16px;
+  padding: 0px 32px;
+  border-radius: 6px;
+  border: 0;
+  padding: 6px 28px;
+  background-color: #fff;
+  color: #29a4ff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  margin-right: 10px;
+  outline: none;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
+  margin-right: 0;
+  background-color: #4fd5d6;
+  -webkit-box-shadow: 0 3px 6px rgba(74, 120, 247, 0.33);
+  box-shadow: 0 3px 6px rgba(74, 120, 247, 0.33);
+  line-height: 44px;
+  color: #fff !important;
+  font-size: 16px;
+}
+
+.actions ul li:first-child button {
+  background: #e8e8e8 !important;
+  color: #999 !important;
+}
 
 select {
   width: 100%;
   display: block;
-  border: 1px solid #C3C3C3;
+  border: 1px solid #c3c3c3;
   height: 44px;
   box-sizing: border-box;
   padding: 9px 20px;
-  color: #8D8D8D;
+  color: #8d8d8d;
   font-size: 14px;
   border-radius: 6px;
   font-weight: 400;
   margin-bottom: 14px;
-  font-family: 'Roboto Slab';
+  font-family: "Roboto Slab";
   background: #fff;
 }
 
@@ -221,7 +252,6 @@ select.sel {
   font-weight: 400;
 }
 
-
 .inputfile + label {
   width: 100%;
   padding: 9px 20px;
@@ -232,15 +262,14 @@ select.sel {
   background-color: #fff;
   font-size: 13px;
   font-weight: 300;
-  color: #8D8D8D;
+  color: #8d8d8d;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
   margin-bottom: 13px;
-  border: 1px solid #C3C3C3;
+  border: 1px solid #c3c3c3;
   background-color: #fff;
-  color: #8D8D8D;
+  color: #8d8d8d;
 }
-
 
 .table {
   width: 100%;
@@ -249,7 +278,6 @@ select.sel {
   background: #fff;
   margin-bottom: 20px;
 }
-
 
 .multi label {
   display: inline-block;
@@ -265,7 +293,8 @@ select.sel {
   margin: 0;
 }
 
-.n-form .form-content input[type="checkbox"], .n-form .form-content input[type="radio"] {
+.n-form .form-content input[type="checkbox"],
+.n-form .form-content input[type="radio"] {
   width: auto;
   position: relative;
   left: auto;
@@ -287,16 +316,15 @@ input.check {
   position: relative;
   margin: 0;
   margin-right: 10px;
-  width: 50
+  width: 50;
 }
-
 
 .n-form .form-content input[type="checkbox"].check {
   width: 25px;
 }
 
 input.check:checked:before {
-  content: '✔';
+  content: "✔";
   position: absolute;
   top: 2px;
   left: 5px;
@@ -304,7 +332,6 @@ input.check:checked:before {
   color: #000;
   font-size: 14px;
 }
-
 
 input.check {
   display: inline-block;
@@ -343,7 +370,7 @@ input.check {
 }
 
 .multi input.check:checked:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0px;
   left: 0px;
@@ -387,12 +414,13 @@ input.check {
   text-align: center;
 }
 
-
 .vertical .steps {
   float: left;
 }
 
-list-type-ulli, .steps ul, .actions ul {
+list-type-ulli,
+.steps ul,
+.actions ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -416,7 +444,7 @@ list-type-ulli, .steps ul, .actions ul {
 }
 
 .steps ul li:before {
-  content: '';
+  content: "";
   width: 1px;
   height: 50px;
   position: absolute;
@@ -432,7 +460,7 @@ list-type-ulli, .steps ul, .actions ul {
 .steps ul li a {
   text-decoration: none;
   color: #222;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 .title {
@@ -473,7 +501,7 @@ list-type-ulli, .steps ul, .actions ul {
 }
 
 .current .title .step-number {
-  background: #4FD5D6;
+  background: #4fd5d6;
   color: #fff;
 }
 
@@ -485,9 +513,8 @@ list-type-ulli, .steps ul, .actions ul {
 }
 
 .current .title .step-text {
-  color: #4FD5D6;
+  color: #4fd5d6;
 }
-
 
 .n-form .form-content .row {
   margin-right: -15px;
@@ -527,7 +554,7 @@ list-type-ulli, .steps ul, .actions ul {
   border: 0;
   padding: 6px 28px;
   background-color: #fff;
-  color: #29A4FF;
+  color: #29a4ff;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
@@ -539,7 +566,7 @@ list-type-ulli, .steps ul, .actions ul {
   -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
   margin-right: 0;
-  background-color: #4FD5D6;
+  background-color: #4fd5d6;
   -webkit-box-shadow: 0 3px 6px rgba(74, 120, 247, 0.33);
   box-shadow: 0 3px 6px rgba(74, 120, 247, 0.33);
   color: #fff !important;
@@ -553,7 +580,6 @@ list-type-ulli, .steps ul, .actions ul {
   background: #fff !important;
   color: #000 !important;
 }
-
 
 .img-holder.n-form-bg .info-holder {
   position: relative;
@@ -603,13 +629,13 @@ list-type-ulli, .steps ul, .actions ul {
   color: #000;
   font-weight: 600;
   font-size: 15px;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   text-transform: uppercase;
 }
 
 .n-form .menu-bar .dropdown .dropdown-toggle span {
   font-weight: 600;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 .n-form .menu-bar .dropdown .dropdown-menu a {
@@ -685,7 +711,7 @@ list-type-ulli, .steps ul, .actions ul {
 }
 
 .n-form .form-content .la input.check:checked:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 3px;
   left: 3px;
@@ -720,7 +746,6 @@ list-type-ulli, .steps ul, .actions ul {
   margin-bottom: 14px;
 }
 
-
 .n-form .form-content .multi input[type="radio"].check {
   position: absolute;
   top: 0;
@@ -736,19 +761,19 @@ list-type-ulli, .steps ul, .actions ul {
 
 .n-form .form-content .table-inf {
   color: #555;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   margin-top: 30px;
 }
 
 .n-form .form-content .table-inf th {
   color: #555;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   border-right: 1px solid #dee2e6;
 }
 
 .n-form .form-content .table-inf td {
   color: #555;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   border-right: 1px solid #dee2e6;
 }
 
@@ -821,13 +846,13 @@ list-type-ulli, .steps ul, .actions ul {
   top: 80%;
   right: 17px;
   color: #666666;
-  transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 9999;
   cursor: pointer;
 }
 
 .p-image:hover {
-  transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .upload-button {
@@ -836,10 +861,9 @@ list-type-ulli, .steps ul, .actions ul {
 }
 
 .upload-button:hover {
-  transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   color: #999;
 }
-
 
 /*** ***/
 #meta_data_container {
@@ -870,7 +894,6 @@ list-type-ulli, .steps ul, .actions ul {
 
 /* Media Css */
 @media only screen and (max-width: 767px) {
-
   .form-body.on-top-mobile .form-holder.n-form .form-content {
     padding: 60px 0;
   }
@@ -885,12 +908,10 @@ list-type-ulli, .steps ul, .actions ul {
     font-size: 12px;
   }
 
-
   .m-left {
     margin-left: 0%;
   }
 }
-
 
 @media only screen and (min-width: 768px) and (max-width: 1169px) {
   .navbar-header {
@@ -900,7 +921,6 @@ list-type-ulli, .steps ul, .actions ul {
   .tp {
     margin-top: 10px;
   }
-
 
   h2 {
     font-size: 16px;
@@ -933,11 +953,9 @@ list-type-ulli, .steps ul, .actions ul {
   }
 }
 
-
 @media only screen and (min-width: 993px) and (max-width: 1350px) {
   .form-content #scroll-div {
     height: 70vh;
     overflow-y: scroll;
   }
-
 }

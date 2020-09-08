@@ -129,7 +129,7 @@
       </div>
       <div class="form-content">
         <div class="form-items">
-          <form>
+          <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
             <div class="row">
               <ng-container [ngSwitch]="currentStep$ | async">
                 <ng-template #mainDiv ngSwitchCase="mainDiv">
@@ -149,6 +149,9 @@
                               id="mobile-number"
                               placeholder="e.g. +1 702 123 4567"
                               type="tel"
+                              ngModel
+                              name="mobileNumber"
+                              required
                             />
                             <!--<input class="flag" type="text" name="" >-->
                           </div>
@@ -1013,12 +1016,19 @@
                       >
                     </li>
                     <li>
-                      <a
+                      <!-- <a
                         id="next-btn"
                         *ngIf="isNextButtonShowed | async"
                         (click)="next()"
                         >Next</a
+                      > -->
+                      <button
+                        type="submit"
+                        id="next-btn"
+                        *ngIf="isNextButtonShowed | async"
                       >
+                        Next
+                      </button>
                     </li>
                   </ul>
                 </div>

@@ -27,7 +27,7 @@ export const showPreviousButtonScreens = [
   'lastDiv',
   'lastDiv2',
   'lastDiv3',
-  'lastDiv4',
+  //'lastDiv4',
 ];
 
 export const showNextButtonScreens = [
@@ -43,7 +43,7 @@ export const showNextButtonScreens = [
   'lastDiv',
   'lastDiv2',
   'lastDiv3',
-  'lastDiv4',
+  //'lastDiv4',
 ];
 
 export const showHomeScreens = [

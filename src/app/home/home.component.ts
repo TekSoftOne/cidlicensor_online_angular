@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, pipe, of } from 'rxjs';
 import { map, tap, switchMap, switchMapTo, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
 import {
   steps,
   showPreviousButtonScreens,
@@ -60,7 +61,7 @@ export class HomeComponent implements AfterViewInit {
     this.isMobileSend = true;
   }
 
-  public next(): void {
+  public next(f: NgForm): void {
     const index = this.getIndex(this.currentStep$.value);
     this.currentStep$.next(steps[index + 1]);
   }
