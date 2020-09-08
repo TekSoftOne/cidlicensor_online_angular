@@ -1,5 +1,5 @@
 import { showHomeScreens } from './../constants';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, pipe, of } from 'rxjs';
 import { map, tap, switchMap, switchMapTo, catchError } from 'rxjs/operators';
@@ -22,6 +22,8 @@ export class HomeComponent implements AfterViewInit {
     center: { lat: 40, lng: -20 },
     zoom: 4,
   };
+
+  @ViewChild('membershipForm', { static: true }) membershipForm: ElementRef;
 
   public isNextButtonShowed: Observable<boolean>;
   public isPreviousButtonShowed: Observable<boolean>;
@@ -61,7 +63,15 @@ export class HomeComponent implements AfterViewInit {
     this.isMobileSend = true;
   }
 
+  public isFormValid(form: NgForm): boolean {
+    return form.invalid && (form.dirty || form.touched || form.submitted);
+  }
+
   public next(f: NgForm): void {
+    if (!f.form.valid) {
+      console.log('invalid');
+      return;
+    }
     const index = this.getIndex(this.currentStep$.value);
     this.currentStep$.next(steps[index + 1]);
   }

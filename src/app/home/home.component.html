@@ -152,6 +152,11 @@
                               ngModel
                               name="mobileNumber"
                               required
+                              pattern="[0-9]{8}[0-9]*"
+                              [ngClass]="{
+                                'form-control': true,
+                                'is-invalid': isFormValid(membershipForm)
+                              }"
                             />
                             <!--<input class="flag" type="text" name="" >-->
                           </div>
@@ -173,7 +178,18 @@
                         <div class="col-12 flush" id="veri">
                           <div class="form-group full col-12 flush">
                             <label class="form-label">Verification:</label>
-                            <input name="" type="text" />
+                            <input
+                              name=""
+                              type="text"
+                              ngModel
+                              required
+                              name="verifyNumber"
+                              pattern="[0-9]{6}"
+                              [ngClass]="{
+                                'form-control': true,
+                                'is-invalid': isFormValid(membershipForm)
+                              }"
+                            />
                           </div>
                         </div>
                       </div>
