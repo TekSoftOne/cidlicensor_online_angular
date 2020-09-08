@@ -402,9 +402,12 @@
                 <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
               </form>
             </ng-template>
-
+            <!-- MEMBERSHIP NUMBER -->
             <ng-template #serDiv1 ngSwitchCase="serDiv1">
-              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+              <form
+                #membershipForm="ngForm"
+                (ngSubmit)="searchRequest(membershipForm)"
+              >
                 <div class="row">
                   <div class="col-lg-12 col-12 col-sm-12 flush" id="ser-div-1">
                     <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
@@ -416,21 +419,31 @@
                       <div class="row tp">
                         <div class="col-lg-12 text-center col-12 col-sm-12">
                           <input
-                            name=""
+                            name="membershipNumber"
                             placeholder="Enter request"
                             type="text"
+                            ngModel
+                            required
+                            [ngClass]="{
+                              'form-control': true,
+                              'is-invalid': isFormValid(membershipForm)
+                            }"
                           />
                         </div>
                         <div class="col-lg-12 text-center col-12 col-sm-12">
-                          <a class="btn-next" (click)="searchRequest()"
+                          <!-- <a class="btn-next" (click)="searchRequest()"
                             >Search</a
-                          >
+                          > -->
+                          <button class="btn-next" type="submit">Search</button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+                <ng-container
+                  *ngIf="!isSearchStep"
+                  [ngTemplateOutlet]="divButtons"
+                ></ng-container>
               </form>
             </ng-template>
 
@@ -461,17 +474,36 @@
                             <div class="col-lg-6 col-12 col-sm-6">
                               <label class="form-label">Full Name:</label>
                               <input
-                                name=""
+                                name="fullName"
                                 placeholder="Enter your name"
                                 type="text"
+                                ngModel
+                                required
+                                [ngClass]="{
+                                  'form-control': true,
+                                  'is-invalid': isControlValid(
+                                    membershipForm,
+                                    membershipForm.controls.fullName
+                                  )
+                                }"
                               />
                             </div>
                             <div class="col-lg-6 col-12 col-sm-6">
                               <label class="form-label">Email Address:</label>
                               <input
-                                name=""
+                                name="emailAddress"
                                 placeholder="Enter your Email Address"
                                 type="text"
+                                ngModel
+                                required
+                                email
+                                [ngClass]="{
+                                  'form-control': true,
+                                  'is-invalid': isControlValid(
+                                    membershipForm,
+                                    membershipForm.controls.emailAddress
+                                  )
+                                }"
                               />
                             </div>
                           </div>
@@ -493,6 +525,16 @@
                                     id="map_address_input"
                                     placeholder="Your Address"
                                     type="text"
+                                    ngModel
+                                    required
+                                    name="address"
+                                    [ngClass]="{
+                                      'form-control': true,
+                                      'is-invalid': isControlValid(
+                                        membershipForm,
+                                        membershipForm.controls.address
+                                      )
+                                    }"
                                   />
                                 </div>
                                 <div
@@ -512,6 +554,16 @@
                               </label>
                               <textarea
                                 class="ht"
+                                name="fullAddress"
+                                ngModel
+                                required
+                                [ngClass]="{
+                                  'form-control': true,
+                                  'is-invalid': isControlValid(
+                                    membershipForm,
+                                    membershipForm.controls.fullAddress
+                                  )
+                                }"
                                 placeholder="Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum "
                               ></textarea>
                             </div>

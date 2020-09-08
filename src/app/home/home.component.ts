@@ -56,6 +56,7 @@ export class HomeComponent implements AfterViewInit {
   public isPreviousButtonShowed: Observable<boolean>;
   public isStepsFlowShowed: Observable<boolean>;
   public isHomeShowed: Observable<boolean>;
+  public isSearchStep: Observable<boolean>;
   private language = 'en';
 
   public currentStep$ = new BehaviorSubject<string>('mainDiv');
@@ -99,12 +100,18 @@ export class HomeComponent implements AfterViewInit {
     this.isStepsFlowShowed = this.currentStep$.pipe(
       map((s) => showStepsFlowScreens.includes(s))
     );
+
     this.isHomeShowed = this.currentStep$.pipe(
       map((s) => showHomeScreens.includes(s))
     );
+
+    this.isSearchStep = this.currentStep$.pipe(map((s) => s === 'serDiv1'));
   }
 
-  public searchRequest(): void {
+  public searchRequest(f: NgForm): void {
+    if (!f.form.valid) {
+      return;
+    }
     this.setCurrentStep('ftDiv3');
   }
 
@@ -114,6 +121,14 @@ export class HomeComponent implements AfterViewInit {
 
   public isFormValid(form: NgForm): boolean {
     return form.invalid && (form.dirty || form.touched || form.submitted);
+  }
+
+  public isControlValid(form: NgForm, control: any): boolean {
+    return (
+      control &&
+      control.invalid &&
+      (form.dirty || form.touched || form.submitted)
+    );
   }
 
   public next(f: NgForm): void {
