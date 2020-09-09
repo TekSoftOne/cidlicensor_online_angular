@@ -76,6 +76,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public formRequestType: FormGroup;
   public formPersonal: FormGroup;
 
+  public fileEmirateBack: any;
+
   constructor(
     private translate: TranslateService,
     private httpClient: HttpClient
@@ -179,7 +181,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.formPersonal = new FormGroup({
       nation: new FormControl(0, [Validators.required, Validators.min(1)]),
+      emirateBackAttach: new FormControl('', Validators.required),
     });
+  }
+
+  public onFileChange(files: FileList): void {
+    // this.labelImport.nativeElement.innerText = Array.from(files)
+    //   .map(f => f.name)
+    //   .join(', ');
+    this.fileEmirateBack = files.item(0);
   }
 
   ngAfterViewInit(): void {

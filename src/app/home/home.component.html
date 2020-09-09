@@ -606,7 +606,7 @@
                                 [ngClass]="{
                                   'form-control': true,
                                   'is-invalid': isControlValid(
-                                    formPersonal,
+                                    membershipForm,
                                     formPersonal.controls.nation
                                   )
                                 }"
@@ -685,12 +685,20 @@
                                 >
                                 <input
                                   class="inputfile inputfile-1"
-                                  data-multiple-caption="{count} files selected"
-                                  id="file-1"
-                                  multiple
-                                  name="file-1[]"
+                                  id="emirateBackAttach"
+                                  (change)="onFileChange($event.target.files)"
+                                  name="emirateBackAttach"
                                   type="file"
+                                  formControlName="emirateBackAttach"
+                                  [ngClass]="{
+                                    'form-control': true,
+                                    'is-invalid': isControlValid(
+                                      membershipForm,
+                                      formPersonal.controls.emirateBackAttach
+                                    )
+                                  }"
                                 />
+
                                 <label for="file-1">
                                   <span
                                     >Upload File – png only Max Size 2 MB</span
