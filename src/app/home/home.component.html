@@ -142,40 +142,13 @@
             </ng-template>
             <!-- verify number -->
             <ng-template #mainDiv2 ngSwitchCase="mainDiv2">
-              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12" id="main-div2">
-                    <div class="row" id="testdiv">
-                      <div class="col-lg-12 col-12 col-sm-12 tp">
-                        <h3>Enter your Mobile Number to get started</h3>
-                      </div>
-                      <div class="col-lg-12 col-12 col-sm-12">
-                        <p class="desc"></p>
-                      </div>
-                      <div class="col-lg-12 flush col-12 col-sm-12">
-                        <div class="col-12 flush" id="veri">
-                          <div class="form-group full col-12 flush">
-                            <label class="form-label">Verification:</label>
-                            <input
-                              name=""
-                              type="text"
-                              ngModel
-                              required
-                              name="verifyNumber"
-                              pattern="[0-9]{6}"
-                              [ngClass]="{
-                                'form-control': true,
-                                'is-invalid': isFormValid(membershipForm)
-                              }"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <ot-mobile-verification
+                (data)="updateData($event)"
+                [verifyNumber]="request.verifyNumber"
+                (nextStep)="next($event)"
+              >
                 <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
+              </ot-mobile-verification>
             </ng-template>
             <!-- type of customer -->
             <ng-template #ftDiv ngSwitchCase="ftDiv">
@@ -419,127 +392,9 @@
             </ng-template>
 
             <ng-template #ftDiv3 ngSwitchCase="ftDiv3">
-              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-                <div class="row">
-                  <div
-                    class="col-lg-12 old col-12 col-sm-12 flush"
-                    id="ft-div-3"
-                  >
-                    <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-                      <div class="row">
-                        <div class="col-lg-12 text-center col-12 col-sm-12">
-                          <h3>Please Enter your Personal Information:</h3>
-                        </div>
-                      </div>
-                      <div class="row tp">
-                        <div class="col-lg-12 col-12 col-sm-12">
-                          <div class="row">
-                            <!--<div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">You are:</label>
-                <select class="sel">
-                  <option>I am Tourist</option>
-                  <option>Diplomat</option>
-                  <option>Resident</option>
-                </select>
-              </div>-->
-                            <div class="col-lg-6 col-12 col-sm-6">
-                              <label class="form-label">Full Name:</label>
-                              <input
-                                name="fullName"
-                                placeholder="Enter your name"
-                                type="text"
-                                ngModel
-                                required
-                                [ngClass]="{
-                                  'form-control': true,
-                                  'is-invalid': isControlValid(
-                                    membershipForm,
-                                    membershipForm.controls.fullName
-                                  )
-                                }"
-                              />
-                            </div>
-                            <div class="col-lg-6 col-12 col-sm-6">
-                              <label class="form-label">Email Address:</label>
-                              <input
-                                name="emailAddress"
-                                placeholder="Enter your Email Address"
-                                type="text"
-                                ngModel
-                                required
-                                email
-                                [ngClass]="{
-                                  'form-control': true,
-                                  'is-invalid': isControlValid(
-                                    membershipForm,
-                                    membershipForm.controls.emailAddress
-                                  )
-                                }"
-                              />
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-12 col-12 col-sm-12">
-                              <label class="form-label">Your Location: </label>
-                            </div>
-                            <div class="col-lg-12 bt-form col-12 col-sm-12">
-                              <!--<div class="col-lg-12 input-space o-hidden flush col-12 col-sm-12">
-                   <input id="pac-input" class="controls" type="text" placeholder="Your Address" />
-                   <div id="map"></div>
-                </div>-->
-                              <div
-                                class="col-lg-12 o-hidden flush col-12 col-sm-12"
-                              >
-                                <div class="map" id="meta_data_container">
-                                  <input
-                                    class="controls"
-                                    id="map_address_input"
-                                    placeholder="Your Address"
-                                    type="text"
-                                    ngModel
-                                    required
-                                    name="address"
-                                    [ngClass]="{
-                                      'form-control': true,
-                                      'is-invalid': isControlValid(
-                                        membershipForm,
-                                        membershipForm.controls.address
-                                      )
-                                    }"
-                                  />
-                                </div>
-                                <div class="map" id="map_with_google_api"></div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-12 col-12 col-sm-12">
-                              <label class="form-label"
-                                >Complete Address:
-                              </label>
-                              <textarea
-                                class="ht"
-                                name="fullAddress"
-                                ngModel
-                                required
-                                [ngClass]="{
-                                  'form-control': true,
-                                  'is-invalid': isControlValid(
-                                    membershipForm,
-                                    membershipForm.controls.fullAddress
-                                  )
-                                }"
-                                placeholder="Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum "
-                              ></textarea>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
+              <ot-personal-information>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container
+              ></ot-personal-information>
             </ng-template>
 
             <ng-template #ftDiv4 ngSwitchCase="ftDiv4">

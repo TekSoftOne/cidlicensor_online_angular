@@ -1,3 +1,4 @@
+import { IFormWizard } from './../../interfaces';
 import { MembershipRequest } from './../../constants';
 import { NgForm } from '@angular/forms';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
@@ -8,15 +9,16 @@ import { isFormValid } from '../../form';
   templateUrl: './mobile.component.html',
   styleUrls: ['./mobile.component.scss'],
 })
-export class MobileComponent implements OnInit {
+export class MobileComponent implements OnInit, IFormWizard {
   @Input() phoneNumber: string;
   @Output() nextStep = new EventEmitter<NgForm>();
-  @Output() data = new EventEmitter<any>();
+  @Output() data = new EventEmitter<MembershipRequest>();
   constructor() {}
-
-  ngOnInit(): void {
-    console.log('');
+  checkControlInvalid(form: NgForm, control: any): boolean {
+    throw new Error('Method not implemented.');
   }
+
+  ngOnInit(): void {}
 
   public checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);

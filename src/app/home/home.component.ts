@@ -15,7 +15,7 @@ import { BehaviorSubject, Observable, pipe, of } from 'rxjs';
 import { map, tap, switchMap, switchMapTo, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { NgForm, FormControl, Validators, Form } from '@angular/forms';
-import * as scripts from './scripts.js';
+
 import {
   steps,
   showPreviousButtonScreens,
@@ -109,19 +109,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     phoneNumber: '+131231231',
     verifyNumber: '123456',
   };
-
-  private static createGoogleMapsScript(): void {
-    if (document.getElementById('google-apis')) {
-      return;
-    }
-    const script = document.createElement('script');
-    script.src =
-      'https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBHpAmimxTn6JfSP_-1PavnZ9WvAE6eCtc&libraries=places&callback=initAutocomplete';
-    script.async = true;
-    script.defer = true;
-    script.id = 'google-apis';
-    document.body.insertAdjacentElement('beforeend', script);
-  }
 
   public updateData(request: MembershipRequest): void {
     this.request = { ...this.request, ...request };
@@ -218,12 +205,5 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.fileEmirateBack = files.item(0);
   }
 
-  ngAfterViewInit(): void {
-    try {
-      scripts();
-    } catch (e) {
-      console.warn(e);
-    }
-    setTimeout(HomeComponent.createGoogleMapsScript);
-  }
+  ngAfterViewInit(): void {}
 }

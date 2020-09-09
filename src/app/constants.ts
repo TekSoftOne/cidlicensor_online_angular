@@ -86,4 +86,8 @@ export interface Nationality {
 export interface MembershipRequest {
   phoneNumber?: string;
   verifyNumber?: string;
+  fullName?: string;
+  emailAddress?: string;
+  address?: string;
+  fullAddress?: string;
 }
