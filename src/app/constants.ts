@@ -77,3 +77,8 @@ export const showStepsFlowScreens = [
   'lastDiv3',
   'lastDiv4',
 ];
+
+export interface Nationality {
+  name: string;
+  id: number;
+}

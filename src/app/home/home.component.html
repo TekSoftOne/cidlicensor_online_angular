@@ -578,7 +578,11 @@
             </ng-template>
 
             <ng-template #ftDiv4 ngSwitchCase="ftDiv4">
-              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+              <form
+                #membershipForm="ngForm"
+                [formGroup]="formPersonal"
+                (ngSubmit)="next(membershipForm)"
+              >
                 <div class="row">
                   <div
                     class="col-lg-12 old col-12 col-sm-12 flush"
@@ -595,10 +599,28 @@
                           <div class="row">
                             <div class="col-lg-6 col-12 col-sm-6">
                               <label class="form-label">Nationality:</label>
-                              <select class="sel">
-                                <option>Philiphines</option>
-                                <option>Diplomat</option>
-                                <option>Resident</option>
+                              <select
+                                class="sel"
+                                name="nation"
+                                [(ngModel)]="nationId"
+                                [ngClass]="{
+                                  'form-control': true,
+                                  'is-invalid': isControlValid(
+                                    formPersonal,
+                                    formPersonal.controls.nation
+                                  )
+                                }"
+                                formControlName="nation"
+                              >
+                                <option [ngValue]="0" selected>
+                                  Choose a nation
+                                </option>
+                                <option
+                                  [value]="nation.id"
+                                  *ngFor="let nation of nationalities"
+                                >
+                                  {{ nation.name }}
+                                </option>
                               </select>
                             </div>
                             <div class="col-lg-6 col-12 col-sm-6">

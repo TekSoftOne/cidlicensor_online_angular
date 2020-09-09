@@ -1,10 +1,16 @@
-import { showHomeScreens } from './../constants';
-import { AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
+import { showHomeScreens, Nationality } from './../constants';
+import {
+  AfterViewInit,
+  Component,
+  ViewChild,
+  ElementRef,
+  OnInit,
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, pipe, of } from 'rxjs';
 import { map, tap, switchMap, switchMapTo, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { NgForm, FormControl } from '@angular/forms';
+import { NgForm, FormControl, Validators, Form } from '@angular/forms';
 import {
   steps,
   showPreviousButtonScreens,
@@ -44,13 +50,11 @@ export function requireCheckboxesToBeCheckedValidator(
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   options = {
     center: { lat: 40, lng: -20 },
     zoom: 4,
   };
-
-  @ViewChild('membershipForm', { static: true }) membershipForm: ElementRef;
 
   public isNextButtonShowed: Observable<boolean>;
   public isPreviousButtonShowed: Observable<boolean>;
@@ -62,28 +66,15 @@ export class HomeComponent implements AfterViewInit {
   public currentStep$ = new BehaviorSubject<string>('mainDiv');
   public isMobileSend = false;
   public googleApiLoad: any;
+  public nationalities: Nationality[] = [
+    { id: 1, name: 'Ameria' },
+    { id: 2, name: 'Netherland' },
+  ];
 
-  public formCustomerType = new FormGroup({
-    // ...more form controls...
-    cbGroupCustomerType: new FormGroup(
-      {
-        typeOfCustomer: new FormControl(false),
-      },
-      requireCheckboxesToBeCheckedValidator()
-    ),
-    // ...more form controls...
-  });
-
-  public formRequestType = new FormGroup({
-    // ...more form controls...
-    cbGroupRequestType: new FormGroup(
-      {
-        typeOfRequest: new FormControl(false),
-      },
-      requireCheckboxesToBeCheckedValidator()
-    ),
-    // ...more form controls...
-  });
+  public nationId = 0;
+  public formCustomerType: FormGroup;
+  public formRequestType: FormGroup;
+  public formPersonal: FormGroup;
 
   constructor(
     private translate: TranslateService,
@@ -127,15 +118,15 @@ export class HomeComponent implements AfterViewInit {
     return (
       control &&
       control.invalid &&
-      (form.dirty || form.touched || form.submitted)
+      (control.dirty || control.touched || form.submitted)
     );
   }
 
   public next(f: NgForm): void {
-    if (!f.form.valid) {
-      console.log('invalid');
-      return;
-    }
+    // if (!f.form.valid) {
+    //   console.log('invalid');
+    //   return;
+    // }
     const index = this.getIndex(this.currentStep$.value);
     this.currentStep$.next(steps[index + 1]);
   }
@@ -165,6 +156,30 @@ export class HomeComponent implements AfterViewInit {
     } else {
       this.language = 'en';
     }
+  }
+
+  ngOnInit(): void {
+    this.formCustomerType = new FormGroup({
+      cbGroupCustomerType: new FormGroup(
+        {
+          typeOfCustomer: new FormControl(false),
+        },
+        requireCheckboxesToBeCheckedValidator()
+      ),
+    });
+
+    this.formRequestType = new FormGroup({
+      cbGroupRequestType: new FormGroup(
+        {
+          typeOfRequest: new FormControl(false),
+        },
+        requireCheckboxesToBeCheckedValidator()
+      ),
+    });
+
+    this.formPersonal = new FormGroup({
+      nation: new FormControl(0, [Validators.required, Validators.min(1)]),
+    });
   }
 
   ngAfterViewInit(): void {
