@@ -1,4 +1,8 @@
-import { showHomeScreens, Nationality } from './../constants';
+import {
+  showHomeScreens,
+  Nationality,
+  MembershipRequest,
+} from './../constants';
 import {
   AfterViewInit,
   Component,
@@ -11,6 +15,7 @@ import { BehaviorSubject, Observable, pipe, of } from 'rxjs';
 import { map, tap, switchMap, switchMapTo, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { NgForm, FormControl, Validators, Form } from '@angular/forms';
+import * as scripts from './scripts.js';
 import {
   steps,
   showPreviousButtonScreens,
@@ -51,6 +56,28 @@ export function requireCheckboxesToBeCheckedValidator(
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+  constructor(
+    private translate: TranslateService,
+    private httpClient: HttpClient
+  ) {
+    this.isNextButtonShowed = this.currentStep$.pipe(
+      map((s) => showNextButtonScreens.includes(s))
+    );
+
+    this.isPreviousButtonShowed = this.currentStep$.pipe(
+      map((s) => showPreviousButtonScreens.includes(s))
+    );
+
+    this.isStepsFlowShowed = this.currentStep$.pipe(
+      map((s) => showStepsFlowScreens.includes(s))
+    );
+
+    this.isHomeShowed = this.currentStep$.pipe(
+      map((s) => showHomeScreens.includes(s))
+    );
+
+    this.isSearchStep = this.currentStep$.pipe(map((s) => s === 'serDiv1'));
+  }
   options = {
     center: { lat: 40, lng: -20 },
     zoom: 4,
@@ -78,27 +105,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public fileEmirateBack: any;
 
-  constructor(
-    private translate: TranslateService,
-    private httpClient: HttpClient
-  ) {
-    this.isNextButtonShowed = this.currentStep$.pipe(
-      map((s) => showNextButtonScreens.includes(s))
-    );
+  public request: MembershipRequest = {
+    phoneNumber: '+131231231',
+    verifyNumber: '123456',
+  };
 
-    this.isPreviousButtonShowed = this.currentStep$.pipe(
-      map((s) => showPreviousButtonScreens.includes(s))
-    );
+  private static createGoogleMapsScript(): void {
+    if (document.getElementById('google-apis')) {
+      return;
+    }
+    const script = document.createElement('script');
+    script.src =
+      'https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBHpAmimxTn6JfSP_-1PavnZ9WvAE6eCtc&libraries=places&callback=initAutocomplete';
+    script.async = true;
+    script.defer = true;
+    script.id = 'google-apis';
+    document.body.insertAdjacentElement('beforeend', script);
+  }
 
-    this.isStepsFlowShowed = this.currentStep$.pipe(
-      map((s) => showStepsFlowScreens.includes(s))
-    );
-
-    this.isHomeShowed = this.currentStep$.pipe(
-      map((s) => showHomeScreens.includes(s))
-    );
-
-    this.isSearchStep = this.currentStep$.pipe(map((s) => s === 'serDiv1'));
+  public updateData(request: MembershipRequest): void {
+    this.request = { ...this.request, ...request };
   }
 
   public searchRequest(f: NgForm): void {
@@ -125,10 +151,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public next(f: NgForm): void {
-    // if (!f.form.valid) {
-    //   console.log('invalid');
-    //   return;
-    // }
+    if (!f.form.valid) {
+      console.log('invalid');
+      return;
+    }
     const index = this.getIndex(this.currentStep$.value);
     this.currentStep$.next(steps[index + 1]);
   }
@@ -193,17 +219,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.googleApiLoad = this.httpClient
-      .jsonp(
-        'https://maps.googleapis.com/maps/api/js?key=AIzaSyBgSPoq80yJ1txKlNgTgIAxvsBKTOaUGIY',
-        'callback'
-      )
-      .pipe(
-        map(() => true),
-        catchError((err) => {
-          console.log(err);
-          return of(false);
-        })
-      );
+    try {
+      scripts();
+    } catch (e) {
+      console.warn(e);
+    }
+    setTimeout(HomeComponent.createGoogleMapsScript);
   }
 }

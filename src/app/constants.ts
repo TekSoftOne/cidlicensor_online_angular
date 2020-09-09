@@ -82,3 +82,8 @@ export interface Nationality {
   name: string;
   id: number;
 }
+
+export interface MembershipRequest {
+  phoneNumber?: string;
+  verifyNumber?: string;
+}

@@ -15,6 +15,7 @@ import {
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MobileComponent } from './wizards/mobile/mobile.component';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -26,6 +27,7 @@ export function createTranslateLoader(http: HttpClient) {
     HomeComponent,
     LoginComponent,
     TrackYourProgressComponent,
+    MobileComponent,
   ],
   imports: [
     BrowserModule,

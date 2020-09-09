@@ -1,0 +1,36 @@
+<form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+  <div class="row">
+    <div class="col-lg-12 col-12 col-sm-12" id="main-div">
+      <div class="row" id="testdiv">
+        <div class="col-lg-12 col-12 col-sm-12 tp">
+          <h3>Enter your Mobile Number to get started</h3>
+        </div>
+        <div class="col-lg-12 col-12 col-sm-12">
+          <p class="desc"></p>
+        </div>
+        <div class="col-lg-12 flush col-12 col-sm-12">
+          <div class="col-12 flush" id="mobi">
+            <div class="form-group full flush">
+              <label class="form-label">Mobile Number:</label>
+              <input
+                id="mobile-number"
+                placeholder="e.g. +1 702 123 4567"
+                type="tel"
+                [(ngModel)]="phoneNumber"
+                name="mobileNumber"
+                required
+                pattern="[\+][0-9]{5}[0-9]*"
+                [ngClass]="{
+                  'form-control': true,
+                  'is-invalid': checkFormInvalid(membershipForm)
+                }"
+              />
+              <!--<input class="flag" type="text" name="" >-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-content></ng-content>
+</form>
