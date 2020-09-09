@@ -1,18 +1,12 @@
-import {AfterViewInit, Component} from '@angular/core';
-import * as scripts from './scripts.js';
+import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
   selector: 'ot-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements AfterViewInit {
+  constructor() {}
 
-  constructor() {
-  }
-
-  ngAfterViewInit(): void {
-    scripts();
-  }
-
+  ngAfterViewInit(): void {}
 }

@@ -392,216 +392,26 @@
             </ng-template>
 
             <ng-template #ftDiv3 ngSwitchCase="ftDiv3">
-              <ot-personal-information>
+              <ot-personal-information
+                [fullName]="request.fullName"
+                [emailAddress]="request.emailAddress"
+                [address]="request.address"
+                [fullAddress]="request.fullAddress"
+                (data)="updateData($event)"
+                (nextStep)="next($event)"
+              >
                 <ng-container [ngTemplateOutlet]="divButtons"></ng-container
               ></ot-personal-information>
             </ng-template>
 
             <ng-template #ftDiv4 ngSwitchCase="ftDiv4">
-              <form
-                #membershipForm="ngForm"
-                [formGroup]="formPersonal"
-                (ngSubmit)="next(membershipForm)"
+              <ot-personal-information-advanced
+                (data)="updateData($event)"
+                (nextStep)="next($event)"
+                [nationId]="request.nationId"
               >
-                <div class="row">
-                  <div
-                    class="col-lg-12 old col-12 col-sm-12 flush"
-                    id="ft-div-4"
-                  >
-                    <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-                      <div class="row">
-                        <div class="col-lg-12 text-center col-12 col-sm-12">
-                          <h3>Please Enter your Personal Information:</h3>
-                        </div>
-                      </div>
-                      <div class="row tp">
-                        <div class="col-lg-12 col-12 col-sm-12">
-                          <div class="row">
-                            <div class="col-lg-6 col-12 col-sm-6">
-                              <label class="form-label">Nationality:</label>
-                              <select
-                                class="sel"
-                                name="nation"
-                                [(ngModel)]="nationId"
-                                [ngClass]="{
-                                  'form-control': true,
-                                  'is-invalid': isControlValid(
-                                    membershipForm,
-                                    formPersonal.controls.nation
-                                  )
-                                }"
-                                formControlName="nation"
-                              >
-                                <option [ngValue]="0" selected>
-                                  Choose a nation
-                                </option>
-                                <option
-                                  [value]="nation.id"
-                                  *ngFor="let nation of nationalities"
-                                >
-                                  {{ nation.name }}
-                                </option>
-                              </select>
-                            </div>
-                            <div class="col-lg-6 col-12 col-sm-6">
-                              <label class="form-label">Religion:</label>
-                              <select class="sel">
-                                <option>Islam</option>
-                                <option>Kristian</option>
-                                <option>Hindu</option>
-                              </select>
-                            </div>
-                            <div class="col-lg-6 col-12 col-sm-6">
-                              <label class="form-label"
-                                >Emirates ID Number:</label
-                              >
-                              <input
-                                name=""
-                                placeholder="Enter your Emirates ID Number"
-                                type="text"
-                              />
-                            </div>
-                            <div class="col-lg-6 col-12 col-sm-6">
-                              <label class="form-label">Passport Number:</label>
-                              <input
-                                name=""
-                                placeholder="Enter your Passport Number"
-                                type="text"
-                              />
-                            </div>
-                            <div class="col-lg-6 col-12 col-sm-6">
-                              <label class="form-label"
-                                >Attach your Profice Picture</label
-                              >
-                              <div class="div-cirlce">
-                                <div class="circle">
-                                  <!-- User Profile Image -->
-                                  <img
-                                    alt=""
-                                    class="profile-pic"
-                                    src="/assets/img/user.png"
-                                  />
-
-                                  <!-- Default Image -->
-                                  <!-- <i class="fa fa-user fa-5x"></i> -->
-                                </div>
-                                <div class="p-image">
-                                  <i class="fa fa-camera upload-button"></i>
-                                  <input
-                                    accept="image/*"
-                                    class="file-upload"
-                                    type="file"
-                                  />
-                                </div>
-                              </div>
-                              <!--<input type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1  " data-multiple-caption="{count} files selected" multiple />
-                <label for="file-1">
-                <span>Upload File – png only Max Size 2 MB</span></label>-->
-                            </div>
-                            <div class="col-lg-6 flush col-12 col-sm-6">
-                              <div class="col-lg-12 col-12 col-sm-12">
-                                <label class="form-label"
-                                  >Attach Emirates ID Back</label
-                                >
-                                <input
-                                  class="inputfile inputfile-1"
-                                  id="emirateBackAttach"
-                                  (change)="onFileChange($event.target.files)"
-                                  name="emirateBackAttach"
-                                  type="file"
-                                  formControlName="emirateBackAttach"
-                                  [ngClass]="{
-                                    'form-control': true,
-                                    'is-invalid': isControlValid(
-                                      membershipForm,
-                                      formPersonal.controls.emirateBackAttach
-                                    )
-                                  }"
-                                />
-
-                                <label for="file-1">
-                                  <span
-                                    >Upload File – png only Max Size 2 MB</span
-                                  ></label
-                                >
-                              </div>
-                              <div class="col-lg-12 col-12 col-sm-12">
-                                <label class="form-label"
-                                  >Attach Emirates ID Front</label
-                                >
-                                <input
-                                  class="inputfile inputfile-1"
-                                  data-multiple-caption="{count} files selected"
-                                  id="file-1"
-                                  multiple
-                                  name="file-1[]"
-                                  type="file"
-                                />
-                                <label for="file-1">
-                                  <span
-                                    >Upload File – png only Max Size 2 MB</span
-                                  ></label
-                                >
-                              </div>
-                              <div class="col-lg-12 col-12 col-sm-12">
-                                <label class="form-label">Gender: </label>
-                                <input name="" placeholder="MALE" type="text" />
-                              </div>
-                            </div>
-                            <div class="col-lg-6 col-12 col-sm-6">
-                              <label class="form-label"
-                                >Attach Passport Copy</label
-                              >
-                              <input
-                                class="inputfile inputfile-1"
-                                data-multiple-caption="{count} files selected"
-                                id="file-1"
-                                multiple
-                                name="file-1[]"
-                                type="file"
-                              />
-                              <label for="file-1">
-                                <span
-                                  >Upload File – png only Max Size 2 MB</span
-                                ></label
-                              >
-                            </div>
-                            <div class="col-lg-6 col-12 col-sm-6">
-                              <label class="form-label"
-                                >Attach Authorization Letter</label
-                              >
-                              <input
-                                class="inputfile inputfile-1"
-                                data-multiple-caption="{count} files selected"
-                                id="file-1"
-                                multiple
-                                name="file-1[]"
-                                type="file"
-                              />
-                              <label for="file-1">
-                                <span
-                                  >Upload File – png only Max Size 2 MB</span
-                                ></label
-                              >
-                            </div>
-                            <div class="col-lg-6 col-12 col-sm-6">
-                              <label class="form-label">Birthdate:</label>
-                              <input
-                                class="date"
-                                id="datepickertwo"
-                                name=""
-                                placeholder="Enter your Birthdate  "
-                                type="text"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
+              </ot-personal-information-advanced>
             </ng-template>
 
             <ng-template #sdDiv ngSwitchCase="sdDiv">

@@ -90,4 +90,6 @@ export interface MembershipRequest {
   emailAddress?: string;
   address?: string;
   fullAddress?: string;
+  nationId?: number;
+  emirateBackAttach?: File;
 }

@@ -1,18 +1,12 @@
-import {AfterViewInit, Component} from '@angular/core';
-import * as scripts from './scripts.js';
+import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
   selector: 'ot-track-your-progress',
   templateUrl: './track-your-progress.component.html',
-  styleUrls: ['./track-your-progress.component.scss']
+  styleUrls: ['./track-your-progress.component.scss'],
 })
 export class TrackYourProgressComponent implements AfterViewInit {
+  constructor() {}
 
-  constructor() {
-  }
-
-  ngAfterViewInit(): void {
-    scripts();
-  }
-
+  ngAfterViewInit(): void {}
 }

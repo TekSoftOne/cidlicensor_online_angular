@@ -18,6 +18,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MobileComponent } from './wizards/mobile/mobile.component';
 import { MobileVerificationComponent } from './wizards/mobile-verification/mobile-verification.component';
 import { PersonalInformationComponent } from './wizards/personal-information/personal-information.component';
+import { PersonalInformationAdvancedComponent } from './wizards/personal-information-advanced/personal-information-advanced.component';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -32,6 +33,7 @@ export function createTranslateLoader(http: HttpClient) {
     MobileComponent,
     MobileVerificationComponent,
     PersonalInformationComponent,
+    PersonalInformationAdvancedComponent,
   ],
   imports: [
     BrowserModule,

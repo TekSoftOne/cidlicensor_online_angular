@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MembershipRequest } from 'src/app/constants';
-import * as scripts from './scripts.js';
+import * as scripts from './google-map-helper.js';
 
 @Component({
   selector: 'ot-personal-information',

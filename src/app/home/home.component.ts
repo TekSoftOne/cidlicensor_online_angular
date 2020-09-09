@@ -93,19 +93,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public currentStep$ = new BehaviorSubject<string>('mainDiv');
   public isMobileSend = false;
   public googleApiLoad: any;
-  public nationalities: Nationality[] = [
-    { id: 1, name: 'Ameria' },
-    { id: 2, name: 'Netherland' },
-  ];
 
-  public nationId = 0;
   public formCustomerType: FormGroup;
   public formRequestType: FormGroup;
-  public formPersonal: FormGroup;
-
-  public fileEmirateBack: any;
 
   public request: MembershipRequest = {
+    address: 'sdfdfsdf',
+    emailAddress: 'sdfsdf@sdfsdf',
+    fullAddress: 'sdfsdfsdf',
+    fullName: 'sdfsdf',
+    nationId: 0,
     phoneNumber: '+131231231',
     verifyNumber: '123456',
   };
@@ -138,10 +135,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public next(f: NgForm): void {
-    if (!f.form.valid) {
-      console.log('invalid');
-      return;
-    }
+    // if (!f.form.valid) {
+    //   console.log('invalid');
+    //   return;
+    // }
     const index = this.getIndex(this.currentStep$.value);
     this.currentStep$.next(steps[index + 1]);
   }
@@ -191,18 +188,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         requireCheckboxesToBeCheckedValidator()
       ),
     });
-
-    this.formPersonal = new FormGroup({
-      nation: new FormControl(0, [Validators.required, Validators.min(1)]),
-      emirateBackAttach: new FormControl('', Validators.required),
-    });
-  }
-
-  public onFileChange(files: FileList): void {
-    // this.labelImport.nativeElement.innerText = Array.from(files)
-    //   .map(f => f.name)
-    //   .join(', ');
-    this.fileEmirateBack = files.item(0);
   }
 
   ngAfterViewInit(): void {}

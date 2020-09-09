@@ -738,9 +738,4 @@ module.exports = () => {
       });
     } catch (e) {}
   };
-
-  $("#datepicker").datepicker("toggle");
-  $("#datepickertwo").datepicker("toggle");
-
-  $("#mobile-number").intlTelInput();
 };
