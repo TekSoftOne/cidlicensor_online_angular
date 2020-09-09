@@ -1,4 +1,4 @@
-import { NgForm } from '@angular/forms';
+import { NgForm, ValidatorFn, FormGroup } from '@angular/forms';
 
 export function isFormValid(form: NgForm): boolean {
   return form.invalid && (form.dirty || form.touched || form.submitted);
@@ -23,4 +23,29 @@ export function createGoogleMapsScript(): void {
   script.defer = true;
   script.id = 'google-apis';
   document.body.insertAdjacentElement('beforeend', script);
+}
+
+export function requireCheckboxesToBeCheckedValidator(
+  minRequired = 1
+): ValidatorFn {
+  // tslint:disable-next-line: typedef
+  return function validate(formGroup: FormGroup) {
+    let checked = 0;
+
+    Object.keys(formGroup.controls).forEach((key) => {
+      const control = formGroup.controls[key];
+
+      if (control.value !== false) {
+        checked++;
+      }
+    });
+
+    if (checked < minRequired) {
+      return {
+        requireCheckboxesToBeChecked: true,
+      };
+    }
+
+    return null;
+  };
 }

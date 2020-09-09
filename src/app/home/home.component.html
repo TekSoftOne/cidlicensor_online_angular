@@ -152,243 +152,31 @@
             </ng-template>
             <!-- type of customer -->
             <ng-template #ftDiv ngSwitchCase="ftDiv">
-              <form
-                #membershipForm="ngForm"
-                [formGroup]="formCustomerType"
-                (ngSubmit)="next(membershipForm)"
+              <ot-type-of-customer
+                (data)="updateData($event)"
+                (nextStep)="next($event)"
+                [typeOfCustomer]="request.typeOfCustomer"
               >
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12 flush" id="ft-div">
-                    <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-                      <div class="row">
-                        <div class="col-lg-12 text-center col-12 col-sm-12">
-                          <h3>Type of Request:</h3>
-                        </div>
-                      </div>
-                      <div class="row tp">
-                        <div class="col-lg-12 col-12 col-sm-12">
-                          <div class="row" formGroupName="cbGroupCustomerType">
-                            <div
-                              class="col-lg-4 la text-center col-12 col-sm-4"
-                            >
-                              <label name="typeOfCustomer">
-                                <div
-                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
-                                >
-                                  <img
-                                    alt=""
-                                    src="/assets/images/img-new-1.png"
-                                  />
-                                  <h6>Tourist</h6>
-                                </div>
-                                <input
-                                  formControlName="typeOfCustomer"
-                                  class="check"
-                                  name="typeOfCustomer"
-                                  type="radio"
-                                  value="tourist"
-                                />
-                              </label>
-                            </div>
-                            <div
-                              class="col-lg-4 la text-center col-12 col-sm-4"
-                            >
-                              <label name="typeOfCustomer">
-                                <div
-                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
-                                >
-                                  <img
-                                    alt=""
-                                    src="/assets/images/img-new-2.png"
-                                  />
-                                  <h6>Diplomat</h6>
-                                </div>
-                                <input
-                                  class="check"
-                                  name="typeOfCustomer"
-                                  type="radio"
-                                  value="diplomat"
-                                  formControlName="typeOfCustomer"
-                                />
-                              </label>
-                            </div>
-                            <div
-                              class="col-lg-4 la text-center col-12 col-sm-4"
-                            >
-                              <label name="typeOfCustomer">
-                                <div
-                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
-                                >
-                                  <img
-                                    alt=""
-                                    src="/assets/images/img-new-3.png"
-                                  />
-                                  <h6>Resident</h6>
-                                </div>
-                                <input
-                                  class="check"
-                                  name="typeOfCustomer"
-                                  type="radio"
-                                  value="resident"
-                                  formControlName="typeOfCustomer"
-                                />
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- <div
-                          class="invalid-feedback"
-                          *ngIf="
-                            form.controls['myCheckboxGroup'].errors &&
-                            form.controls['myCheckboxGroup'].errors
-                              .requireCheckboxesToBeChecked
-                          "
-                        >
-                          At least one checkbox is required to check
-                        </div> -->
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container
+              ></ot-type-of-customer>
             </ng-template>
             <!-- type of request -->
             <ng-template #ftDiv2 ngSwitchCase="ftDiv2">
-              <form
-                #membershipForm="ngForm"
-                [formGroup]="formRequestType"
-                (ngSubmit)="next(membershipForm)"
+              <ot-type-of-request
+                (data)="updateData($event)"
+                (nextStep)="next($event)"
+                [typeOfRequest]="request.typeOfRequest"
               >
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12 flush" id="ft-div-2">
-                    <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-                      <div class="row">
-                        <div class="col-lg-12 text-center col-12 col-sm-12">
-                          <h3>Type of Request:</h3>
-                        </div>
-                      </div>
-                      <div class="row tp">
-                        <div class="col-lg-12 col-12 col-sm-12">
-                          <div class="row" formGroupName="cbGroupRequestType">
-                            <div
-                              class="col-lg-4 la text-center col-12 col-sm-4"
-                            >
-                              <label name="">
-                                <div
-                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
-                                >
-                                  <img
-                                    alt=""
-                                    src="/assets/images/img-new-1.png"
-                                  />
-                                  <h6>New</h6>
-                                </div>
-                                <input
-                                  class="check"
-                                  name="typeOfRequest"
-                                  type="radio"
-                                  value="new"
-                                  formControlName="typeOfRequest"
-                                />
-                              </label>
-                            </div>
-                            <div
-                              class="col-lg-4 la text-center col-12 col-sm-4"
-                            >
-                              <label name="">
-                                <div
-                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
-                                >
-                                  <img
-                                    alt=""
-                                    src="/assets/images/img-new-2.png"
-                                  />
-                                  <h6>Renewal</h6>
-                                </div>
-                                <input
-                                  class="check"
-                                  name="typeOfRequest"
-                                  type="radio"
-                                  value="renewal"
-                                  formControlName="typeOfRequest"
-                                />
-                              </label>
-                            </div>
-                            <div
-                              class="col-lg-4 la text-center col-12 col-sm-4"
-                            >
-                              <label name="">
-                                <div
-                                  class="col-lg-12 bg-label col-sm-12 col-xs-12"
-                                >
-                                  <img
-                                    alt=""
-                                    src="/assets/images/img-new-3.png"
-                                  />
-                                  <h6>Replacement</h6>
-                                </div>
-                                <input
-                                  class="check"
-                                  name="typeOfRequest"
-                                  type="radio"
-                                  value="replacement"
-                                  formControlName="typeOfRequest"
-                                />
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
+                <ng-container [ngTemplateOutlet]="divButtons"></ng-container
+              ></ot-type-of-request>
             </ng-template>
             <!-- MEMBERSHIP NUMBER -->
             <ng-template #serDiv1 ngSwitchCase="serDiv1">
-              <form
-                #membershipForm="ngForm"
-                (ngSubmit)="searchRequest(membershipForm)"
+              <ot-search-membership-number
+                (data)="updateData($event)"
+                (nextStep)="next($event)"
               >
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12 flush" id="ser-div-1">
-                    <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-                      <div class="row">
-                        <div class="col-lg-12 text-center col-12 col-sm-12">
-                          <h3>Enter Membership Number:</h3>
-                        </div>
-                      </div>
-                      <div class="row tp">
-                        <div class="col-lg-12 text-center col-12 col-sm-12">
-                          <input
-                            name="membershipNumber"
-                            placeholder="Enter request"
-                            type="text"
-                            ngModel
-                            required
-                            [ngClass]="{
-                              'form-control': true,
-                              'is-invalid': isFormValid(membershipForm)
-                            }"
-                          />
-                        </div>
-                        <div class="col-lg-12 text-center col-12 col-sm-12">
-                          <!-- <a class="btn-next" (click)="searchRequest()"
-                            >Search</a
-                          > -->
-                          <button class="btn-next" type="submit">Search</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <ng-container
-                  *ngIf="!isSearchStep"
-                  [ngTemplateOutlet]="divButtons"
-                ></ng-container>
-              </form>
+              </ot-search-membership-number>
             </ng-template>
 
             <ng-template #ftDiv3 ngSwitchCase="ftDiv3">
@@ -415,210 +203,21 @@
             </ng-template>
 
             <ng-template #sdDiv ngSwitchCase="sdDiv">
-              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12" id="sd-div">
-                    <div class="row">
-                      <div class="col-lg-12 text-center col-12 col-sm-12">
-                        <h3>Please Enter your Work Information:</h3>
-                      </div>
-                    </div>
-                    <div class="row tp">
-                      <div class="col-lg-12 col-12 col-sm-12">
-                        <div class="row">
-                          <div class="col-lg-6 col-12 col-sm-6">
-                            <label class="form-label"
-                              >Your Monthly Salary:</label
-                            >
-                            <input name="" placeholder="5000 DHS" type="text" />
-                          </div>
-                          <div class="col-lg-6 col-12 col-sm-6">
-                            <label class="form-label"
-                              >How much Monthly Quota you need:</label
-                            >
-                            <input name="" placeholder="2000 DHS" type="text" />
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-lg-12 col-12 col-sm-12">
-                            <label class="form-label">Any comments: </label>
-                            <textarea placeholder="FDFDF"></textarea>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <ot-work-information
+                (data)="updateData($event)"
+                (nextStep)="next($event)"
+              >
                 <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
+              </ot-work-information>
             </ng-template>
 
             <ng-template #tdDiv ngSwitchCase="tdDiv">
-              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12" id="td-div">
-                    <div class="row">
-                      <div class="col-lg-12 col-12 col-sm-12">
-                        <label class="form-label">YOUR AREA </label>
-                        <select>
-                          <option>Business Bay</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-12 tps2 col-12 col-sm-12">
-                        <h2>LOCATION:</h2>
-                      </div>
-                      <div class="col-lg-12 tp col-12 col-sm-12">
-                        <p class="desc">
-                          Please select any of our nearest Branch office from
-                          your location, and we will process your application
-                          there
-                        </p>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-12 col-12 col-sm-12 multi">
-                        <div class="table">
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#1:<br />
-                              Shop 202 , Business Bay Branch , AE , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#2:<br />
-                              Shop 302 , Jumirah Branch , MMI , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#3:<br />
-                              Shop 302 , Jumirah Branch , AE , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#4:<br />
-                              Shop 202 , Business Bay Branch , AE , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#5:<br />
-                              Shop 302 , Jumirah Branch , MMI , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#6:<br />
-                              Shop 302 , Jumirah Branch , AE , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#7:<br />
-                              Shop 202 , Business Bay Branch , AE , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#8:<br />
-                              Shop 302 , Jumirah Branch , MMI , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#9:<br />
-                              Shop 302 , Jumirah Branch , AE , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#10:<br />
-                              Shop 202 , Business Bay Branch , AE , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label class="bt">
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#11:<br />
-                              Shop 302 , Jumirah Branch , MMI , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                          <label>
-                            <input
-                              class="check"
-                              name="location"
-                              type="radio"
-                            /><span>
-                              Location#12:<br />
-                              Shop 302 , Jumirah Branch , AE , Dubai
-                              <a href="#">X</a></span
-                            >
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <ot-location
+                (data)="updateData($event)"
+                (nextStep)="next($event)"
+              >
                 <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
+              </ot-location>
             </ng-template>
 
             <ng-template #lastDiv ngSwitchCase="lastDiv">

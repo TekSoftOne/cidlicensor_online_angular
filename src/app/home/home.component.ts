@@ -1,8 +1,5 @@
-import {
-  showHomeScreens,
-  Nationality,
-  MembershipRequest,
-} from './../constants';
+import { showHomeScreens } from './../constants';
+import { Nationality, MembershipRequest } from './../interfaces';
 import {
   AfterViewInit,
   Component,
@@ -24,31 +21,7 @@ import {
 } from '../constants';
 
 import { FormGroup, ValidatorFn } from '@angular/forms';
-
-export function requireCheckboxesToBeCheckedValidator(
-  minRequired = 1
-): ValidatorFn {
-  // tslint:disable-next-line: typedef
-  return function validate(formGroup: FormGroup) {
-    let checked = 0;
-
-    Object.keys(formGroup.controls).forEach((key) => {
-      const control = formGroup.controls[key];
-
-      if (control.value !== false) {
-        checked++;
-      }
-    });
-
-    if (checked < minRequired) {
-      return {
-        requireCheckboxesToBeChecked: true,
-      };
-    }
-
-    return null;
-  };
-}
+import { requireCheckboxesToBeCheckedValidator } from '../form';
 
 @Component({
   selector: 'ot-home',
@@ -93,9 +66,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public currentStep$ = new BehaviorSubject<string>('mainDiv');
   public isMobileSend = false;
   public googleApiLoad: any;
-
-  public formCustomerType: FormGroup;
-  public formRequestType: FormGroup;
 
   public request: MembershipRequest = {
     address: 'sdfdfsdf',
@@ -170,25 +140,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit(): void {
-    this.formCustomerType = new FormGroup({
-      cbGroupCustomerType: new FormGroup(
-        {
-          typeOfCustomer: new FormControl(false),
-        },
-        requireCheckboxesToBeCheckedValidator()
-      ),
-    });
-
-    this.formRequestType = new FormGroup({
-      cbGroupRequestType: new FormGroup(
-        {
-          typeOfRequest: new FormControl(false),
-        },
-        requireCheckboxesToBeCheckedValidator()
-      ),
-    });
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {}
 }

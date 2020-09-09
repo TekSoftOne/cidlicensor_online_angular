@@ -1,5 +1,5 @@
 import { IFormWizard } from './../../interfaces';
-import { MembershipRequest } from './../../constants';
+import { MembershipRequest } from './../../interfaces';
 import { NgForm } from '@angular/forms';
 import {
   Component,

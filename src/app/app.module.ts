@@ -19,6 +19,11 @@ import { MobileComponent } from './wizards/mobile/mobile.component';
 import { MobileVerificationComponent } from './wizards/mobile-verification/mobile-verification.component';
 import { PersonalInformationComponent } from './wizards/personal-information/personal-information.component';
 import { PersonalInformationAdvancedComponent } from './wizards/personal-information-advanced/personal-information-advanced.component';
+import { TypeOfCustomerComponent } from './wizards/type-of-customer/type-of-customer.component';
+import { TypeOfRequestComponent } from './wizards/type-of-request/type-of-request.component';
+import { SearchMembershipNumberComponent } from './wizards/search-membership-number/search-membership-number.component';
+import { WorkInformationComponent } from './wizards/work-information/work-information.component';
+import { LocationComponent } from './wizards/location/location.component';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -34,6 +39,11 @@ export function createTranslateLoader(http: HttpClient) {
     MobileVerificationComponent,
     PersonalInformationComponent,
     PersonalInformationAdvancedComponent,
+    TypeOfCustomerComponent,
+    TypeOfRequestComponent,
+    SearchMembershipNumberComponent,
+    WorkInformationComponent,
+    LocationComponent,
   ],
   imports: [
     BrowserModule,

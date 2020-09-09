@@ -77,19 +77,3 @@ export const showStepsFlowScreens = [
   'lastDiv3',
   'lastDiv4',
 ];
-
-export interface Nationality {
-  name: string;
-  id: number;
-}
-
-export interface MembershipRequest {
-  phoneNumber?: string;
-  verifyNumber?: string;
-  fullName?: string;
-  emailAddress?: string;
-  address?: string;
-  fullAddress?: string;
-  nationId?: number;
-  emirateBackAttach?: File;
-}

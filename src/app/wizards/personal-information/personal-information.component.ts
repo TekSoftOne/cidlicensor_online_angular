@@ -13,7 +13,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MembershipRequest } from 'src/app/constants';
+import { MembershipRequest } from 'src/app/interfaces';
 import * as scripts from './google-map-helper.js';
 
 @Component({
