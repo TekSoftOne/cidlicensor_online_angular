@@ -123,10 +123,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public next(f: NgForm): void {
-    // if (!f.form.valid) {
-    //   console.log('invalid');
-    //   return;
-    // }
+    if (!f.form.valid) {
+      console.log('invalid');
+      return;
+    }
     const index = this.getIndex(this.currentStep$.value);
     const step = steps[index + 1];
     this.currentStep$.next(step);

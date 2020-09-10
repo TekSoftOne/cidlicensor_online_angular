@@ -1,4 +1,9 @@
-import { isFormValid, isControlValid } from 'src/app/form';
+import {
+  isFormValid,
+  isControlValid,
+  requireFileSizeValidator,
+  requireFileSizeFormValidator,
+} from 'src/app/form';
 import { IFormWizard, Religion } from './../../interfaces';
 import * as datePickerHelper from './date-picker-helper.js';
 import {
@@ -38,6 +43,8 @@ export class PersonalInformationAdvancedComponent
 
   public fileEmirateBack: File;
 
+  public sizeInvalid = false;
+
   @Input() nationId: number;
 
   ngAfterViewInit(): void {
@@ -68,7 +75,8 @@ export class PersonalInformationAdvancedComponent
   ngOnInit(): void {
     this.formPersonal = new FormGroup({
       nation: new FormControl(0, [Validators.required, Validators.min(1)]),
-      emirateBackAttach: new FormControl('', Validators.required),
+      emirateBackAttach: new FormControl('', [Validators.required]),
+      religion: new FormControl(0, [Validators.required, Validators.min(1)]),
     });
   }
 }

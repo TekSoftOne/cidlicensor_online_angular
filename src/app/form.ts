@@ -41,11 +41,51 @@ export function requireCheckboxesToBeCheckedValidator(
     });
 
     if (checked < minRequired) {
+      // invalid
       return {
         requireCheckboxesToBeChecked: true,
       };
     }
 
+    return null; // valid
+  };
+}
+
+export function requireFileSizeValidator(size = 100): ValidatorFn {
+  // tslint:disable-next-line: typedef
+  return function ValidityState(control: any) {
+    if (control.size >= size) {
+      return {
+        requireFileSizeValid: true,
+      };
+    }
     return null;
+  };
+}
+
+export function requireFileSizeFormValidator(
+  size = 100,
+  controlName: string[]
+): ValidatorFn {
+  // tslint:disable-next-line: typedef
+  return function validate(formGroup: FormGroup) {
+    let checked = 0;
+
+    Object.keys(formGroup.controls).forEach((key) => {
+      const control = formGroup.controls[key];
+
+      if (control.value.size >= size) {
+        checked++;
+      }
+    });
+
+    if (checked < size) {
+      // invalid
+      return {
+        requireFileSizeChecked1: true,
+      };
+    }
+
+    return null; // valid
   };
 }
