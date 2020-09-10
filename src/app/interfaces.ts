@@ -32,6 +32,7 @@ export interface MembershipRequest {
   passportNumber?: string;
   genderId?: number;
   birthday?: string;
+  religionId?: number;
 }
 
 export interface Religion {

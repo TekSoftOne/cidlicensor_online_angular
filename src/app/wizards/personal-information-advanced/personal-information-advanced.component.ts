@@ -40,7 +40,7 @@ export class PersonalInformationAdvancedComponent
 
   public religions: Religion[] = [
     { id: 1, name: 'Islam' },
-    { id: 1, name: 'Kristian' },
+    { id: 2, name: 'Kristian' },
   ];
 
   public genders: Gender[] = [
@@ -48,15 +48,16 @@ export class PersonalInformationAdvancedComponent
     { id: 2, name: 'Female' },
   ];
 
-  public fileEmirateBack: File;
-  public fileEmirateFront: File;
-  public fileAuthorizationLetter: File;
-  public fileProfilePic: File;
+  @Input() fileEmirateBack: File;
+  @Input() fileEmirateFront: File;
+  @Input() fileAuthorizationLetter: File;
+  @Input() fileProfilePic: File;
 
-  public emirateIdNumber: string;
-  public passportNumber: string;
-  public birthday: string;
-  public genderId = 0;
+  @Input() emirateIdNumber: string;
+  @Input() passportNumber: string;
+  @Input() birthday: string;
+  @Input() genderId: number;
+  @Input() religionId: number;
 
   @Input() nationId: number;
 
@@ -81,6 +82,7 @@ export class PersonalInformationAdvancedComponent
       emirateIdNumber: this.emirateIdNumber,
       passportNumber: this.passportNumber,
       birthday: this.birthday,
+      religionId: this.religionId,
     });
     this.nextStep.emit(f);
   }

@@ -71,18 +71,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public googleApiLoad: any;
 
   public request: MembershipRequest = {
-    address: 'sdfdfsdf',
-    emailAddress: 'sdfsdf@sdfsdf',
-    emirateBackAttach: undefined,
-    fullAddress: 'sdfsdfsdf',
-    fullName: 'sdfsdf',
-    membershipNumber: 'membership12343',
+    // address: 'sdfdfsdf',
+    // emailAddress: 'sdfsdf@sdfsdf',
+    // emirateBackAttach: undefined,
+    // fullAddress: 'sdfsdfsdf',
+    // fullName: 'sdfsdf',
+    // membershipNumber: 'membership12343',
+    // phoneNumber: '+131231231',
+    // typeOfCustomer: 'diplomat',
+    // typeOfRequest: 'replacement',
+    // verifyNumber: '123456',
     nationId: 0,
-    phoneNumber: '+131231231',
-    typeOfCustomer: 'diplomat',
-    typeOfRequest: 'replacement',
-    verifyNumber: '123456',
+    religionId: 0,
+    genderId: 0,
   };
+
+  private readonly CURRENT_STEP_TOKEN = 'OT_STEP';
+  private readonly CURRENT_DATA_TOKEN = 'OT_D';
 
   public updateData(request: MembershipRequest): void {
     this.request = { ...this.request, ...request };
@@ -99,8 +104,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.isMobileSend = true;
   }
 
-  private readonly CURRENT_STEP_TOKEN = 'OT_STEP';
-
   public loadCurrentStep(): string {
     const cacheStep = localStorage.getItem(this.CURRENT_STEP_TOKEN);
     if (cacheStep) {
@@ -108,6 +111,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     return this.defaultStep;
+  }
+
+  public loadCurrentData(): MembershipRequest {
+    const cacheData = localStorage.getItem(this.CURRENT_DATA_TOKEN);
+    if (cacheData) {
+      return JSON.parse(cacheData);
+    }
+    return {};
   }
 
   public isFormValid(form: NgForm): boolean {
@@ -131,6 +142,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const step = steps[index + 1];
     this.currentStep$.next(step);
     this.cacheCurrentStep(step);
+    this.cacheCurrentData(this.request);
   }
 
   private getIndex(value: string): number {
@@ -149,6 +161,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private cacheCurrentStep(step: string): void {
     localStorage.setItem(this.CURRENT_STEP_TOKEN, step);
+  }
+
+  private cacheCurrentData(data: MembershipRequest): void {
+    localStorage.setItem(this.CURRENT_DATA_TOKEN, JSON.stringify(data));
   }
 
   public changeLanguage(e: Event): void {

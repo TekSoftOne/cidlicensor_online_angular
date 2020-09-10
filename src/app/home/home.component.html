@@ -197,6 +197,15 @@
                 (data)="updateData($event)"
                 (nextStep)="next($event)"
                 [nationId]="request.nationId"
+                [emirateIdNumber]="request.emirateIdNumber"
+                [passportNumber]="request.passportNumber"
+                [birthday]="request.birthday"
+                [genderId]="request.genderId"
+                [religionId]="request.religionId"
+                [fileEmirateBack]="request.emirateBackAttach"
+                [fileEmirateFront]="request.emirateFrontAttach"
+                [fileAuthorizationLetter]="request.authorizationLetterAttach"
+                [fileProfilePic]="request.profilePicAttach"
               >
                 <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
               </ot-personal-information-advanced>
