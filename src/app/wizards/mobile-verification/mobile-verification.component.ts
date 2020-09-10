@@ -2,8 +2,7 @@ import { IFormWizard } from './../../interfaces';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { isFormValid } from 'src/app/form';
-import { MembershipRequest } from 'src/app/constants';
-import { VirtualTimeScheduler } from 'rxjs';
+import { MembershipRequest } from 'src/app/interfaces';
 
 @Component({
   selector: 'ot-mobile-verification',

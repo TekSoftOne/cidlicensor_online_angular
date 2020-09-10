@@ -33,6 +33,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private translate: TranslateService,
     private httpClient: HttpClient
   ) {
+    this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
+
     this.isNextButtonShowed = this.currentStep$.pipe(
       map((s) => showNextButtonScreens.includes(s))
     );
@@ -63,17 +65,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isSearchStep: Observable<boolean>;
   private language = 'en';
 
-  public currentStep$ = new BehaviorSubject<string>('mainDiv');
+  private readonly defaultStep = 'mainDiv';
+  public currentStep$: BehaviorSubject<string>;
   public isMobileSend = false;
   public googleApiLoad: any;
 
   public request: MembershipRequest = {
     address: 'sdfdfsdf',
     emailAddress: 'sdfsdf@sdfsdf',
+    emirateBackAttach: undefined,
     fullAddress: 'sdfsdfsdf',
     fullName: 'sdfsdf',
+    membershipNumber: 'membership12343',
     nationId: 0,
     phoneNumber: '+131231231',
+    typeOfCustomer: 'diplomat',
+    typeOfRequest: 'replacement',
     verifyNumber: '123456',
   };
 
@@ -90,6 +97,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public sendMobile(): void {
     this.isMobileSend = true;
+  }
+
+  private readonly CURRENT_STEP_TOKEN = 'OT_STEP';
+
+  public loadCurrentStep(): string {
+    const cacheStep = localStorage.getItem(this.CURRENT_STEP_TOKEN);
+    if (cacheStep) {
+      return cacheStep;
+    }
+
+    return this.defaultStep;
   }
 
   public isFormValid(form: NgForm): boolean {
@@ -110,7 +128,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     //   return;
     // }
     const index = this.getIndex(this.currentStep$.value);
-    this.currentStep$.next(steps[index + 1]);
+    const step = steps[index + 1];
+    this.currentStep$.next(step);
+    this.cacheCurrentStep(step);
   }
 
   private getIndex(value: string): number {
@@ -124,6 +144,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private setCurrentStep(step: string): void {
     this.currentStep$.next(step);
+    this.cacheCurrentStep(step);
+  }
+
+  private cacheCurrentStep(step: string): void {
+    localStorage.setItem(this.CURRENT_STEP_TOKEN, step);
   }
 
   public changeLanguage(e: Event): void {

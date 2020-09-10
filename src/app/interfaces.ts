@@ -26,3 +26,8 @@ export interface MembershipRequest {
   typeOfRequest?: any;
   membershipNumber?: string;
 }
+
+export interface Religion {
+  name: string;
+  id: number;
+}

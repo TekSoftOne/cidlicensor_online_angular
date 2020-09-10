@@ -1,5 +1,5 @@
 import { isFormValid, isControlValid } from 'src/app/form';
-import { IFormWizard } from './../../interfaces';
+import { IFormWizard, Religion } from './../../interfaces';
 import * as datePickerHelper from './date-picker-helper.js';
 import {
   Component,
@@ -10,7 +10,7 @@ import {
   Input,
 } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
-import { MembershipRequest, Nationality } from 'src/app/constants';
+import { MembershipRequest, Nationality } from 'src/app/interfaces';
 
 @Component({
   selector: 'ot-personal-information-advanced',
@@ -30,6 +30,12 @@ export class PersonalInformationAdvancedComponent
     { id: 1, name: 'Ameria' },
     { id: 2, name: 'Netherland' },
   ];
+
+  public religions: Religion[] = [
+    { id: 1, name: 'Islam' },
+    { id: 1, name: 'Kristian' },
+  ];
+
   public fileEmirateBack: File;
 
   @Input() nationId: number;

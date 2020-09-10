@@ -40,10 +40,27 @@
               </div>
               <div class="col-lg-6 col-12 col-sm-6">
                 <label class="form-label">Religion:</label>
-                <select class="sel">
-                  <option>Islam</option>
-                  <option>Kristian</option>
-                  <option>Hindu</option>
+                <select
+                  class="sel"
+                  ngModel
+                  name="religion"
+                  formControlName="religion"
+                  required
+                  [ngClass]="{
+                    'form-control': true,
+                    'is-invalid': checkControlInvalid(
+                      membershipForm,
+                      formPersonal.controls
+                    )
+                  }"
+                >
+                  <option value="0">Choose a Religion</option>
+                  <option
+                    *ngFor="let religion of religions"
+                    value="religion.id"
+                  >
+                    {{ religion.name }}
+                  </option>
                 </select>
               </div>
               <div class="col-lg-6 col-12 col-sm-6">
