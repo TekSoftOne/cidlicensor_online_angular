@@ -31,7 +31,7 @@ declare var $: any;
   styleUrls: ['./personal-information-advanced.component.scss'],
 })
 export class PersonalInformationAdvancedComponent
-  implements OnInit, IFormWizard, AfterViewInit, OnChanges {
+  implements OnInit, IFormWizard, AfterViewInit {
   constructor(private datePipe: DatePipe) {}
 
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
@@ -68,20 +68,14 @@ export class PersonalInformationAdvancedComponent
 
   @Input() nationId: number;
 
+  // disable hide event of datepicker when focus to the textbox
+  public isHideEnable = false;
+
   @ViewChild('birthdayDatePicker', { static: true })
   birthdayDatePicker: ElementRef;
 
   ngAfterViewInit(): void {
-    // fix issue with validation: closing dialog, has value, still not valid
-    $('#datepickertwo')
-      .datepicker({ autoclose: true })
-      .on('hide', (e) => {
-        this.birthday = this.datePipe.transform(e.date, 'MM/dd/yyyy');
-      });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('');
+    this.initDatePicker();
   }
 
   checkFormInvalid(form: NgForm): boolean {
@@ -113,10 +107,26 @@ export class PersonalInformationAdvancedComponent
     this.formPersonal = new FormGroup({
       nation: new FormControl(0, [Validators.required, Validators.min(1)]),
       religion: new FormControl(0, [Validators.required, Validators.min(1)]),
-      birthday: new FormControl(new Date(), Validators.required),
+      birthday: new FormControl('', Validators.required),
       emirateIdNumber: new FormControl('', Validators.required),
       passportNumber: new FormControl('', Validators.required),
       genderId: new FormControl(0, Validators.min(1)),
     });
+  }
+
+  private initDatePicker(): void {
+    $('#datepickertwo')
+      .datepicker({ autoclose: true })
+      // fix issue with validation: closing dialog, has value, still not valid
+      .on('hide', (e) => {
+        if (this.isHideEnable) {
+          this.birthday = this.datePipe.transform(e.date, 'MM/dd/yyyy');
+        }
+
+        this.isHideEnable = false;
+      })
+      .on('show', (e) => {
+        this.isHideEnable = true;
+      });
   }
 }
