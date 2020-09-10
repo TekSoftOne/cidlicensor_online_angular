@@ -18,13 +18,12 @@
   }"
 />
 
-<label for="file-1">
-  <span
-    [ngClass]="{
-      'form-control': true,
-      'is-invalid': (sizeInvalid | async)
-    }"
-    >Upload File – png only Max Size 2 MB</span
-  >
+<label
+  for="file-1"
+  [ngClass]="{
+    'is-invalid-upload': (sizeInvalid | async)
+  }"
+>
+  <span>Upload File – png only Max Size 2 MB</span>
   <span *ngIf="file | async as emirateBack">{{ emirateBack?.name }}</span>
 </label>

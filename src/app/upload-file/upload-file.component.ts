@@ -30,7 +30,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
     const submit = this.submitChange.asObservable();
     this.sizeInvalid = combineLatest([this.file, this.submitChange]).pipe(
       map(([f, isSubmit]) => {
-        if (!isSubmit) {
+        if (!isSubmit && !f) {
           // not submit, dirty,.. => also valid
           return false; // = valid
         }
