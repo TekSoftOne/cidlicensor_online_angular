@@ -24,6 +24,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
 
   @Output() data = new EventEmitter<File>();
   @Input() formSubmited = false;
+  @Input() label: string;
 
   constructor() {
     this.file = new BehaviorSubject<File>(undefined);

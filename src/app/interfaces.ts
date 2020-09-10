@@ -22,6 +22,9 @@ export interface MembershipRequest {
   fullAddress?: string;
   nationId?: number;
   emirateBackAttach?: File;
+  emirateFrontAttach?: File;
+  profilePicAttach?: File;
+  authorizationLetterAttach?: File;
   typeOfCustomer?: any;
   typeOfRequest?: any;
   membershipNumber?: string;

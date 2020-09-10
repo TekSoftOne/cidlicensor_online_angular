@@ -1,0 +1,22 @@
+<label class="form-label">Attach your Profice Picture</label>
+<div class="div-cirlce">
+  <div class="circle">
+    <!-- User Profile Image -->
+    <ng-container *ngIf="imageUrl | async as img; else imagePlaceholder">
+      <img alt="" class="profile-pic" [src]="img" />
+    </ng-container>
+    <ng-template #imagePlaceholder>
+      <img alt="" class="profile-pic" src="/assets/img/user.png" />
+    </ng-template>
+  </div>
+  <div class="p-image">
+    <i class="fa fa-camera upload-button" (click)="triggerImageUpload()"></i>
+    <input
+      #imageUpload
+      accept="image/*"
+      class="file-upload"
+      (change)="onImageChange($event.target.files)"
+      type="file"
+    />
+  </div>
+</div>

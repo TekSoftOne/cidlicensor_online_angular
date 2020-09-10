@@ -44,6 +44,9 @@ export class PersonalInformationAdvancedComponent
   ];
 
   public fileEmirateBack: File;
+  public fileEmirateFront: File;
+  public fileAuthorizationLetter: File;
+  public fileProfilePic: File;
 
   @Input() nationId: number;
 
@@ -61,6 +64,9 @@ export class PersonalInformationAdvancedComponent
     this.data.emit({
       nationId: this.nationId,
       emirateBackAttach: this.fileEmirateBack,
+      emirateFrontAttach: this.fileEmirateFront,
+      profilePicAttach: this.fileProfilePic,
+      authorizationLetterAttach: this.fileAuthorizationLetter,
     });
     this.nextStep.emit(f);
   }
@@ -68,7 +74,6 @@ export class PersonalInformationAdvancedComponent
   ngOnInit(): void {
     this.formPersonal = new FormGroup({
       nation: new FormControl(0, [Validators.required, Validators.min(1)]),
-      emirateBackAttach: new FormControl('', [Validators.required]),
       religion: new FormControl(0, [Validators.required, Validators.min(1)]),
     });
   }
