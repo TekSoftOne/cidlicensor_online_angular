@@ -5,7 +5,6 @@ import {
   requireFileSizeFormValidator,
 } from 'src/app/form';
 import { IFormWizard, Religion, Gender } from './../../interfaces';
-import * as datePickerHelper from './date-picker-helper.js';
 import {
   Component,
   OnInit,
@@ -13,11 +12,18 @@ import {
   Output,
   AfterViewInit,
   Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MembershipRequest, Nationality } from 'src/app/interfaces';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
+
+declare var $: any;
 
 @Component({
   selector: 'ot-personal-information-advanced',
@@ -25,8 +31,9 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./personal-information-advanced.component.scss'],
 })
 export class PersonalInformationAdvancedComponent
-  implements OnInit, IFormWizard, AfterViewInit {
-  constructor() {}
+  implements OnInit, IFormWizard, AfterViewInit, OnChanges {
+  constructor(private datePipe: DatePipe) {}
+
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest
@@ -61,8 +68,20 @@ export class PersonalInformationAdvancedComponent
 
   @Input() nationId: number;
 
+  @ViewChild('birthdayDatePicker', { static: true })
+  birthdayDatePicker: ElementRef;
+
   ngAfterViewInit(): void {
-    datePickerHelper();
+    // fix issue with validation: closing dialog, has value, still not valid
+    $('#datepickertwo')
+      .datepicker({ autoclose: true })
+      .on('hide', (e) => {
+        this.birthday = this.datePipe.transform(e.date, 'MM/dd/yyyy');
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('');
   }
 
   checkFormInvalid(form: NgForm): boolean {
@@ -70,6 +89,9 @@ export class PersonalInformationAdvancedComponent
   }
   checkControlInvalid(form: NgForm, control: any): boolean {
     return isControlValid(form, control);
+  }
+  public test(e: Event): void {
+    console.log();
   }
   next(f: NgForm): void {
     this.data.emit({
@@ -91,7 +113,7 @@ export class PersonalInformationAdvancedComponent
     this.formPersonal = new FormGroup({
       nation: new FormControl(0, [Validators.required, Validators.min(1)]),
       religion: new FormControl(0, [Validators.required, Validators.min(1)]),
-      birthday: new FormControl('', Validators.required),
+      birthday: new FormControl(new Date(), Validators.required),
       emirateIdNumber: new FormControl('', Validators.required),
       passportNumber: new FormControl('', Validators.required),
       genderId: new FormControl(0, Validators.min(1)),

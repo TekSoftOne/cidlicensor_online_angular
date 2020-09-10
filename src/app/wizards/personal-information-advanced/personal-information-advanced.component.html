@@ -168,10 +168,12 @@
                   class="date"
                   id="datepickertwo"
                   name="birthday"
+                  #birthdayDatePicker
                   [(ngModel)]="birthday"
                   placeholder="Enter your Birthdate  "
                   type="text"
                   formControlName="birthday"
+                  (change)="test($event)"
                   [ngClass]="{
                     'form-control': true,
                     'is-invalid': checkControlInvalid(
