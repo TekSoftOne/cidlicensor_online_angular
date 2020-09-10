@@ -1,0 +1,30 @@
+<label
+  [ngClass]="{
+    'form-label': true,
+    'form-control': true,
+    'is-invalid': (lengthInvalid | async)
+  }"
+  >Attach Emirates ID Back</label
+>
+<input
+  class="inputfile inputfile-1"
+  id="emirateBackAttach"
+  (change)="onFileChange($event.target.files)"
+  name="emirateBackAttach"
+  type="file"
+  [ngClass]="{
+    'form-control': true,
+    'is-invalid': (lengthInvalid | async)
+  }"
+/>
+
+<label for="file-1">
+  <span
+    [ngClass]="{
+      'form-control': true,
+      'is-invalid': (sizeInvalid | async)
+    }"
+    >Upload File – png only Max Size 2 MB</span
+  >
+  <span *ngIf="file | async as emirateBack">{{ emirateBack?.name }}</span>
+</label>

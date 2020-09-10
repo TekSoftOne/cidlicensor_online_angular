@@ -24,6 +24,7 @@ import { TypeOfRequestComponent } from './wizards/type-of-request/type-of-reques
 import { SearchMembershipNumberComponent } from './wizards/search-membership-number/search-membership-number.component';
 import { WorkInformationComponent } from './wizards/work-information/work-information.component';
 import { LocationComponent } from './wizards/location/location.component';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,6 +45,7 @@ export function createTranslateLoader(http: HttpClient) {
     SearchMembershipNumberComponent,
     WorkInformationComponent,
     LocationComponent,
+    UploadFileComponent,
   ],
   imports: [
     BrowserModule,

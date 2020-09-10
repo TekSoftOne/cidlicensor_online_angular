@@ -16,6 +16,8 @@ import {
 } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MembershipRequest, Nationality } from 'src/app/interfaces';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'ot-personal-information-advanced',
@@ -43,19 +45,10 @@ export class PersonalInformationAdvancedComponent
 
   public fileEmirateBack: File;
 
-  public sizeInvalid = false;
-
   @Input() nationId: number;
 
   ngAfterViewInit(): void {
     datePickerHelper();
-  }
-
-  public onFileChange(files: FileList): void {
-    // this.labelImport.nativeElement.innerText = Array.from(files)
-    //   .map(f => f.name)
-    //   .join(', ');
-    this.fileEmirateBack = files.item(0);
   }
 
   checkFormInvalid(form: NgForm): boolean {

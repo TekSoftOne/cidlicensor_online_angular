@@ -103,41 +103,11 @@
               </div>
               <div class="col-lg-6 flush col-12 col-sm-6">
                 <div class="col-lg-12 col-12 col-sm-12">
-                  <label
-                    [ngClass]="{
-                      'form-label': true,
-                      'form-control': true,
-                      'is-invalid': checkControlInvalid(
-                        membershipForm,
-                        formPersonal.controls.emirateBackAttach
-                      )
-                    }"
-                    >Attach Emirates ID Back</label
+                  <ot-upload-file
+                    [formSubmited]="membershipForm.submitted"
+                    (data)="fileEmirateBack = $event"
                   >
-                  <input
-                    class="inputfile inputfile-1"
-                    id="emirateBackAttach"
-                    (change)="onFileChange($event.target.files)"
-                    name="emirateBackAttach"
-                    type="file"
-                    formControlName="emirateBackAttach"
-                  />
-
-                  <label
-                    for="file-1"
-                    [ngClass]="{
-                      'form-control': true,
-                      'is-invalid':
-                        formPersonal.controls.emirateBackAttach.errors &&
-                        formPersonal.controls.emirateBackAttach.errors
-                          .requireFileSizeValid
-                    }"
-                  >
-                    <span *ngIf="!(fileEmirateBack?.name.length > 0)"
-                      >Upload File – png only Max Size 2 MB</span
-                    >
-                    <span>{{ fileEmirateBack?.name }}</span>
-                  </label>
+                  </ot-upload-file>
                 </div>
                 <div class="col-lg-12 col-12 col-sm-12">
                   <label class="form-label">Attach Emirates ID Front</label>
