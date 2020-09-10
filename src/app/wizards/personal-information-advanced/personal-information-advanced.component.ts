@@ -4,7 +4,7 @@ import {
   requireFileSizeValidator,
   requireFileSizeFormValidator,
 } from 'src/app/form';
-import { IFormWizard, Religion } from './../../interfaces';
+import { IFormWizard, Religion, Gender } from './../../interfaces';
 import * as datePickerHelper from './date-picker-helper.js';
 import {
   Component,
@@ -43,10 +43,20 @@ export class PersonalInformationAdvancedComponent
     { id: 1, name: 'Kristian' },
   ];
 
+  public genders: Gender[] = [
+    { id: 1, name: 'Male' },
+    { id: 2, name: 'Female' },
+  ];
+
   public fileEmirateBack: File;
   public fileEmirateFront: File;
   public fileAuthorizationLetter: File;
   public fileProfilePic: File;
+
+  public emirateIdNumber: string;
+  public passportNumber: string;
+  public birthday: string;
+  public genderId = 0;
 
   @Input() nationId: number;
 
@@ -67,6 +77,10 @@ export class PersonalInformationAdvancedComponent
       emirateFrontAttach: this.fileEmirateFront,
       profilePicAttach: this.fileProfilePic,
       authorizationLetterAttach: this.fileAuthorizationLetter,
+      genderId: this.genderId,
+      emirateIdNumber: this.emirateIdNumber,
+      passportNumber: this.passportNumber,
+      birthday: this.birthday,
     });
     this.nextStep.emit(f);
   }
@@ -75,6 +89,10 @@ export class PersonalInformationAdvancedComponent
     this.formPersonal = new FormGroup({
       nation: new FormControl(0, [Validators.required, Validators.min(1)]),
       religion: new FormControl(0, [Validators.required, Validators.min(1)]),
+      birthday: new FormControl('', Validators.required),
+      emirateIdNumber: new FormControl('', Validators.required),
+      passportNumber: new FormControl('', Validators.required),
+      genderId: new FormControl(0, Validators.min(1)),
     });
   }
 }

@@ -28,9 +28,18 @@ export interface MembershipRequest {
   typeOfCustomer?: any;
   typeOfRequest?: any;
   membershipNumber?: string;
+  emirateIdNumber?: string;
+  passportNumber?: string;
+  genderId?: number;
+  birthday?: string;
 }
 
 export interface Religion {
+  name: string;
+  id: number;
+}
+
+export interface Gender {
   name: string;
   id: number;
 }
