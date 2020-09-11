@@ -4,7 +4,12 @@ import {
   requireFileSizeValidator,
   requireFileSizeFormValidator,
 } from 'src/app/form';
-import { IFormWizard, Religion, Gender } from './../../interfaces';
+import {
+  IFormWizard,
+  Religion,
+  Gender,
+  CustomValidation,
+} from './../../interfaces';
 import {
   Component,
   OnInit,
@@ -22,6 +27,7 @@ import { MembershipRequest, Nationality } from 'src/app/interfaces';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
+import { dateFormat } from 'src/app/constants';
 
 declare var $: any;
 
@@ -37,6 +43,9 @@ export class PersonalInformationAdvancedComponent
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest
+  >();
+  @Output() dataValidation: EventEmitter<CustomValidation> = new EventEmitter<
+    CustomValidation
   >();
 
   public formPersonal: FormGroup;
@@ -120,7 +129,7 @@ export class PersonalInformationAdvancedComponent
       // fix issue with validation: closing dialog, has value, still not valid
       .on('hide', (e) => {
         if (this.isHideEnable) {
-          this.birthday = this.datePipe.transform(e.date, 'MM/dd/yyyy');
+          this.birthday = this.datePipe.transform(e.date, dateFormat);
         }
 
         this.isHideEnable = false;

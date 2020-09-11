@@ -77,3 +77,5 @@ export const showStepsFlowScreens = [
   'lastDiv3',
   'lastDiv4',
 ];
+
+export const dateFormat = 'MM/dd/yyyy';

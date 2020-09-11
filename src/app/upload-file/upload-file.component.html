@@ -2,7 +2,8 @@
   [ngClass]="{
     'form-label': true,
     'form-control': true,
-    'is-invalid': (lengthInvalid | async)
+    'is-invalid': (lengthInvalid | async),
+    'is-invalid-all': (isValid | async)
   }"
   >{{ label }}</label
 >

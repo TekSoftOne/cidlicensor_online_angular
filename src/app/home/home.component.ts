@@ -1,5 +1,9 @@
 import { showHomeScreens } from './../constants';
-import { Nationality, MembershipRequest } from './../interfaces';
+import {
+  Nationality,
+  MembershipRequest,
+  CustomValidation,
+} from './../interfaces';
 import {
   AfterViewInit,
   Component,
@@ -86,11 +90,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
     genderId: 0,
   };
 
+  public requestValidation: CustomValidation[] = [];
+
   private readonly CURRENT_STEP_TOKEN = 'OT_STEP';
   private readonly CURRENT_DATA_TOKEN = 'OT_D';
 
   public updateData(request: MembershipRequest): void {
     this.request = { ...this.request, ...request };
+  }
+
+  public updateValidation(validation: CustomValidation): void {
+    const existed = this.requestValidation.find(
+      (x) => x.controlName === validation.controlName
+    );
+    if (!existed) {
+      this.requestValidation.push(validation);
+      return;
+    }
+
+    existed.isValid = validation.isValid;
   }
 
   public searchRequest(f: NgForm): void {

@@ -44,3 +44,8 @@ export interface Gender {
   name: string;
   id: number;
 }
+
+export interface CustomValidation {
+  controlName: string;
+  isValid: boolean;
+}

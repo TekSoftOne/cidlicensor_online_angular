@@ -99,6 +99,8 @@
               <div class="col-lg-6 col-12 col-sm-6">
                 <ot-upload-image
                   (data)="fileProfilePic = $event"
+                  [isRequired]="true"
+                  [formSubmitted]="membershipForm.submitted"
                 ></ot-upload-image>
               </div>
               <div class="col-lg-6 flush col-12 col-sm-6">
@@ -106,7 +108,9 @@
                   <ot-upload-file
                     [formSubmited]="membershipForm.submitted"
                     (data)="fileEmirateBack = $event"
+                    (dataValidation)="dataValidation.emit($event)"
                     label="Attach Emirates ID Back"
+                    constrolName="attach Emirates ID Back"
                   >
                   </ot-upload-file>
                 </div>

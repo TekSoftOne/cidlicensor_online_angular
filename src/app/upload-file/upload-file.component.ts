@@ -8,8 +8,9 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest, merge } from 'rxjs';
+import { map, tap, skip, takeLast } from 'rxjs/operators';
+import { CustomValidation } from '../interfaces';
 
 @Component({
   selector: 'ot-upload-file',
@@ -21,10 +22,13 @@ export class UploadFileComponent implements OnInit, OnChanges {
   public sizeInvalid: Observable<boolean>;
   public lengthInvalid: Observable<boolean>;
   public submitChange = new BehaviorSubject<boolean>(false);
+  public isValid: Observable<boolean>;
 
   @Output() data = new EventEmitter<File>();
+  @Output() dataValidation = new EventEmitter<CustomValidation>();
   @Input() formSubmited = false;
   @Input() label: string;
+  @Input() constrolName: string;
 
   constructor() {
     this.file = new BehaviorSubject<File>(undefined);
@@ -57,6 +61,19 @@ export class UploadFileComponent implements OnInit, OnChanges {
           return true;
         }
         return false;
+      })
+    );
+
+    this.isValid = merge(this.sizeInvalid, this.lengthInvalid).pipe(
+      tap((s) => {
+        this.dataValidation.emit({
+          controlName: this.constrolName ?? 'unknown',
+          isValid: !s,
+        });
+        console.log({
+          controlName: this.constrolName,
+          isValid: !s,
+        });
       })
     );
   }

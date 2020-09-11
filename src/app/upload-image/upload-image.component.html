@@ -1,5 +1,8 @@
 <label class="form-label">Attach your Profice Picture</label>
-<div class="div-cirlce">
+<div
+  class="div-cirlce"
+  [ngClass]="{ 'is-invalid-profile-pic': isInvalid | async }"
+>
   <div class="circle">
     <!-- User Profile Image -->
     <ng-container *ngIf="imageUrl | async as img; else imagePlaceholder">

@@ -7,6 +7,9 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
+  Input,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import {
   BehaviorSubject,
@@ -14,6 +17,8 @@ import {
   Subscribable,
   Subscription,
   of,
+  Subject,
+  combineLatest,
 } from 'rxjs';
 import { map, switchMap, skip, tap } from 'rxjs/operators';
 
@@ -22,16 +27,24 @@ import { map, switchMap, skip, tap } from 'rxjs/operators';
   templateUrl: './upload-image.component.html',
   styleUrls: ['./upload-image.component.scss'],
 })
-export class UploadImageComponent implements OnInit, OnDestroy {
+export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('imageUpload', { static: true }) inputImage: ElementRef;
 
   public imageUrl: Observable<string | undefined>;
   public image: BehaviorSubject<File>;
   public imageFileSubscription: Subscription;
+  public isInvalid: Observable<boolean>;
+  @Input() formSubmitted = false;
+  @Input() isRequired = false;
   @Output() data: EventEmitter<File>;
+
+  private formSubmittedEvent: BehaviorSubject<boolean>;
 
   constructor() {
     this.image = new BehaviorSubject<File>(undefined);
+    this.formSubmittedEvent = new BehaviorSubject<boolean>(false);
+    this.data = new EventEmitter<File>();
+
     this.imageUrl = this.image.pipe(
       switchMap((file) => {
         if (!file) {
@@ -40,7 +53,15 @@ export class UploadImageComponent implements OnInit, OnDestroy {
         return this.readUrl(file);
       })
     );
-    this.data = new EventEmitter<File>();
+
+    this.isInvalid = combineLatest([
+      this.formSubmittedEvent,
+      this.imageUrl,
+    ]).pipe(
+      map(([summitStatus, url]) => {
+        return summitStatus && this.isRequired && !url;
+      })
+    );
 
     const imageFile = this.image.pipe(
       skip(1),
@@ -50,6 +71,11 @@ export class UploadImageComponent implements OnInit, OnDestroy {
     );
 
     this.imageFileSubscription = imageFile.subscribe();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.formSubmitted) {
+      this.formSubmittedEvent.next(changes.formSubmitted.currentValue);
+    }
   }
   ngOnDestroy(): void {
     if (this.imageFileSubscription) {

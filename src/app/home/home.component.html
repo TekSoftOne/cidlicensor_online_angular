@@ -195,6 +195,7 @@
             <ng-template #ftDiv4 ngSwitchCase="ftDiv4">
               <ot-personal-information-advanced
                 (data)="updateData($event)"
+                (dataValidation)="updateValidation($event)"
                 (nextStep)="next($event)"
                 [nationId]="request.nationId"
                 [emirateIdNumber]="request.emirateIdNumber"
