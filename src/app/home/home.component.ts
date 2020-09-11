@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isSearchStep: Observable<boolean>;
   private language = 'en';
 
-  private readonly defaultStep = 'mainDiv';
+  private readonly defaultStep = 'sPhoneNumber';
   public currentStep$: BehaviorSubject<string>;
   public isMobileSend = false;
   public googleApiLoad: any;
