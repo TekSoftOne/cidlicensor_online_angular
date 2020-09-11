@@ -31,21 +31,22 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('imageUpload', { static: true }) inputImage: ElementRef;
 
   public imageUrl: Observable<string | undefined>;
-  public image: BehaviorSubject<File>;
+  public image$: BehaviorSubject<File>;
   public imageFileSubscription: Subscription;
   public isInvalid: Observable<boolean>;
   @Input() formSubmitted = false;
   @Input() isRequired = false;
+  @Input() image: File;
   @Output() data: EventEmitter<File>;
 
   private formSubmittedEvent: BehaviorSubject<boolean>;
 
   constructor() {
-    this.image = new BehaviorSubject<File>(undefined);
+    this.image$ = new BehaviorSubject<File>(undefined);
     this.formSubmittedEvent = new BehaviorSubject<boolean>(false);
     this.data = new EventEmitter<File>();
 
-    this.imageUrl = this.image.pipe(
+    this.imageUrl = this.image$.pipe(
       switchMap((file) => {
         if (!file) {
           return of(undefined);
@@ -63,7 +64,7 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
       })
     );
 
-    const imageFile = this.image.pipe(
+    const imageFile = this.image$.pipe(
       skip(1),
       tap((f) => {
         this.data.emit(f);
@@ -75,6 +76,10 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.formSubmitted) {
       this.formSubmittedEvent.next(changes.formSubmitted.currentValue);
+    }
+
+    if (changes.image) {
+      this.image$.next(changes.image.currentValue);
     }
   }
   ngOnDestroy(): void {
@@ -91,7 +96,7 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
 
   public onImageChange(files: FileList): void {
     const f = files[0];
-    this.image.next(f);
+    this.image$.next(f);
   }
 
   // tslint:disable-next-line: typedef
