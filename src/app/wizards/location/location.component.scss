@@ -1,3 +1,16 @@
 .is-invalid-location {
   border: solid red 1px;
 }
+
+.location {
+  border-bottom: 1px solid #ddd;
+  padding: 15px;
+  &.last {
+    border-bottom: none;
+  }
+
+  &.selected {
+    background-color: #365da4;
+    color: white;
+  }
+}

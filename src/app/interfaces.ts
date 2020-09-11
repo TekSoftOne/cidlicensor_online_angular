@@ -21,6 +21,7 @@ export interface MembershipRequest {
   address?: string;
   fullAddress?: string;
   nationId?: number;
+  nationName?: string;
   emirateBackAttach?: File;
   emirateFrontAttach?: File;
   profilePicAttach?: File;
@@ -31,8 +32,10 @@ export interface MembershipRequest {
   emirateIdNumber?: string;
   passportNumber?: string;
   genderId?: number;
+  genderName?: string;
   birthday?: string;
   religionId?: number;
+  religionName?: string;
   // step
   monthlySalary?: number;
   monthlyQuota?: number;
@@ -40,6 +43,7 @@ export interface MembershipRequest {
   // step
   areaId?: number;
   locationId?: number;
+  locationAddress?: string;
 }
 
 export interface Religion {

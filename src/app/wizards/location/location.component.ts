@@ -33,35 +33,14 @@ export class LocationComponent implements OnInit, IFormWizard {
   public areaSelected$: BehaviorSubject<number | undefined>;
   public areaSelected: Observable<number>;
   public isValid: Observable<boolean>;
-  public locations: Observable<Location[]>;
-  public locationAll: Observable<Location[]> = of([
-    {
-      address: 'Shop 202 , Business Bay Branch , AE , Dubai',
-      id: 1,
-      areaId: 1,
-    },
-    { address: 'Shop 302 , Jumirah Branch , MMI , Dubai', id: 2, areaId: 1 },
-    { address: 'Address 3', id: 3, areaId: 2 },
-    { address: 'Address 4', id: 4, areaId: 2 },
-  ]);
-  public areas: Area[] = [
-    { name: 'area1', id: 1 },
-    { name: 'area2', id: 2 },
-  ];
+  public locations$: Observable<Location[]>;
+  public locations: Location[] = [];
+  // public locationAll$: Observable<Location[]>;
+  public areas$: Observable<Area[]>;
 
   constructor() {
     this.formSubmitted$ = new BehaviorSubject<boolean>(false);
     this.locationSelected$ = new BehaviorSubject<number | undefined>(undefined);
-    // const locationSelected = forkJoin([
-    //   of(this.locationId),
-    //   this.locationSelected$.asObservable(),
-    // ]).pipe(tap((l) => console.log('location' + l)));
-    const locationSelected = this.locationSelected$
-      .asObservable()
-      .pipe(tap((l) => (this.locationId = l)));
-
-    locationSelected.subscribe();
-
     this.areaSelected$ = new BehaviorSubject<number | undefined>(this.areaId);
     this.areaSelected = this.areaSelected$.asObservable().pipe(
       map((area) => {
@@ -72,6 +51,38 @@ export class LocationComponent implements OnInit, IFormWizard {
         return area;
       })
     );
+
+    const locationAll$ = of([
+      {
+        address: 'Shop 202 , Business Bay Branch , AE , Dubai',
+        id: 1,
+        areaId: 1,
+      },
+      { address: 'Shop 302 , Jumirah Branch , MMI , Dubai', id: 2, areaId: 1 },
+      { address: 'Address 3', id: 3, areaId: 2 },
+      { address: 'Address 4', id: 4, areaId: 2 },
+    ]);
+
+    locationAll$.subscribe();
+
+    this.areas$ = of([
+      { name: 'area1', id: 1 },
+      { name: 'area2', id: 2 },
+    ]);
+
+    this.locations$ = combineLatest([locationAll$, this.areaSelected]).pipe(
+      map(([locations, areaId]) => {
+        return locations.filter((x) => x.areaId === Number(areaId));
+      }),
+      tap((l) => (this.locations = l))
+    );
+
+    const locationSelected = this.locationSelected$
+      .asObservable()
+      .pipe(tap((l) => (this.locationId = l)));
+
+    locationSelected.subscribe();
+
     this.isValid = combineLatest([
       this.formSubmitted$,
       this.locationSelected$,
@@ -89,11 +100,6 @@ export class LocationComponent implements OnInit, IFormWizard {
         this.dataValidation.emit({ controlName: 'Location', isValid: s })
       )
     );
-    this.locations = combineLatest([this.locationAll, this.areaSelected]).pipe(
-      map(([locations, areaId]) => {
-        return locations.filter((x) => x.areaId === Number(areaId));
-      })
-    );
   }
 
   checkFormInvalid(form: NgForm): boolean {
@@ -104,11 +110,16 @@ export class LocationComponent implements OnInit, IFormWizard {
   }
   next(f: NgForm): void {
     this.formSubmitted$.next(true);
-    this.data.emit({ areaId: this.areaId, locationId: this.locationId });
+    this.data.emit({
+      areaId: this.areaId,
+      locationId: this.locationId,
+      locationAddress: this.locations.find((l) => l.id === this.locationId)
+        ?.address,
+    });
     this.nextStep.emit(f);
   }
 
-  public onLocationSelect(location: number): void {
+  public onLocationSelect(location: number, locationName: string): void {
     this.locationSelected$.next(location);
     this.formSubmitted$.next(false);
   }

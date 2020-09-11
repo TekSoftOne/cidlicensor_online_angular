@@ -24,8 +24,8 @@ import {
 } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MembershipRequest, Nationality } from 'src/app/interfaces';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { dateFormat } from 'src/app/constants';
 
@@ -38,7 +38,22 @@ declare var $: any;
 })
 export class PersonalInformationAdvancedComponent
   implements OnInit, IFormWizard, AfterViewInit {
-  constructor(private datePipe: DatePipe) {}
+  constructor(private datePipe: DatePipe) {
+    this.genders$ = of([
+      { id: 1, name: 'Male' },
+      { id: 2, name: 'Female' },
+    ]).pipe(tap((g) => (this.genders = g)));
+
+    this.nationalities$ = of([
+      { id: 1, name: 'Ameria' },
+      { id: 2, name: 'Netherland' },
+    ]).pipe(tap((n) => (this.nationalities = n)));
+
+    this.religions$ = of([
+      { id: 1, name: 'Islam' },
+      { id: 2, name: 'Kristian' },
+    ]).pipe(tap((r) => (this.religions = r)));
+  }
 
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
@@ -49,20 +64,15 @@ export class PersonalInformationAdvancedComponent
   >();
 
   public formPersonal: FormGroup;
-  public nationalities: Nationality[] = [
-    { id: 1, name: 'Ameria' },
-    { id: 2, name: 'Netherland' },
-  ];
+  public nationalities$: Observable<Nationality[]>;
 
-  public religions: Religion[] = [
-    { id: 1, name: 'Islam' },
-    { id: 2, name: 'Kristian' },
-  ];
+  public religions$: Observable<Religion[]>;
 
-  public genders: Gender[] = [
-    { id: 1, name: 'Male' },
-    { id: 2, name: 'Female' },
-  ];
+  public genders$: Observable<Gender[]>;
+
+  public genders: Gender[] = [];
+  public nationalities: Nationality[] = [];
+  public religions: Religion[] = [];
 
   @Input() fileEmirateBack: File;
   @Input() fileEmirateFront: File;
@@ -99,15 +109,21 @@ export class PersonalInformationAdvancedComponent
   next(f: NgForm): void {
     this.data.emit({
       nationId: this.nationId,
+      nationName: this.nationalities.find((x) => x.id === Number(this.nationId))
+        ?.name,
       emirateBackAttach: this.fileEmirateBack,
       emirateFrontAttach: this.fileEmirateFront,
       profilePicAttach: this.fileProfilePic,
       authorizationLetterAttach: this.fileAuthorizationLetter,
       genderId: this.genderId,
+      genderName: this.genders.find((x) => x.id === Number(this.genderId))
+        ?.name,
       emirateIdNumber: this.emirateIdNumber,
       passportNumber: this.passportNumber,
       birthday: this.birthday,
       religionId: this.religionId,
+      religionName: this.religions.find((r) => r.id === Number(this.religionId))
+        ?.name,
     });
     this.nextStep.emit(f);
   }

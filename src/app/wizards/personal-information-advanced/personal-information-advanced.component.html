@@ -32,7 +32,7 @@
                   <option [ngValue]="0" selected>Choose a nation</option>
                   <option
                     [value]="nation.id"
-                    *ngFor="let nation of nationalities"
+                    *ngFor="let nation of nationalities$ | async"
                   >
                     {{ nation.name }}
                   </option>
@@ -55,7 +55,7 @@
                 >
                   <option value="0">Choose a Religion</option>
                   <option
-                    *ngFor="let religion of religions"
+                    *ngFor="let religion of religions$ | async"
                     [value]="religion.id"
                   >
                     {{ religion.name }}
@@ -138,7 +138,10 @@
                     }"
                   >
                     <option value="0">Choose a gender</option>
-                    <option [value]="gender.id" *ngFor="let gender of genders">
+                    <option
+                      [value]="gender.id"
+                      *ngFor="let gender of genders$ | async"
+                    >
                       {{ gender.name }}
                     </option>
                   </select>

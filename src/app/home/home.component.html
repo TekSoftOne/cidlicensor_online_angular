@@ -226,6 +226,7 @@
                 (data)="updateData($event)"
                 (nextStep)="next($event)"
                 [areaId]="request.areaId"
+                [locationId]="request.locationId"
                 (dataValidation)="updateValidation($event)"
               >
                 <ng-container [ngTemplateOutlet]="divButtons"></ng-container>

@@ -8,6 +8,7 @@
             [(ngModel)]="areaId"
             name="areaId"
             (ngModelChange)="areaSelected$.next($event)"
+            *ngIf="areas$ | async as areas"
           >
             <option [value]="area.id" *ngFor="let area of areas">
               {{ area.name }}
@@ -31,22 +32,26 @@
           <div
             class="table"
             [ngClass]="{ 'is-invalid-location': !(isValid | async) }"
-            *ngIf="locations | async as currentLocations"
+            *ngIf="locations$ | async as currentLocations"
           >
-            <label
-              (click)="onLocationSelect(location.id)"
-              class="bt"
+            <div
+              class="location"
+              [ngClass]="{
+                last: locationIndex === currentLocations.length - 1,
+                selected: locationId && locationId === location.id
+              }"
+              (click)="onLocationSelect(location.id, location.address)"
               *ngFor="
                 let location of currentLocations;
                 let locationIndex = index
               "
             >
-              <input class="check" name="location" type="radio" /><span>
+              <span>
                 Location#{{ locationIndex }}:<br />
                 {{ location.address }}
-                <a href="#">X</a></span
-              >
-            </label>
+                <!-- <a href="#">X</a> -->
+              </span>
+            </div>
           </div>
         </div>
       </div>
