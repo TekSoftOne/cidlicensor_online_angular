@@ -17,7 +17,7 @@ export const steps = [
 export const showPreviousButtonScreens = [
   // 'sPhoneNumber',
   // 'sVerifyPhone',
-  // 'sTypeOfCustomer',
+  'sTypeOfCustomer',
   'sTypeOfRequest',
   // 'serDiv1',
   'sPersonalBasic',
@@ -27,7 +27,7 @@ export const showPreviousButtonScreens = [
   'lastDiv',
   'sPaymentChoices',
   'sReview',
-  //'sApplicationIdNotice',
+  // 'sApplicationIdNotice',
 ];
 
 export const showNextButtonScreens = [
@@ -43,7 +43,7 @@ export const showNextButtonScreens = [
   'lastDiv',
   'sPaymentChoices',
   'sReview',
-  //'sApplicationIdNotice',
+  // 'sApplicationIdNotice',
 ];
 
 export const showHomeScreens = [
@@ -63,8 +63,8 @@ export const showHomeScreens = [
 ];
 
 export const showStepsFlowScreens = [
-  //'sPhoneNumber',
-  //'sVerifyPhone',
+  // 'sPhoneNumber',
+  // 'sVerifyPhone',
   'sTypeOfCustomer',
   'sTypeOfRequest',
   'serDiv1',
