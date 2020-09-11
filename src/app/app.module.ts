@@ -27,6 +27,7 @@ import { LocationComponent } from './wizards/location/location.component';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { UploadImageComponent } from './upload-image/upload-image.component';
 import { DatePipe } from '@angular/common';
+import { SummaryComponent } from './wizards/summary/summary.component';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -49,6 +50,7 @@ export function createTranslateLoader(http: HttpClient) {
     LocationComponent,
     UploadFileComponent,
     UploadImageComponent,
+    SummaryComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import { isFormValid, isControlValid } from 'src/app/form';
 import { IFormWizard, MembershipRequest } from './../../interfaces';
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -10,8 +10,15 @@ import { NgForm } from '@angular/forms';
 })
 export class WorkInformationComponent implements OnInit, IFormWizard {
   constructor() {}
-  nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
-  data: EventEmitter<MembershipRequest> = new EventEmitter<MembershipRequest>();
+  @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
+  @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
+    MembershipRequest
+  >();
+
+  @Input() monthlySalary: number;
+  @Input() monthlyQuota: number;
+  @Input() comment: string;
+
   checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
   }
@@ -19,7 +26,11 @@ export class WorkInformationComponent implements OnInit, IFormWizard {
     return isControlValid(form, control);
   }
   next(f: NgForm): void {
-    this.data.emit({});
+    this.data.emit({
+      monthlyQuota: this.monthlyQuota,
+      monthlySalary: this.monthlySalary,
+      comment: this.comment,
+    });
     this.nextStep.emit(f);
   }
 

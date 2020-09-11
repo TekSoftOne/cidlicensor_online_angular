@@ -225,92 +225,17 @@
               <ot-location
                 (data)="updateData($event)"
                 (nextStep)="next($event)"
+                [areaId]="request.areaId"
+                (dataValidation)="updateValidation($event)"
               >
                 <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
               </ot-location>
             </ng-template>
 
             <ng-template #lastDiv ngSwitchCase="lastDiv">
-              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12" id="last-div">
-                    <div class="row">
-                      <div class="col-lg-12 col-12 col-sm-12">
-                        <h3>Review & Submit</h3>
-                      </div>
-                      <div
-                        class="col-lg-12 table-inf col-12 col-sm-12 text-center"
-                      >
-                        <div class="table-responsive">
-                          <table class="table">
-                            <tbody>
-                              <tr>
-                                <td>Full Name</td>
-                                <td>James D</td>
-                              </tr>
-                              <tr>
-                                <td>Email Address</td>
-                                <td>james@gmail.com</td>
-                              </tr>
-                              <tr>
-                                <td>Type Of Request</td>
-                                <td>020 XXX XXX XXX</td>
-                              </tr>
-                              <tr>
-                                <td>Type Of Request 2</td>
-                                <td>Renewal</td>
-                              </tr>
-                              <tr>
-                                <td>Complete Address</td>
-                                <td>AE , Dubai</td>
-                              </tr>
-                              <tr>
-                                <td>Gender</td>
-                                <td>Male</td>
-                              </tr>
-                              <tr>
-                                <td>Birthdate</td>
-                                <td>02/02/1980</td>
-                              </tr>
-                              <tr>
-                                <td>Enter Membership Number</td>
-                                <td>XXXXXXXXXXX</td>
-                              </tr>
-                              <tr>
-                                <td>Nationality</td>
-                                <td>Philiphines</td>
-                              </tr>
-                              <tr>
-                                <td>Religion</td>
-                                <td>Islam</td>
-                              </tr>
-                              <tr>
-                                <td>Month Salary</td>
-                                <td>5000 DHS</td>
-                              </tr>
-                              <tr>
-                                <td>Month Quota Need</td>
-                                <td>2000 DHS</td>
-                              </tr>
-                              <tr>
-                                <td>Comment</td>
-                                <td>Hi James</td>
-                              </tr>
-                              <tr>
-                                <td>Location</td>
-                                <td>
-                                  Shop 202 , Business Bay Branch , AE , Dubai
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <ot-summary [request]="request" (nextStep)="next($event)">
                 <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
+              </ot-summary>
             </ng-template>
 
             <ng-template #sPaymentChoices ngSwitchCase="sPaymentChoices">

@@ -1,0 +1,76 @@
+<form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+  <div class="row">
+    <div class="col-lg-12 col-12 col-sm-12" id="last-div">
+      <div class="row">
+        <div class="col-lg-12 col-12 col-sm-12">
+          <h3>Review & Submit</h3>
+        </div>
+        <div class="col-lg-12 table-inf col-12 col-sm-12 text-center">
+          <div class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>Full Name</td>
+                  <td>{{ request.fullName }}</td>
+                </tr>
+                <tr>
+                  <td>Email Address</td>
+                  <td>{{ request.emailAddress }}</td>
+                </tr>
+                <tr>
+                  <td>Type Of Request</td>
+                  <td>{{ request.typeOfCustomer }}</td>
+                </tr>
+                <tr>
+                  <td>Type Of Request 2</td>
+                  <td>{{ request.typeOfRequest }}</td>
+                </tr>
+                <tr>
+                  <td>Complete Address</td>
+                  <td>{{ request.fullAddress }}</td>
+                </tr>
+                <tr>
+                  <td>Gender</td>
+                  <td>{{ request.genderId }}</td>
+                </tr>
+                <tr>
+                  <td>Birthdate</td>
+                  <td>{{ request.birthday }}</td>
+                </tr>
+                <tr>
+                  <td>Enter Membership Number</td>
+                  <td>{{ request.membershipNumber }}</td>
+                </tr>
+                <tr>
+                  <td>Nationality</td>
+                  <td>{{ request.nationId }}</td>
+                </tr>
+                <tr>
+                  <td>Religion</td>
+                  <td>{{ request.religionId }}</td>
+                </tr>
+                <tr>
+                  <td>Month Salary</td>
+                  <td>{{ request.monthlySalary }} DHS</td>
+                </tr>
+                <tr>
+                  <td>Month Quota Need</td>
+                  <td>{{ request.monthlyQuota }} DHS</td>
+                </tr>
+                <tr>
+                  <td>Comment</td>
+                  <td>{{ request.comment }}</td>
+                </tr>
+                <tr>
+                  <td>Location</td>
+                  <td>{{ request.locationId }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-content> </ng-content>
+</form>

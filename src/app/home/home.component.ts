@@ -88,6 +88,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     nationId: 0,
     religionId: 0,
     genderId: 0,
+    areaId: 1,
+    locationId: 1,
   };
 
   public requestValidation: CustomValidation[] = [];
@@ -152,15 +154,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public next(f: NgForm): void {
-    // if (!f.form.valid) {
-    //   console.log('invalid');
-    //   return;
-    // }
+    if (
+      !f.form.valid ||
+      this.requestValidation.filter((x) => !x.isValid).length > 0
+    ) {
+      console.log('invalid');
+      return;
+    }
     const index = this.getIndex(this.currentStep$.value);
     const step = steps[index + 1];
     this.currentStep$.next(step);
     this.cacheCurrentStep(step);
     this.cacheCurrentData(this.request);
+    this.requestValidation = [];
   }
 
   private getIndex(value: string): number {
@@ -170,6 +176,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public previous(): void {
     const index = this.getIndex(this.currentStep$.value);
     this.currentStep$.next(steps[index - 1]);
+    this.requestValidation = [];
   }
 
   private setCurrentStep(step: string): void {

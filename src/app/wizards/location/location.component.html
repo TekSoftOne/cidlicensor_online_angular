@@ -4,8 +4,14 @@
       <div class="row">
         <div class="col-lg-12 col-12 col-sm-12">
           <label class="form-label">YOUR AREA </label>
-          <select>
-            <option>Business Bay</option>
+          <select
+            [(ngModel)]="areaId"
+            name="areaId"
+            (ngModelChange)="areaSelected$.next($event)"
+          >
+            <option [value]="area.id" *ngFor="let area of areas">
+              {{ area.name }}
+            </option>
           </select>
         </div>
       </div>
@@ -22,88 +28,22 @@
       </div>
       <div class="row">
         <div class="col-lg-12 col-12 col-sm-12 multi">
-          <div class="table">
-            <label class="bt">
+          <div
+            class="table"
+            [ngClass]="{ 'is-invalid-location': !(isValid | async) }"
+            *ngIf="locations | async as currentLocations"
+          >
+            <label
+              (click)="onLocationSelect(location.id)"
+              class="bt"
+              *ngFor="
+                let location of currentLocations;
+                let locationIndex = index
+              "
+            >
               <input class="check" name="location" type="radio" /><span>
-                Location#1:<br />
-                Shop 202 , Business Bay Branch , AE , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label class="bt">
-              <input class="check" name="location" type="radio" /><span>
-                Location#2:<br />
-                Shop 302 , Jumirah Branch , MMI , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label class="bt">
-              <input class="check" name="location" type="radio" /><span>
-                Location#3:<br />
-                Shop 302 , Jumirah Branch , AE , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label class="bt">
-              <input class="check" name="location" type="radio" /><span>
-                Location#4:<br />
-                Shop 202 , Business Bay Branch , AE , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label class="bt">
-              <input class="check" name="location" type="radio" /><span>
-                Location#5:<br />
-                Shop 302 , Jumirah Branch , MMI , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label class="bt">
-              <input class="check" name="location" type="radio" /><span>
-                Location#6:<br />
-                Shop 302 , Jumirah Branch , AE , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label class="bt">
-              <input class="check" name="location" type="radio" /><span>
-                Location#7:<br />
-                Shop 202 , Business Bay Branch , AE , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label class="bt">
-              <input class="check" name="location" type="radio" /><span>
-                Location#8:<br />
-                Shop 302 , Jumirah Branch , MMI , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label class="bt">
-              <input class="check" name="location" type="radio" /><span>
-                Location#9:<br />
-                Shop 302 , Jumirah Branch , AE , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label class="bt">
-              <input class="check" name="location" type="radio" /><span>
-                Location#10:<br />
-                Shop 202 , Business Bay Branch , AE , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label class="bt">
-              <input class="check" name="location" type="radio" /><span>
-                Location#11:<br />
-                Shop 302 , Jumirah Branch , MMI , Dubai
-                <a href="#">X</a></span
-              >
-            </label>
-            <label>
-              <input class="check" name="location" type="radio" /><span>
-                Location#12:<br />
-                Shop 302 , Jumirah Branch , AE , Dubai
+                Location#{{ locationIndex }}:<br />
+                {{ location.address }}
                 <a href="#">X</a></span
               >
             </label>

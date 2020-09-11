@@ -33,6 +33,13 @@ export interface MembershipRequest {
   genderId?: number;
   birthday?: string;
   religionId?: number;
+  // step
+  monthlySalary?: number;
+  monthlyQuota?: number;
+  comment?: string;
+  // step
+  areaId?: number;
+  locationId?: number;
 }
 
 export interface Religion {
@@ -48,4 +55,15 @@ export interface Gender {
 export interface CustomValidation {
   controlName: string;
   isValid: boolean;
+}
+
+export interface Area {
+  name: string;
+  id: number;
+}
+
+export interface Location {
+  address: string;
+  id: number;
+  areaId: number;
 }
