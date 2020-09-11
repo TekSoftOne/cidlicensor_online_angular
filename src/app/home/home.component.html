@@ -161,7 +161,7 @@
               ></ot-type-of-customer>
             </ng-template>
             <!-- type of request -->
-            <ng-template #ftDiv2 ngSwitchCase="ftDiv2">
+            <ng-template #sTypeOfRequest ngSwitchCase="sTypeOfRequest">
               <ot-type-of-request
                 (data)="updateData($event)"
                 (nextStep)="next($event)"
@@ -179,7 +179,7 @@
               </ot-search-membership-number>
             </ng-template>
 
-            <ng-template #ftDiv3 ngSwitchCase="ftDiv3">
+            <ng-template #sPersonalBasic ngSwitchCase="sPersonalBasic">
               <ot-personal-information
                 [fullName]="request.fullName"
                 [emailAddress]="request.emailAddress"
@@ -192,7 +192,7 @@
               ></ot-personal-information>
             </ng-template>
 
-            <ng-template #ftDiv4 ngSwitchCase="ftDiv4">
+            <ng-template #sPersonalAdvanced ngSwitchCase="sPersonalAdvanced">
               <ot-personal-information-advanced
                 (data)="updateData($event)"
                 (dataValidation)="updateValidation($event)"
@@ -212,7 +212,7 @@
               </ot-personal-information-advanced>
             </ng-template>
 
-            <ng-template #sdDiv ngSwitchCase="sdDiv">
+            <ng-template #sWorkInformation ngSwitchCase="sWorkInformation">
               <ot-work-information
                 (data)="updateData($event)"
                 (nextStep)="next($event)"
