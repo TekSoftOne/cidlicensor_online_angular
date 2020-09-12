@@ -79,3 +79,9 @@ export const showStepsFlowScreens = [
 ];
 
 export const dateFormat = 'MM/dd/yyyy';
+
+export const customerTypes = [
+  { id: 1, name: 'Resident' },
+  { id: 2, name: 'Diplomat' },
+  { id: 3, name: 'Tourist' },
+];

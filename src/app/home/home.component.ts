@@ -26,6 +26,7 @@ import {
 
 import { FormGroup, ValidatorFn } from '@angular/forms';
 import { requireCheckboxesToBeCheckedValidator } from '../form';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Component({
   selector: 'ot-home',
@@ -33,10 +34,7 @@ import { requireCheckboxesToBeCheckedValidator } from '../form';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  constructor(
-    private translate: TranslateService,
-    private httpClient: HttpClient
-  ) {
+  constructor(private httpClient: HttpClient) {
     this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
 
     this.isNextButtonShowed = this.currentStep$.pipe(
@@ -67,7 +65,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isStepsFlowShowed: Observable<boolean>;
   public isHomeShowed: Observable<boolean>;
   public isSearchStep: Observable<boolean>;
-  private language = 'en';
 
   private readonly defaultStep = 'sPhoneNumber';
   public currentStep$: BehaviorSubject<string>;
@@ -190,20 +187,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private cacheCurrentData(data: MembershipRequest): void {
     localStorage.setItem(this.CURRENT_DATA_TOKEN, JSON.stringify(data));
-  }
-
-  public changeLanguage(e: Event): void {
-    e.preventDefault();
-    this.setLanguage();
-    this.translate.use(this.language);
-  }
-
-  private setLanguage(): void {
-    if (this.language === 'en') {
-      this.language = 'ar';
-    } else {
-      this.language = 'en';
-    }
   }
 
   ngOnInit(): void {}

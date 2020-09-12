@@ -1,472 +1,403 @@
-<div class="form-body on-top-mobile">
-  <div class="website-logo">
-    <a [routerLink]="['/']">
-      <div class="logo">
-        <img alt="" class="logo-size" src="/assets/images/newlogo.png" />
-      </div>
-    </a>
-  </div>
-  <div class="row">
-    <div class="img-holder n-form-bg">
-      <div class="bg"></div>
-      <div class="tablerow">
-        <div class="tablecell">
-          <div
-            class="col-12 flush col-sm-12"
-            id="first-bg"
-            *ngIf="isHomeShowed | async"
-          >
-            <div class="info-holder simple-info">
-              <div><img alt="" src="/assets/images/graphic6.svg" /></div>
-              <div>
-                <h3>{{ "HOME.TITLE" | translate }}</h3>
-              </div>
-              <div>
-                <p>
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
-                  The point of using Lorem Ipsum is that it has a more-or-less
-                  normal distribution of letters, as opposed to using 'Content
-                  here, content here', making it look like readable English.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="vertical" *ngIf="isStepsFlowShowed | async">
-            <div class="steps">
-              <ul class=" " id="sds-ul" role="tablist">
-                <li
-                  aria-disabled="false"
-                  aria-selected="true"
-                  class="first current"
-                  id="ft-li"
-                  role="tab"
-                >
-                  <a id="steps-uid-0-t-0-0">
-                    <span class="current-info audible"> </span>
-                    <div class="title">
-                      <span class="step-number">1</span
-                      ><span class="step-text">PERSONAL</span>
-                    </div>
-                  </a>
-                </li>
-                <li aria-disabled="true" class="disabled" id="sd-li" role="tab">
-                  <a id="steps-uid-0-t-1-1">
-                    <div class="title">
-                      <span class="step-number">2</span
-                      ><span class="step-text">LIMIT</span>
-                    </div>
-                  </a>
-                </li>
-                <li aria-disabled="true" class="disabled" id="td-li" role="tab">
-                  <a id="steps-uid-0-t-1-2">
-                    <div class="title">
-                      <span class="step-number">3</span
-                      ><span class="step-text">LOCATION</span>
-                    </div>
-                  </a>
-                </li>
-                <li
-                  aria-disabled="true"
-                  class="disabled last"
-                  id="lt-li"
-                  role="tab"
-                >
-                  <a id="steps-uid-0-t-1-3">
-                    <div class="title">
-                      <span class="step-number">4</span
-                      ><span class="step-text">SUBMIT</span>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
+<div class="row">
+  <div class="img-holder n-form-bg">
+    <div class="bg"></div>
+    <div class="tablerow">
+      <div class="tablecell">
+        <div
+          class="col-12 flush col-sm-12"
+          id="first-bg"
+          *ngIf="isHomeShowed | async"
+        >
+          <ot-welcome></ot-welcome>
+        </div>
+        <div class="vertical" *ngIf="isStepsFlowShowed | async">
+          <div class="steps">
+            <ul class=" " id="sds-ul" role="tablist">
+              <li
+                aria-disabled="false"
+                aria-selected="true"
+                class="first current"
+                id="ft-li"
+                role="tab"
+              >
+                <a id="steps-uid-0-t-0-0">
+                  <span class="current-info audible"> </span>
+                  <div class="title">
+                    <span class="step-number">1</span
+                    ><span class="step-text">PERSONAL</span>
+                  </div>
+                </a>
+              </li>
+              <li aria-disabled="true" class="disabled" id="sd-li" role="tab">
+                <a id="steps-uid-0-t-1-1">
+                  <div class="title">
+                    <span class="step-number">2</span
+                    ><span class="step-text">LIMIT</span>
+                  </div>
+                </a>
+              </li>
+              <li aria-disabled="true" class="disabled" id="td-li" role="tab">
+                <a id="steps-uid-0-t-1-2">
+                  <div class="title">
+                    <span class="step-number">3</span
+                    ><span class="step-text">LOCATION</span>
+                  </div>
+                </a>
+              </li>
+              <li
+                aria-disabled="true"
+                class="disabled last"
+                id="lt-li"
+                role="tab"
+              >
+                <a id="steps-uid-0-t-1-3">
+                  <div class="title">
+                    <span class="step-number">4</span
+                    ><span class="step-text">SUBMIT</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
-    <div class="form-holder position n-form">
-      <div class="container-fluid">
-        <div class="row menu-bar">
-          <div class="col-8 col-sm-6">
-            <p>
-              <a [routerLink]="['/']">HOME</a>
-              <a [routerLink]="['/track-your-request']">TRACK YOUR REQUEST</a>
-            </p>
-          </div>
-          <div class="col-4 rt-menubar col-sm-6 text-right">
-            <p>
-              <a [routerLink]="['/login']">LOGIN</a>
-            </p>
-            <div class="dropdown user user-menu">
-              <a
-                aria-expanded="true"
-                class="dropdown-toggle"
-                data-toggle="dropdown"
-                href="#"
-              >
-                <span class="hide">User</span>
+  </div>
 
-                <img
-                  alt="User Image"
-                  class="user-image"
-                  src="/assets/img/user.png"
-                />
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="#"> <i class="fa fa-sign-out"></i> Logout </a>
-                </li>
-              </ul>
-            </div>
-            <p>
-              <a href="#" (click)="changeLanguage($event)">{{
-                "HOME.LANGUAGE" | translate
-              }}</a>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="form-content">
-        <div class="form-items">
-          <ng-container [ngSwitch]="currentStep$ | async">
-            <!-- phone number -->
-            <ng-template #sPhoneNumber ngSwitchCase="sPhoneNumber">
-              <ot-mobile
-                (nextStep)="next($event)"
-                [phoneNumber]="request.phoneNumber"
-                (data)="updateData($event)"
-              >
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </ot-mobile>
-            </ng-template>
-            <!-- verify number -->
-            <ng-template #sVerifyPhone ngSwitchCase="sVerifyPhone">
-              <ot-mobile-verification
-                (data)="updateData($event)"
-                [verifyNumber]="request.verifyNumber"
-                (nextStep)="next($event)"
-              >
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </ot-mobile-verification>
-            </ng-template>
-            <!-- type of customer -->
-            <ng-template #sTypeOfCustomer ngSwitchCase="sTypeOfCustomer">
-              <ot-type-of-customer
-                (data)="updateData($event)"
-                (nextStep)="next($event)"
-                [typeOfCustomer]="request.typeOfCustomer"
-              >
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container
-              ></ot-type-of-customer>
-            </ng-template>
-            <!-- type of request -->
-            <ng-template #sTypeOfRequest ngSwitchCase="sTypeOfRequest">
-              <ot-type-of-request
-                (data)="updateData($event)"
-                (nextStep)="next($event)"
-                [typeOfRequest]="request.typeOfRequest"
-              >
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container
-              ></ot-type-of-request>
-            </ng-template>
-            <!-- MEMBERSHIP NUMBER -->
-            <ng-template #serDiv1 ngSwitchCase="serDiv1">
-              <ot-search-membership-number
-                (data)="updateData($event)"
-                (nextStep)="next($event)"
-              >
-              </ot-search-membership-number>
-            </ng-template>
+  <div class="form-holder position n-form">
+    <div class="container-fluid">
+      <ot-header></ot-header>
+    </div>
+    <!-- Wizard part -->
+    <div class="form-content">
+      <div class="form-items">
+        <ng-container [ngSwitch]="currentStep$ | async">
+          <!-- phone number -->
+          <ng-template #sPhoneNumber ngSwitchCase="sPhoneNumber">
+            <ot-mobile
+              (nextStep)="next($event)"
+              [phoneNumber]="request.phoneNumber"
+              (data)="updateData($event)"
+            >
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+            </ot-mobile>
+          </ng-template>
+          <!-- verify number -->
+          <ng-template #sVerifyPhone ngSwitchCase="sVerifyPhone">
+            <ot-mobile-verification
+              (data)="updateData($event)"
+              [verifyNumber]="request.verifyNumber"
+              (nextStep)="next($event)"
+            >
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+            </ot-mobile-verification>
+          </ng-template>
+          <!-- type of customer -->
+          <ng-template #sTypeOfCustomer ngSwitchCase="sTypeOfCustomer">
+            <ot-type-of-customer
+              (data)="updateData($event)"
+              (nextStep)="next($event)"
+              [typeOfCustomer]="request.typeOfCustomer"
+            >
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container
+            ></ot-type-of-customer>
+          </ng-template>
+          <!-- type of request -->
+          <ng-template #sTypeOfRequest ngSwitchCase="sTypeOfRequest">
+            <ot-type-of-request
+              (data)="updateData($event)"
+              (nextStep)="next($event)"
+              [typeOfRequest]="request.typeOfRequest"
+            >
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container
+            ></ot-type-of-request>
+          </ng-template>
+          <!-- MEMBERSHIP NUMBER -->
+          <ng-template #serDiv1 ngSwitchCase="serDiv1">
+            <ot-search-membership-number
+              (data)="updateData($event)"
+              (nextStep)="next($event)"
+            >
+            </ot-search-membership-number>
+          </ng-template>
 
-            <ng-template #sPersonalBasic ngSwitchCase="sPersonalBasic">
-              <ot-personal-information
-                [fullName]="request.fullName"
-                [emailAddress]="request.emailAddress"
-                [address]="request.address"
-                [fullAddress]="request.fullAddress"
-                (data)="updateData($event)"
-                (nextStep)="next($event)"
-              >
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container
-              ></ot-personal-information>
-            </ng-template>
+          <ng-template #sPersonalBasic ngSwitchCase="sPersonalBasic">
+            <ot-personal-information
+              [fullName]="request.fullName"
+              [emailAddress]="request.emailAddress"
+              [address]="request.address"
+              [fullAddress]="request.fullAddress"
+              (data)="updateData($event)"
+              (nextStep)="next($event)"
+            >
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container
+            ></ot-personal-information>
+          </ng-template>
 
-            <ng-template #sPersonalAdvanced ngSwitchCase="sPersonalAdvanced">
-              <ot-personal-information-advanced
-                (data)="updateData($event)"
-                (dataValidation)="updateValidation($event)"
-                (nextStep)="next($event)"
-                [nationId]="request.nationId"
-                [emirateIdNumber]="request.emirateIdNumber"
-                [passportNumber]="request.passportNumber"
-                [birthday]="request.birthday"
-                [genderId]="request.genderId"
-                [religionId]="request.religionId"
-                [fileEmirateBack]="request.emirateBackAttach"
-                [fileEmirateFront]="request.emirateFrontAttach"
-                [fileAuthorizationLetter]="request.authorizationLetterAttach"
-                [fileProfilePic]="request.profilePicAttach"
-              >
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </ot-personal-information-advanced>
-            </ng-template>
+          <ng-template #sPersonalAdvanced ngSwitchCase="sPersonalAdvanced">
+            <ot-personal-information-advanced
+              (data)="updateData($event)"
+              (dataValidation)="updateValidation($event)"
+              (nextStep)="next($event)"
+              [nationId]="request.nationId"
+              [emirateIdNumber]="request.emirateIdNumber"
+              [passportNumber]="request.passportNumber"
+              [birthday]="request.birthday"
+              [genderId]="request.genderId"
+              [religionId]="request.religionId"
+              [fileEmirateBack]="request.emirateBackAttach"
+              [fileEmirateFront]="request.emirateFrontAttach"
+              [fileAuthorizationLetter]="request.authorizationLetterAttach"
+              [fileProfilePic]="request.profilePicAttach"
+            >
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+            </ot-personal-information-advanced>
+          </ng-template>
 
-            <ng-template #sWorkInformation ngSwitchCase="sWorkInformation">
-              <ot-work-information
-                (data)="updateData($event)"
-                (nextStep)="next($event)"
-              >
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </ot-work-information>
-            </ng-template>
+          <ng-template #sWorkInformation ngSwitchCase="sWorkInformation">
+            <ot-work-information
+              (data)="updateData($event)"
+              (nextStep)="next($event)"
+            >
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+            </ot-work-information>
+          </ng-template>
 
-            <ng-template #sLocationAreas ngSwitchCase="sLocationAreas">
-              <ot-location
-                (data)="updateData($event)"
-                (nextStep)="next($event)"
-                [areaId]="request.areaId"
-                [locationId]="request.locationId"
-                (dataValidation)="updateValidation($event)"
-              >
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </ot-location>
-            </ng-template>
+          <ng-template #sLocationAreas ngSwitchCase="sLocationAreas">
+            <ot-location
+              (data)="updateData($event)"
+              (nextStep)="next($event)"
+              [areaId]="request.areaId"
+              [locationId]="request.locationId"
+              (dataValidation)="updateValidation($event)"
+            >
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+            </ot-location>
+          </ng-template>
 
-            <ng-template #lastDiv ngSwitchCase="lastDiv">
-              <ot-summary [request]="request" (nextStep)="next($event)">
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </ot-summary>
-            </ng-template>
+          <ng-template #lastDiv ngSwitchCase="lastDiv">
+            <ot-summary [request]="request" (nextStep)="next($event)">
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+            </ot-summary>
+          </ng-template>
 
-            <ng-template #sPaymentChoices ngSwitchCase="sPaymentChoices">
-              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12" id="last-div-2">
-                    <div class="row">
-                      <div class="col-lg-12 col-12 col-sm-12 text-center">
-                        <h3>Review & Submit</h3>
-                      </div>
-                      <div class="col-lg-12 tp col-12 col-sm-12 text-center">
-                        <p>
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. Lorem Ipsum has been the
-                          industry's standard dummy text ever since the 1500s,
-                          when an unknown printer took a galley of type and
-                          scrambled it to make a type specimen book. It has
-                          survived not only five centuries
-                        </p>
-                      </div>
+          <ng-template #sPaymentChoices ngSwitchCase="sPaymentChoices">
+            <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+              <div class="row">
+                <div class="col-lg-12 col-12 col-sm-12" id="last-div-2">
+                  <div class="row">
+                    <div class="col-lg-12 col-12 col-sm-12 text-center">
+                      <h3>Review & Submit</h3>
                     </div>
-                    <div class="row tp">
-                      <div class="col-lg-12 col-12 col-sm-12">
-                        <div class="row">
-                          <div
-                            class="col-lg-4 m-left la text-center col-12 col-sm-6"
-                          >
-                            <label name="">
-                              <div
-                                class="col-lg-12 bg-label col-sm-12 col-xs-12"
-                              >
-                                <img
-                                  alt=""
-                                  src="/assets/images/img-new-1.png"
-                                />
-                                <h6>Pay Online</h6>
-                              </div>
-                              <input
-                                class="check"
-                                name="payment"
-                                type="radio"
-                                value="payonline"
-                              />
-                            </label>
-                          </div>
-                          <div class="col-lg-4 la text-center col-12 col-sm-6">
-                            <label name="">
-                              <div
-                                class="col-lg-12 bg-label col-sm-12 col-xs-12"
-                              >
-                                <img
-                                  alt=""
-                                  src="/assets/images/img-new-2.png"
-                                />
-                                <h6>Cash</h6>
-                              </div>
-                              <input
-                                class="check"
-                                name="payment"
-                                type="radio"
-                                value="cash"
-                              />
-                            </label>
-                          </div>
+                    <div class="col-lg-12 tp col-12 col-sm-12 text-center">
+                      <p>
+                        Lorem Ipsum is simply dummy text of the printing and
+                        typesetting industry. Lorem Ipsum has been the
+                        industry's standard dummy text ever since the 1500s,
+                        when an unknown printer took a galley of type and
+                        scrambled it to make a type specimen book. It has
+                        survived not only five centuries
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row tp">
+                    <div class="col-lg-12 col-12 col-sm-12">
+                      <div class="row">
+                        <div
+                          class="col-lg-4 m-left la text-center col-12 col-sm-6"
+                        >
+                          <label name="">
+                            <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
+                              <img alt="" src="/assets/images/img-new-1.png" />
+                              <h6>Pay Online</h6>
+                            </div>
+                            <input
+                              class="check"
+                              name="payment"
+                              type="radio"
+                              value="payonline"
+                            />
+                          </label>
+                        </div>
+                        <div class="col-lg-4 la text-center col-12 col-sm-6">
+                          <label name="">
+                            <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
+                              <img alt="" src="/assets/images/img-new-2.png" />
+                              <h6>Cash</h6>
+                            </div>
+                            <input
+                              class="check"
+                              name="payment"
+                              type="radio"
+                              value="cash"
+                            />
+                          </label>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
-            </ng-template>
+              </div>
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+            </form>
+          </ng-template>
 
-            <ng-template #sReview ngSwitchCase="sReview">
-              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12" id="last-div-3">
-                    <div class="row">
-                      <div class="col-lg-12 col-12 col-sm-12 text-center">
-                        <h3>Review & Submit</h3>
-                      </div>
+          <ng-template #sReview ngSwitchCase="sReview">
+            <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+              <div class="row">
+                <div class="col-lg-12 col-12 col-sm-12" id="last-div-3">
+                  <div class="row">
+                    <div class="col-lg-12 col-12 col-sm-12 text-center">
+                      <h3>Review & Submit</h3>
                     </div>
-                    <div class="row tp">
-                      <div class="col-lg-12 text-center col-12 col-sm-12">
-                        <p>
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. Lorem Ipsum has been the
-                          industry's standard dummy text ever since the 1500s,
-                          when an unknown printer took a galley of type and
-                          scrambled it to make a type specimen book. It has
-                          survived not only five centuries
-                        </p>
-                      </div>
+                  </div>
+                  <div class="row tp">
+                    <div class="col-lg-12 text-center col-12 col-sm-12">
+                      <p>
+                        Lorem Ipsum is simply dummy text of the printing and
+                        typesetting industry. Lorem Ipsum has been the
+                        industry's standard dummy text ever since the 1500s,
+                        when an unknown printer took a galley of type and
+                        scrambled it to make a type specimen book. It has
+                        survived not only five centuries
+                      </p>
                     </div>
                   </div>
                 </div>
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
-            </ng-template>
+              </div>
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+            </form>
+          </ng-template>
 
-            <ng-template
-              #sApplicationIdNotice
-              ngSwitchCase="sApplicationIdNotice"
-            >
-              <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-                <div class="row">
-                  <div class="col-lg-12 col-12 col-sm-12" id="last-div-4">
-                    <div class="row">
-                      <div class="col-lg-12 col-12 col-sm-12 text-center">
-                        <h3>Your Application Number is: XXXXXX</h3>
-                      </div>
+          <ng-template
+            #sApplicationIdNotice
+            ngSwitchCase="sApplicationIdNotice"
+          >
+            <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+              <div class="row">
+                <div class="col-lg-12 col-12 col-sm-12" id="last-div-4">
+                  <div class="row">
+                    <div class="col-lg-12 col-12 col-sm-12 text-center">
+                      <h3>Your Application Number is: XXXXXX</h3>
                     </div>
                   </div>
                 </div>
-                <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-              </form>
-            </ng-template>
-          </ng-container>
-          <!-- </div> from parent form -->
-          <ng-template #divButtons>
-            <div class="row">
-              <div class="actions col-lg-12 col-12 col-sm-12" id="generic-ul">
-                <ul aria-label="Pagination" role="menu">
-                  <li>
-                    <a
-                      class=""
-                      id="prev-btn"
-                      *ngIf="isPreviousButtonShowed | async"
-                      (click)="previous()"
-                      >Previous</a
-                    >
-                  </li>
-                  <li>
-                    <!-- <a
-                        id="next-btn"
-                        *ngIf="isNextButtonShowed | async"
-                        (click)="next()"
-                        >Next</a
-                      > -->
-                    <button
-                      type="submit"
+              </div>
+              <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
+            </form>
+          </ng-template>
+        </ng-container>
+        <!-- </div> from parent form -->
+        <ng-template #divButtons>
+          <div class="row">
+            <div class="actions col-lg-12 col-12 col-sm-12" id="generic-ul">
+              <ul aria-label="Pagination" role="menu">
+                <li>
+                  <a
+                    class=""
+                    id="prev-btn"
+                    *ngIf="isPreviousButtonShowed | async"
+                    (click)="previous()"
+                    >Previous</a
+                  >
+                </li>
+                <li>
+                  <!-- <a
                       id="next-btn"
                       *ngIf="isNextButtonShowed | async"
-                    >
-                      Next
-                    </button>
-                  </li>
-                </ul>
-              </div>
+                      (click)="next()"
+                      >Next</a
+                    > -->
+                  <button
+                    type="submit"
+                    id="next-btn"
+                    *ngIf="isNextButtonShowed | async"
+                  >
+                    Next
+                  </button>
+                </li>
+              </ul>
             </div>
-          </ng-template>
-          <!-- <div class="row">
-              <div class="actions col-lg-12 col-12 col-sm-12  " id="ft-ul">
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class=" "></a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-              <div class="actions col-lg-12 col-12 col-sm-12" id="sd-ul">
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class="" id="prev-btn">Previous</a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-              <div class="actions col-lg-12 col-12 col-sm-12" id="sd-ul-2">
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class="" id="prev-btn">Previous</a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-              <div
-                class="actions col-lg-12 col-12 col-sm-12"
-                id="renewal-ul"
-              >
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class="" id="prev-btn">Previous</a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-              <div class="actions col-lg-12 col-12 col-sm-12" id="td-ul">
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class="" id="prev-btn">Previous</a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-              <div class="actions col-lg-12 col-12 col-sm-12" id="td-ul-2">
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class="" id="prev-btn">Previous</a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-              <div class="actions col-lg-12 col-12 col-sm-12" id="fd-ul">
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class="" id="prev-btn">Previous</a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-              <div class="actions col-lg-12 col-12 col-sm-12" id="loca-ul">
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class="" id="prev-btn">Previous</a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-              <div class="actions col-lg-12 col-12 col-sm-12" id="sub-ul">
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class="" id="prev-btn">Previous</a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-              <div
-                class="actions col-lg-12 col-12 col-sm-12"
-                id="sub-ul-2"
-              >
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class="" id="prev-btn">Previous</a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-              <div
-                class="actions col-lg-12 col-12 col-sm-12"
-                id="sub-ul-3"
-              >
-                <ul aria-label="Pagination" role="menu">
-                  <li><a class="" id="prev-btn">Previous</a></li>
-                  <li><a id="next-btn">Next</a></li>
-                </ul>
-              </div>
-            </div> -->
-          <!-- </form>  from parent form  -->
-        </div>
+          </div>
+        </ng-template>
+        <!-- <div class="row">
+            <div class="actions col-lg-12 col-12 col-sm-12  " id="ft-ul">
+              <ul aria-label="Pagination" role="menu">
+                <li><a class=" "></a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+            <div class="actions col-lg-12 col-12 col-sm-12" id="sd-ul">
+              <ul aria-label="Pagination" role="menu">
+                <li><a class="" id="prev-btn">Previous</a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+            <div class="actions col-lg-12 col-12 col-sm-12" id="sd-ul-2">
+              <ul aria-label="Pagination" role="menu">
+                <li><a class="" id="prev-btn">Previous</a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+            <div
+              class="actions col-lg-12 col-12 col-sm-12"
+              id="renewal-ul"
+            >
+              <ul aria-label="Pagination" role="menu">
+                <li><a class="" id="prev-btn">Previous</a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+            <div class="actions col-lg-12 col-12 col-sm-12" id="td-ul">
+              <ul aria-label="Pagination" role="menu">
+                <li><a class="" id="prev-btn">Previous</a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+            <div class="actions col-lg-12 col-12 col-sm-12" id="td-ul-2">
+              <ul aria-label="Pagination" role="menu">
+                <li><a class="" id="prev-btn">Previous</a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+            <div class="actions col-lg-12 col-12 col-sm-12" id="fd-ul">
+              <ul aria-label="Pagination" role="menu">
+                <li><a class="" id="prev-btn">Previous</a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+            <div class="actions col-lg-12 col-12 col-sm-12" id="loca-ul">
+              <ul aria-label="Pagination" role="menu">
+                <li><a class="" id="prev-btn">Previous</a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+            <div class="actions col-lg-12 col-12 col-sm-12" id="sub-ul">
+              <ul aria-label="Pagination" role="menu">
+                <li><a class="" id="prev-btn">Previous</a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+            <div
+              class="actions col-lg-12 col-12 col-sm-12"
+              id="sub-ul-2"
+            >
+              <ul aria-label="Pagination" role="menu">
+                <li><a class="" id="prev-btn">Previous</a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+            <div
+              class="actions col-lg-12 col-12 col-sm-12"
+              id="sub-ul-3"
+            >
+              <ul aria-label="Pagination" role="menu">
+                <li><a class="" id="prev-btn">Previous</a></li>
+                <li><a id="next-btn">Next</a></li>
+              </ul>
+            </div>
+          </div> -->
+        <!-- </form>  from parent form  -->
       </div>
     </div>
   </div>

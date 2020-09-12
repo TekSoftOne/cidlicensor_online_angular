@@ -4,7 +4,18 @@
     <div class="tablerow">
       <div class="tablecell">
         <div class="col-12 flush col-sm-12" id="first-bg">
-          <ot-welcome></ot-welcome>
+          <div class="info-holder simple-info">
+            <div><img alt="" src="/assets/images/graphic6.svg" /></div>
+            <div>
+              <h3>{{ "LOGIN.ACCEPTING_MESSAGE" | translate }}</h3>
+            </div>
+            <div>
+              <p>
+                Fill the form, attach your latest CV <br />and portfolio to get
+                listed.
+              </p>
+            </div>
+          </div>
         </div>
         <div class="vertical"></div>
       </div>
@@ -14,15 +25,17 @@
     <div class="container-fluid">
       <ot-header></ot-header>
     </div>
+    <!-- login part -->
     <div class="form-content">
       <div class="form-items">
         <form>
           <div class="row">
             <form>
               <div class="col-lg-12 login text-center col-12 col-sm-12">
-                <h2>Track Your Request</h2>
-                <input name="" placeholder="Enter request" type="text" />
-                <input class="submit" name="" type="submit" value="Search" />
+                <h2>LOGIN</h2>
+                <input name="" placeholder="Email" type="text" />
+                <input id="" name="" placeholder="Password" type="text" />
+                <input class="submit" name="" type="submit" value="Login" />
               </div>
             </form>
           </div>

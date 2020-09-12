@@ -2,5 +2,8 @@
   "HOME": {
     "TITLE": "Welcome to Lorem Ipsum",
     "LANGUAGE": "AR"
+  },
+  "LOGIN": {
+    "ACCEPTING_MESSAGE": "We’re Accepting applications!"
   }
 }

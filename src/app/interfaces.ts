@@ -71,3 +71,8 @@ export interface Location {
   id: number;
   areaId: number;
 }
+
+export interface CustomerType {
+  name: string;
+  id: number;
+}

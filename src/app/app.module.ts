@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './authentication/login/login.component';
 import { TrackYourProgressComponent } from './track-your-progress/track-your-progress.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {
@@ -28,6 +28,9 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
 import { UploadImageComponent } from './upload-image/upload-image.component';
 import { DatePipe } from '@angular/common';
 import { SummaryComponent } from './wizards/summary/summary.component';
+import { AuthenticationService } from './authentication/authentication.service';
+import { HeaderComponent } from './header/header.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -51,6 +54,8 @@ export function createTranslateLoader(http: HttpClient) {
     UploadFileComponent,
     UploadImageComponent,
     SummaryComponent,
+    HeaderComponent,
+    WelcomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +74,7 @@ export function createTranslateLoader(http: HttpClient) {
       },
     }),
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, AuthenticationService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

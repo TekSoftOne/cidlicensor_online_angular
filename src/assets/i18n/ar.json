@@ -2,5 +2,8 @@
   "HOME": {
     "TITLE": "الصفحة الرئيسية",
     "LANGUAGE": "EN"
+  },
+  "LOGIN": {
+    "ACCEPTING_MESSAGE": "نحن نقبل الطلبات!"
   }
 }
