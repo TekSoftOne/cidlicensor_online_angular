@@ -163,7 +163,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     //   return;
     // }
     const index = this.getIndex(this.currentStep$.value);
-    const step = steps[index + 1];
+    let step = steps[index + 1];
+    if (this.request.typeOfRequest === 'new') {
+      step = steps[index + 2];
+    }
     this.currentStep$.next(step);
     this.cacheCurrentStep(step);
     this.cacheCurrentData(this.request);
@@ -176,7 +179,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public previous(): void {
     const index = this.getIndex(this.currentStep$.value);
-    this.currentStep$.next(steps[index - 1]);
+
+    let step = steps[index - 1];
+    if (step === 'serDiv1') {
+      step = steps[index - 2];
+    }
+    this.currentStep$.next(step);
     this.requestValidation = [];
   }
 
