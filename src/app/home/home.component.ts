@@ -17,7 +17,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, pipe, of } from 'rxjs';
+import { BehaviorSubject, Observable, pipe, of, throwError } from 'rxjs';
 import { map, tap, switchMap, switchMapTo, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { NgForm, FormControl, Validators, Form } from '@angular/forms';
@@ -203,21 +203,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     );
 
-    user.subscribe();
-
     const request = user.pipe(
-      switchMap((u) => {
-        if (u) {
-          return this.httpClient
-            .post(`${environment.apiUrl}/api/membershipRequests/New`, {})
-            .pipe(
-              map((appId) => {
-                return appId as string;
-              })
-            );
+      switchMap((registerResult: any) => {
+        if (
+          !registerResult.succeeded &&
+          registerResult.errors &&
+          registerResult.errors[0].code === 'DuplicateUserName'
+        ) {
+          throw new Error('duplicated');
         }
 
-        return of(undefined);
+        return this.httpClient
+          .post(`${environment.apiUrl}/api/membershipRequests/New`, {})
+          .pipe(
+            map((appId) => {
+              return appId as string;
+            })
+          );
       })
     );
 

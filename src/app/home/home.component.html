@@ -288,7 +288,12 @@
                         {{ appId }}
                       </h3>
                       <ng-template #creatingAppNumber>
-                        <h3>We are processing...</h3>
+                        <div *ngIf="!error; else errorCreatingApp">
+                          <h3>We are processing...</h3>
+                        </div>
+                        <ng-template #errorCreatingApp
+                          ><h3>{{ error }}</h3></ng-template
+                        >
                       </ng-template>
                     </div>
                   </div>
