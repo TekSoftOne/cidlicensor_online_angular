@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { isControlValid } from 'src/app/form';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'ot-login',
@@ -19,6 +20,7 @@ import { isControlValid } from 'src/app/form';
 export class LoginComponent implements AfterViewInit {
   constructor(
     private authenticationService: AuthenticationService,
+    private toastrservice: ToastrService,
     private router: Router
   ) {}
   public loading = false;
@@ -36,6 +38,7 @@ export class LoginComponent implements AfterViewInit {
         catchError((err: HttpErrorResponse) => {
           this.loading = false;
           this.error = err.error ?? err.message;
+          this.toastrservice.error(err.error, 'Error');
           return throwError(err);
         }),
         tap(() => this.router.navigateByUrl('track-your-request')),
