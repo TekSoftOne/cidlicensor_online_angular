@@ -30,6 +30,10 @@ import { AuthenticationService } from '../authentication/authentication.service'
 
 @Component({
   selector: 'ot-home',
+  // tslint:disable-next-line: no-host-metadata-property
+  host: {
+    class: 'ot-body',
+  },
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })

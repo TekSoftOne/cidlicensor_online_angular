@@ -39,7 +39,7 @@ body {
   height: 100%;
 }
 
-.form-body .row {
+.form-body > .ot-body > .row {
   position: relative;
   margin-left: 0;
   margin-right: 0;

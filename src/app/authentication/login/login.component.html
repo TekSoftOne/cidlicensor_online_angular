@@ -30,11 +30,23 @@
       <div class="form-items">
         <form>
           <div class="row">
-            <form>
+            <form #loginForm="ngForm" (ngSubmit)="onSubmitLogin(loginForm)">
               <div class="col-lg-12 login text-center col-12 col-sm-12">
                 <h2>LOGIN</h2>
-                <input name="" placeholder="Email" type="text" />
-                <input id="" name="" placeholder="Password" type="text" />
+                <input
+                  name="userName"
+                  placeholder="Email"
+                  type="text"
+                  ngModel
+                  required
+                />
+                <input
+                  name="password"
+                  placeholder="Password"
+                  type="text"
+                  ngModel
+                  required
+                />
                 <input class="submit" name="" type="submit" value="Login" />
               </div>
             </form>
