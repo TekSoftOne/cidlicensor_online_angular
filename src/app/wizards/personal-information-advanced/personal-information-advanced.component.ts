@@ -86,7 +86,7 @@ export class PersonalInformationAdvancedComponent
   @Input() religionId: number;
 
   @Input() nationId: number;
-
+  @Input() typeOfCustomer: string;
   // disable hide event of datepicker when focus to the textbox
   public isHideEnable = false;
 
@@ -129,12 +129,14 @@ export class PersonalInformationAdvancedComponent
   }
 
   ngOnInit(): void {
+    const passportRequirements =
+      this.typeOfCustomer === 'tourist' ? [Validators.required] : [];
     this.formPersonal = new FormGroup({
       nation: new FormControl(0, [Validators.required, Validators.min(1)]),
       religion: new FormControl(0, [Validators.required, Validators.min(1)]),
       birthday: new FormControl('', Validators.required),
       emirateIdNumber: new FormControl('', Validators.required),
-      passportNumber: new FormControl('', Validators.required),
+      passportNumber: new FormControl('', passportRequirements),
       genderId: new FormControl(0, Validators.min(1)),
     });
   }

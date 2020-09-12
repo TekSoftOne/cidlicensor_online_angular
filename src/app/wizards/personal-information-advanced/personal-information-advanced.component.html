@@ -15,7 +15,7 @@
           <div class="col-lg-12 col-12 col-sm-12">
             <div class="row">
               <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">Nationality:</label>
+                <label class="form-label">Nationality*</label>
                 <select
                   class="sel"
                   name="nation"
@@ -39,7 +39,7 @@
                 </select>
               </div>
               <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">Religion:</label>
+                <label class="form-label">Religion*</label>
                 <select
                   class="sel"
                   [(ngModel)]="religionId"
@@ -63,7 +63,7 @@
                 </select>
               </div>
               <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">Emirates ID Number:</label>
+                <label class="form-label">Emirates ID Number*</label>
                 <input
                   name="emirateIdNumber"
                   placeholder="Enter your Emirates ID Number"
@@ -80,7 +80,11 @@
                 />
               </div>
               <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">Passport Number:</label>
+                <label class="form-label"
+                  >Passport Number<span *ngIf="typeOfCustomer === 'tourist'"
+                    >*</span
+                  ></label
+                >
                 <input
                   name=""
                   placeholder="Enter your Passport Number"
@@ -110,8 +114,12 @@
                     [formSubmited]="membershipForm.submitted"
                     (data)="fileEmirateBack = $event"
                     (dataValidation)="dataValidation.emit($event)"
-                    label="Attach Emirates ID Back"
+                    [label]="
+                      'Attach Emirates ID Back' +
+                      (typeOfCustomer === 'tourist' ? '*' : '')
+                    "
                     constrolName="attach Emirates ID Back"
+                    [isRequired]="typeOfCustomer === 'tourist' ? true : false"
                   >
                   </ot-upload-file>
                 </div>
@@ -124,7 +132,7 @@
                   </ot-upload-file>
                 </div>
                 <div class="col-lg-12 col-12 col-sm-12">
-                  <label class="form-label">Gender: </label>
+                  <label class="form-label">Gender* </label>
                   <select
                     name=""
                     id=""
@@ -171,7 +179,7 @@
                 </ot-upload-file>
               </div>
               <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">Birthdate:</label>
+                <label class="form-label">Birthdate*</label>
                 <input
                   class="date"
                   id="datepickertwo"

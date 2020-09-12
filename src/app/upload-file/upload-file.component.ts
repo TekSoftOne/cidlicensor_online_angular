@@ -29,6 +29,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
   @Input() formSubmited = false;
   @Input() label: string;
   @Input() constrolName: string;
+  @Input() isRequired = false;
 
   constructor() {
     this.file = new BehaviorSubject<File>(undefined);
@@ -51,6 +52,9 @@ export class UploadFileComponent implements OnInit, OnChanges {
 
     this.lengthInvalid = combineLatest([this.file, this.submitChange]).pipe(
       map(([f, isSubmit]) => {
+        if (!this.isRequired) {
+          return false;
+        }
         if (!isSubmit) {
           // not submit, dirty,.. => also valid
           return false; // = valid

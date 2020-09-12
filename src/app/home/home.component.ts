@@ -161,16 +161,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public next(f: NgForm): void {
-    // if (
-    //   !f.form.valid ||
-    //   this.requestValidation.filter((x) => !x.isValid).length > 0
-    // ) {
-    //   console.log('invalid');
-    //   return;
-    // }
+    if (
+      !f.form.valid ||
+      this.requestValidation.filter((x) => !x.isValid).length > 0
+    ) {
+      console.log('invalid');
+      return;
+    }
     const index = this.getIndex(this.currentStep$.value);
     let step = steps[index + 1];
-    if (this.request.typeOfRequest === 'new') {
+    if (
+      this.currentStep$.value === 'sTypeOfRequest' &&
+      this.request.typeOfRequest === 'new'
+    ) {
       step = steps[index + 2];
     } else if (this.currentStep$.value === 'sReview') {
       if (!this.request.emailAddress || !this.request.fullName) {
