@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { isFormValid } from '../../form';
 import * as nationPickerHelper from './nation-picker-helper.js';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'ot-mobile',
@@ -21,7 +22,7 @@ export class MobileComponent implements OnInit, AfterViewInit, IFormWizard {
   @Input() phoneNumber: string;
   @Output() nextStep = new EventEmitter<NgForm>();
   @Output() data = new EventEmitter<MembershipRequest>();
-  constructor() {}
+  constructor(private toastrservice: ToastrService) {}
   ngAfterViewInit(): void {
     nationPickerHelper();
   }
@@ -36,6 +37,9 @@ export class MobileComponent implements OnInit, AfterViewInit, IFormWizard {
   }
 
   public next(f: NgForm): void {
+    if (!f.valid) {
+      this.toastrservice.warning('Please enter at least 8 numbers');
+    }
     this.data.emit({ phoneNumber: this.phoneNumber } as MembershipRequest);
     this.nextStep.emit(f);
   }

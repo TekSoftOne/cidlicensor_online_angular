@@ -5,5 +5,10 @@
   },
   "LOGIN": {
     "ACCEPTING_MESSAGE": "نحن نقبل الطلبات!"
+  },
+  "WIZARD": {
+    "PHONE": {
+      "HEADER": "أدخل رقم هاتفك المحمول للبدء"
+    }
   }
 }

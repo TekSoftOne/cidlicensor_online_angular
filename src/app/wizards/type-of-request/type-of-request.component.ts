@@ -6,6 +6,7 @@ import {
 import { IFormWizard, MembershipRequest } from './../../interfaces';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { NgForm, FormGroup, FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'ot-type-of-request',
@@ -13,7 +14,7 @@ import { NgForm, FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./type-of-request.component.scss'],
 })
 export class TypeOfRequestComponent implements OnInit, IFormWizard {
-  constructor() {}
+  constructor(private toastrservice: ToastrService) {}
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest
@@ -29,6 +30,9 @@ export class TypeOfRequestComponent implements OnInit, IFormWizard {
     return isControlValid(form, control);
   }
   next(f: NgForm): void {
+    if (!f.valid) {
+      this.toastrservice.warning('Please choose at least 1 Type Of Request!');
+    }
     this.data.emit({ typeOfRequest: this.typeOfRequest });
     this.nextStep.emit(f);
   }

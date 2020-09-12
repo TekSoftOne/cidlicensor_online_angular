@@ -18,13 +18,37 @@
       <div class="form-items">
         <form>
           <div class="row">
-            <form>
-              <div class="col-lg-12 login text-center col-12 col-sm-12">
-                <h2>Track Your Request</h2>
-                <input name="" placeholder="Enter request" type="text" />
-                <input class="submit" name="" type="submit" value="Search" />
-              </div>
-            </form>
+            <ng-container
+              *ngIf="appResult | async as app; else formSearchTemplate"
+            >
+              <h3>
+                Hi {{ app.name }}, your address: {{ app.fullAddress }}, we are
+                processing your application!
+              </h3>
+            </ng-container>
+            <ng-template #formSearchTemplate>
+              <form
+                #SearchApplcationForm="ngForm"
+                (ngSubmit)="OnSearchApplication(SearchApplcationForm)"
+              >
+                <div class="col-lg-12 login text-center col-12 col-sm-12">
+                  <h2>Track Your Request</h2>
+                  <input
+                    name="applicationNumber"
+                    placeholder="Enter application number"
+                    type="text"
+                    ngModel
+                    required
+                    pattern="[0-9]{8}"
+                    [ngClass]="{
+                      'form-control': true,
+                      'is-invalid': checkFormInvalid(SearchApplcationForm)
+                    }"
+                  />
+                  <input class="submit" name="" type="submit" value="Search" />
+                </div>
+              </form>
+            </ng-template>
           </div>
         </form>
       </div>

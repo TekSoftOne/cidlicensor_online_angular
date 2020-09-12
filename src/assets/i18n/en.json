@@ -5,5 +5,10 @@
   },
   "LOGIN": {
     "ACCEPTING_MESSAGE": "We’re Accepting applications!"
+  },
+  "WIZARD": {
+    "PHONE": {
+      "HEADER": "Enter your Mobile Number to get started"
+    }
   }
 }

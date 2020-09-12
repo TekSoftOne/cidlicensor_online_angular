@@ -35,7 +35,8 @@ export function requireCheckboxesToBeCheckedValidator(
     Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.controls[key];
 
-      if (control.value !== false) {
+      if (control.value === undefined || control.value === false) {
+      } else {
         checked++;
       }
     });

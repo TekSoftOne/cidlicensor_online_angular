@@ -32,6 +32,7 @@ import {
 import { FormGroup, ValidatorFn } from '@angular/forms';
 import { requireCheckboxesToBeCheckedValidator } from '../form';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'ot-home',
@@ -55,7 +56,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public googleApiLoad: any;
   public applicationNumber$: BehaviorSubject<string>;
   public error: string;
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private toastrservice: ToastrService
+  ) {
     this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
     this.applicationNumber$ = new BehaviorSubject<string>(undefined);
 
@@ -185,15 +189,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.applicationNumber$.next(result);
         },
         (error) => {
-          this.error =
-            'Your username already exist or application is not valid!';
+          this.toastrservice.error(error);
         }
       );
+    } else if (this.currentStep$.value === 'serDiv1') {
+      this.processSearch();
+      return;
     }
     this.currentStep$.next(step);
     this.cacheCurrentStep(step);
     this.cacheCurrentData(this.request);
     this.requestValidation = [];
+  }
+
+  private processSearch(): void {
+    this.toastrservice.warning(
+      'Can not find the membership that you have registered!'
+    );
   }
 
   private createApplication(): Observable<string> {
@@ -211,13 +223,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (
           !registerResult.succeeded &&
           registerResult.errors &&
-          registerResult.errors[0].code === 'DuplicateUserName'
+          registerResult.errors.length > 0
         ) {
-          throw new Error('duplicated');
+          throw new Error(registerResult.errors[0].code);
         }
 
         return this.httpClient
-          .post(`${environment.apiUrl}/api/membershipRequests/New`, {})
+          .post(`${environment.apiUrl}/api/membershipRequests/New`, {
+            name: this.request.fullName,
+            fullAddress: this.request.fullAddress,
+            emiratesIdNumber: this.request.emirateIdNumber,
+          })
           .pipe(
             map((appId) => {
               return appId as string;

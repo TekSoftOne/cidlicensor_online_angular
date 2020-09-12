@@ -7,6 +7,7 @@ import { IFormWizard } from './../../interfaces';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { NgForm, FormGroup, FormControl } from '@angular/forms';
 import { MembershipRequest } from 'src/app/interfaces';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'ot-type-of-customer',
@@ -15,7 +16,7 @@ import { MembershipRequest } from 'src/app/interfaces';
 })
 export class TypeOfCustomerComponent implements OnInit, IFormWizard {
   public formCustomerType: FormGroup;
-  constructor() {}
+  constructor(private toastrservice: ToastrService) {}
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest
@@ -30,6 +31,9 @@ export class TypeOfCustomerComponent implements OnInit, IFormWizard {
     return isControlValid(form, control);
   }
   next(f: NgForm): void {
+    if (!f.valid) {
+      this.toastrservice.warning('Please choose at least 1 Type Of Customer!');
+    }
     this.data.emit({ typeOfCustomer: this.typeOfCustomer });
     this.nextStep.emit(f);
   }

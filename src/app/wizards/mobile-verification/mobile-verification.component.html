@@ -18,7 +18,7 @@
                 [(ngModel)]="verifyNumber"
                 required
                 name="verifyNumber"
-                pattern="[0-9]+"
+                pattern="[0-9]{6}"
                 [ngClass]="{
                   'form-control': true,
                   'is-invalid': checkFormInvalid(membershipForm)

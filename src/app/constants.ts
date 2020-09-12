@@ -27,7 +27,7 @@ export const showPreviousButtonScreens = [
   'lastDiv',
   // 'sPaymentChoices',
   'sReview',
-  'sApplicationIdNotice',
+  // 'sApplicationIdNotice',
 ];
 
 export const showNextButtonScreens = [
