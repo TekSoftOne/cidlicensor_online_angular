@@ -277,8 +277,19 @@
               <div class="row">
                 <div class="col-lg-12 col-12 col-sm-12" id="last-div-4">
                   <div class="row">
-                    <div class="col-lg-12 col-12 col-sm-12 text-center">
-                      <h3>Your Application Number is: XXXXXX</h3>
+                    <div ngif class="col-lg-12 col-12 col-sm-12 text-center">
+                      <h3
+                        *ngIf="
+                          applicationNumber$ | async as appId;
+                          else creatingAppNumber
+                        "
+                      >
+                        Your Application Number is:
+                        {{ appId }}
+                      </h3>
+                      <ng-template #creatingAppNumber>
+                        <h3>We are processing...</h3>
+                      </ng-template>
                     </div>
                   </div>
                 </div>

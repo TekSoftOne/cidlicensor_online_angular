@@ -1,4 +1,9 @@
-import { showHomeScreens } from './../constants';
+import { environment } from './../../environments/environment.prod';
+import {
+  CURRENT_DATA_TOKEN,
+  CURRENT_STEP_TOKEN,
+  showHomeScreens,
+} from './../constants';
 import {
   Nationality,
   MembershipRequest,
@@ -38,8 +43,21 @@ import { AuthenticationService } from '../authentication/authentication.service'
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+  public isNextButtonShowed: Observable<boolean>;
+  public isPreviousButtonShowed: Observable<boolean>;
+  public isStepsFlowShowed: Observable<boolean>;
+  public isHomeShowed: Observable<boolean>;
+  public isSearchStep: Observable<boolean>;
+
+  private readonly defaultStep = 'sPhoneNumber';
+  public currentStep$: BehaviorSubject<string>;
+  public isMobileSend = false;
+  public googleApiLoad: any;
+  public applicationNumber$: BehaviorSubject<string>;
+  public error: string;
   constructor(private httpClient: HttpClient) {
     this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
+    this.applicationNumber$ = new BehaviorSubject<string>(undefined);
 
     this.isNextButtonShowed = this.currentStep$.pipe(
       map((s) => showNextButtonScreens.includes(s))
@@ -58,22 +76,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
 
     this.isSearchStep = this.currentStep$.pipe(map((s) => s === 'serDiv1'));
+
+    localStorage.removeItem(CURRENT_STEP_TOKEN);
   }
   options = {
     center: { lat: 40, lng: -20 },
     zoom: 4,
   };
-
-  public isNextButtonShowed: Observable<boolean>;
-  public isPreviousButtonShowed: Observable<boolean>;
-  public isStepsFlowShowed: Observable<boolean>;
-  public isHomeShowed: Observable<boolean>;
-  public isSearchStep: Observable<boolean>;
-
-  private readonly defaultStep = 'sPhoneNumber';
-  public currentStep$: BehaviorSubject<string>;
-  public isMobileSend = false;
-  public googleApiLoad: any;
 
   public request: MembershipRequest = {
     // address: 'sdfdfsdf',
@@ -94,9 +103,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   };
 
   public requestValidation: CustomValidation[] = [];
-
-  private readonly CURRENT_STEP_TOKEN = 'OT_STEP';
-  private readonly CURRENT_DATA_TOKEN = 'OT_D';
 
   public updateData(request: MembershipRequest): void {
     this.request = { ...this.request, ...request };
@@ -126,7 +132,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public loadCurrentStep(): string {
-    const cacheStep = localStorage.getItem(this.CURRENT_STEP_TOKEN);
+    const cacheStep = localStorage.getItem(CURRENT_STEP_TOKEN);
     if (cacheStep) {
       return cacheStep;
     }
@@ -135,7 +141,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public loadCurrentData(): MembershipRequest {
-    const cacheData = localStorage.getItem(this.CURRENT_DATA_TOKEN);
+    const cacheData = localStorage.getItem(CURRENT_DATA_TOKEN);
     if (cacheData) {
       return JSON.parse(cacheData);
     }
@@ -166,11 +172,56 @@ export class HomeComponent implements OnInit, AfterViewInit {
     let step = steps[index + 1];
     if (this.request.typeOfRequest === 'new') {
       step = steps[index + 2];
+    } else if (this.currentStep$.value === 'sReview') {
+      if (!this.request.emailAddress || !this.request.fullName) {
+        return;
+      }
+
+      this.createApplication().subscribe(
+        (result) => {
+          this.applicationNumber$.next(result);
+        },
+        (error) => {
+          this.error =
+            'Your username already exist or application is not valid!';
+        }
+      );
     }
     this.currentStep$.next(step);
     this.cacheCurrentStep(step);
     this.cacheCurrentData(this.request);
     this.requestValidation = [];
+  }
+
+  private createApplication(): Observable<string> {
+    const user = this.httpClient.post(
+      `${environment.apiUrl}/api/users/register`,
+      {
+        userName: this.request.emailAddress,
+        email: this.request.emailAddress,
+        password: '123456',
+      }
+    );
+
+    user.subscribe();
+
+    const request = user.pipe(
+      switchMap((u) => {
+        if (u) {
+          return this.httpClient
+            .post(`${environment.apiUrl}/api/membershipRequests/New`, {})
+            .pipe(
+              map((appId) => {
+                return appId as string;
+              })
+            );
+        }
+
+        return of(undefined);
+      })
+    );
+
+    return request;
   }
 
   private getIndex(value: string): number {
@@ -194,11 +245,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private cacheCurrentStep(step: string): void {
-    localStorage.setItem(this.CURRENT_STEP_TOKEN, step);
+    // localStorage.setItem(CURRENT_STEP_TOKEN, step);
   }
 
   private cacheCurrentData(data: MembershipRequest): void {
-    localStorage.setItem(this.CURRENT_DATA_TOKEN, JSON.stringify(data));
+    // localStorage.setItem(CURRENT_DATA_TOKEN, JSON.stringify(data));
   }
 
   ngOnInit(): void {}

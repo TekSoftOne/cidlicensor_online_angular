@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { CURRENT_STEP_TOKEN } from '../constants';
 
 @Component({
   selector: 'ot-header',

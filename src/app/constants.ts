@@ -9,7 +9,7 @@ export const steps = [
   'sWorkInformation',
   'sLocationAreas',
   'lastDiv',
-  'sPaymentChoices',
+  // 'sPaymentChoices',
   'sReview',
   'sApplicationIdNotice',
 ];
@@ -25,9 +25,9 @@ export const showPreviousButtonScreens = [
   'sWorkInformation',
   'sLocationAreas',
   'lastDiv',
-  'sPaymentChoices',
+  // 'sPaymentChoices',
   'sReview',
-  // 'sApplicationIdNotice',
+  'sApplicationIdNotice',
 ];
 
 export const showNextButtonScreens = [
@@ -41,7 +41,7 @@ export const showNextButtonScreens = [
   'sWorkInformation',
   'sLocationAreas',
   'lastDiv',
-  'sPaymentChoices',
+  // 'sPaymentChoices',
   'sReview',
   // 'sApplicationIdNotice',
 ];
@@ -73,7 +73,7 @@ export const showStepsFlowScreens = [
   'sWorkInformation',
   'sLocationAreas',
   'lastDiv',
-  'sPaymentChoices',
+  // 'sPaymentChoices',
   'sReview',
   'sApplicationIdNotice',
 ];
@@ -85,3 +85,6 @@ export const customerTypes = [
   { id: 2, name: 'Diplomat' },
   { id: 3, name: 'Tourist' },
 ];
+
+export const CURRENT_STEP_TOKEN = 'OT_STEP';
+export const CURRENT_DATA_TOKEN = 'OT_D';
