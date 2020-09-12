@@ -1,13 +1,13 @@
 <div class="row menu-bar">
   <div class="col-8 col-sm-6">
     <p>
-      <a [routerLink]="['/']">HOME</a>
+      <a *ngIf="!isIn()" [routerLink]="['/']">HOME</a>
       <a [routerLink]="['/track-your-request']">TRACK YOUR REQUEST</a>
     </p>
   </div>
   <div class="col-4 rt-menubar col-sm-6 text-right">
     <p>
-      <a [routerLink]="['/login']">LOGIN</a>
+      <a *ngIf="!isIn()" [routerLink]="['/login']">LOGIN</a>
     </p>
     <div *ngIf="isIn()" class="dropdown user user-menu">
       <a
@@ -22,7 +22,9 @@
       </a>
       <ul class="dropdown-menu">
         <li>
-          <a href="#"> <i class="fa fa-sign-out"></i> Logout </a>
+          <a href="#" (click)="logout($event)">
+            <i class="fa fa-sign-out"></i> Logout
+          </a>
         </li>
       </ul>
     </div>

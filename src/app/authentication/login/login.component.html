@@ -39,6 +39,14 @@
                   type="text"
                   ngModel
                   required
+                  email
+                  [ngClass]="{
+                    'form-control': true,
+                    'is-invalid': checkControlInvalid(
+                      loginForm,
+                      loginForm.controls.userName
+                    )
+                  }"
                 />
                 <input
                   name="password"
@@ -46,6 +54,13 @@
                   type="text"
                   ngModel
                   required
+                  [ngClass]="{
+                    'form-control': true,
+                    'is-invalid': checkControlInvalid(
+                      loginForm,
+                      loginForm.controls.password
+                    )
+                  }"
                 />
                 <input class="submit" name="" type="submit" value="Login" />
               </div>

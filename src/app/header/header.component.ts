@@ -20,6 +20,12 @@ export class HeaderComponent implements OnInit {
     return this.authentication.isTokenValid();
   }
 
+  public logout(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.authentication.logout();
+  }
+
   public changeLanguage(e: Event): void {
     e.preventDefault();
     this.setLanguage();

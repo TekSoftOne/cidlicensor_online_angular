@@ -5,6 +5,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { isControlValid } from 'src/app/form';
 
 @Component({
   selector: 'ot-login',
@@ -30,16 +31,20 @@ export class LoginComponent implements AfterViewInit {
 
     this.loading = true;
     this.authenticationService
-      .login(form.controls.email.value, form.controls.password.value)
+      .login(form.controls.userName.value, form.controls.password.value)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.loading = false;
           this.error = err.error ?? err.message;
           return throwError(err);
         }),
-        tap(() => this.router.navigateByUrl('dashboard')),
+        tap(() => this.router.navigateByUrl('track-your-request')),
         tap(() => (this.loading = false))
       )
       .subscribe();
+  }
+
+  public checkControlInvalid(form: NgForm, control: any): boolean {
+    return isControlValid(form, control);
   }
 }

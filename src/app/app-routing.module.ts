@@ -1,3 +1,4 @@
+import { AuthGuard } from './authentication/auth-guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
@@ -7,7 +8,11 @@ import { TrackYourProgressComponent } from './track-your-progress/track-your-pro
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'track-your-request', component: TrackYourProgressComponent },
+  {
+    path: 'track-your-request',
+    component: TrackYourProgressComponent,
+    canActivate: [AuthGuard],
+  },
   { path: '**', redirectTo: '' },
 ];
 
