@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 export const steps = [
   'sPhoneNumber',
   'sVerifyPhone',
@@ -27,8 +28,11 @@ export const showPreviousButtonScreens = [
   'lastDiv',
   // 'sPaymentChoices',
   'sReview',
-  'sApplicationIdNotice',
 ];
+
+if (environment.production === false) {
+  showPreviousButtonScreens.push('sApplicationIdNotice');
+}
 
 export const showNextButtonScreens = [
   'sPhoneNumber',
