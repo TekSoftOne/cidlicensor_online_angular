@@ -229,11 +229,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
 
         return this.httpClient
-          .post(`${environment.apiUrl}/api/membershipRequests/New`, {
-            name: this.request.fullName,
-            fullAddress: this.request.fullAddress,
-            emiratesIdNumber: this.request.emiratesIdNumber,
-          })
+          .post(
+            `${environment.apiUrl}/api/membershipRequests/New`,
+            this.makeFormData()
+          )
           .pipe(
             map((appId) => {
               return appId as string;
@@ -243,6 +242,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
 
     return request;
+  }
+
+  private makeFormData(): FormData {
+    const f = new FormData();
+    for (const key in this.request) {
+      if (key) {
+        f.append(key, this.request[key]);
+      }
+    }
+    return f;
   }
 
   private getIndex(value: string): number {

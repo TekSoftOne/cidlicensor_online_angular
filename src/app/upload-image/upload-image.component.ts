@@ -68,7 +68,7 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
       tap((v) =>
         this.dataValidation.emit({
           controlName: this.controlName,
-          isValid: v,
+          isValid: !v,
         } as CustomValidation)
       )
     );

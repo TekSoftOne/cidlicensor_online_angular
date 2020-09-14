@@ -28,6 +28,7 @@
                   </div>
                 </a>
               </li>
+
               <li aria-disabled="true" class="disabled" id="sd-li" role="tab">
                 <a id="steps-uid-0-t-1-1">
                   <div class="title">
@@ -140,15 +141,15 @@
               (dataValidation)="updateValidation($event)"
               (nextStep)="next($event)"
               [nationId]="request.nationId"
-              [emirateIdNumber]="request.emirateIdNumber"
+              [emirateIdNumber]="request.emiratesIdNumber"
               [passportNumber]="request.passportNumber"
               [birthday]="request.birthday"
               [genderId]="request.genderId"
               [religionId]="request.religionId"
-              [fileEmirateBack]="request.emirateBackAttach"
-              [fileEmirateFront]="request.emirateFrontAttach"
-              [fileAuthorizationLetter]="request.authorizationLetterAttach"
-              [fileProfilePic]="request.profilePicAttach"
+              [fileEmirateBack]="request.emiratesIdBack"
+              [fileEmirateFront]="request.emiratesIdFront"
+              [fileAuthorizationLetter]="request.authorizationLetter"
+              [fileProfilePic]="request.profilePhoto"
               [typeOfCustomer]="request.typeOfCustomer"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
