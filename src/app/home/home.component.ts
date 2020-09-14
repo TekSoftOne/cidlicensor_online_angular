@@ -232,7 +232,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           .post(`${environment.apiUrl}/api/membershipRequests/New`, {
             name: this.request.fullName,
             fullAddress: this.request.fullAddress,
-            emiratesIdNumber: this.request.emirateIdNumber,
+            emiratesIdNumber: this.request.emiratesIdNumber,
           })
           .pipe(
             map((appId) => {

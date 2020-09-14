@@ -14,6 +14,7 @@ export interface Nationality {
 }
 
 export interface MembershipRequest {
+  membershipRequestId?: number;
   phoneNumber?: string;
   verifyNumber?: string;
   fullName?: string;
@@ -22,14 +23,15 @@ export interface MembershipRequest {
   fullAddress?: string;
   nationId?: number;
   nationName?: string;
-  emirateBackAttach?: File;
-  emirateFrontAttach?: File;
-  profilePicAttach?: File;
-  authorizationLetterAttach?: File;
+  emiratesIdBack?: File;
+  emiratesIdFront?: File;
+  passportAttachement?: File;
+  profilePhoto?: File;
+  authorizationLetter?: File;
   typeOfCustomer?: any;
   typeOfRequest?: any;
   membershipNumber?: string;
-  emirateIdNumber?: string;
+  emiratesIdNumber?: string;
   passportNumber?: string;
   genderId?: number;
   genderName?: string;
@@ -43,6 +45,8 @@ export interface MembershipRequest {
   // step
   areaId?: number;
   locationId?: number;
+  occupation?: string;
+  visaResidency?: number;
   locationAddress?: string;
 }
 
