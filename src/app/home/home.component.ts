@@ -176,20 +176,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
     let step = steps[index + 1];
     if (
       this.currentStep$.value === 'sTypeOfRequest' &&
-      this.request.typeOfRequest === 'new'
+      this.request.requestCategory === 'new'
     ) {
       step = steps[index + 2];
     } else if (this.currentStep$.value === 'sReview') {
-      if (!this.request.emailAddress || !this.request.fullName) {
+      if (!this.request.email || !this.request.fullName) {
         return;
       }
 
       this.createApplication().subscribe(
         (result) => {
           this.applicationNumber$.next(result);
-          // this.createLicensorRequest().subscribe((r) => {
-          //   console.log(r);
-          // });
+          this.createLicensorRequest().subscribe((r) => {
+            console.log(r);
+          });
         },
         (error) => {
           this.toastrservice.error(error);
@@ -215,8 +215,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const user = this.httpClient.post(
       `${environment.apiUrl}/api/users/register`,
       {
-        userName: this.request.emailAddress,
-        email: this.request.emailAddress,
+        userName: this.request.email,
+        email: this.request.email,
         password: '123456',
       }
     );

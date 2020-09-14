@@ -30,7 +30,7 @@ export class PersonalInformationComponent
   >();
 
   @Input() fullName: string;
-  @Input() emailAddress: string;
+  @Input() email: string;
   @Input() address: string;
   @Input() fullAddress: string;
   ngAfterViewInit(): void {
@@ -51,7 +51,7 @@ export class PersonalInformationComponent
   next(f: NgForm): void {
     this.data.emit({
       fullName: this.fullName,
-      emailAddress: this.emailAddress,
+      email: this.email,
       address: this.address,
       fullAddress: this.fullAddress,
     });

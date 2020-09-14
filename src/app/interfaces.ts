@@ -18,7 +18,7 @@ export interface MembershipRequest {
   phoneNumber?: string;
   verifyNumber?: string;
   fullName?: string;
-  emailAddress?: string;
+  email?: string;
   address?: string;
   fullAddress?: string;
   nationId?: number;
@@ -29,13 +29,13 @@ export interface MembershipRequest {
   profilePhoto?: File;
   authorizationLetter?: File;
   typeOfCustomer?: any;
-  typeOfRequest?: any;
+  requestCategory?: any;
   membershipNumber?: string;
-  emiratesIdNumber?: string;
+  emiratesIDNumber?: string;
   passportNumber?: string;
   genderId?: number;
   genderName?: string;
-  birthday?: string;
+  birthdate?: string;
   religionId?: number;
   religionName?: string;
   // step

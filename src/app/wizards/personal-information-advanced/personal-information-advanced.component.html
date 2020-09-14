@@ -65,16 +65,16 @@
               <div class="col-lg-6 col-12 col-sm-6">
                 <label class="form-label">Emirates ID Number*</label>
                 <input
-                  name="emirateIdNumber"
+                  name="emirateIDNumber"
                   placeholder="Enter your Emirates ID Number"
                   type="text"
-                  [(ngModel)]="emirateIdNumber"
-                  formControlName="emirateIdNumber"
+                  [(ngModel)]="emirateIDNumber"
+                  formControlName="emirateIDNumber"
                   [ngClass]="{
                     'form-control': true,
                     'is-invalid': checkControlInvalid(
                       membershipForm,
-                      formPersonal.controls.emirateIdNumber
+                      formPersonal.controls.emirateIDNumber
                     )
                   }"
                 />

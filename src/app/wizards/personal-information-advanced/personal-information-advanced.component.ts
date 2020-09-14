@@ -79,7 +79,7 @@ export class PersonalInformationAdvancedComponent
   @Input() fileAuthorizationLetter: File;
   @Input() fileProfilePic: File;
 
-  @Input() emirateIdNumber: string;
+  @Input() emirateIDNumber: string;
   @Input() passportNumber: string;
   @Input() birthday: string;
   @Input() genderId: number;
@@ -118,9 +118,9 @@ export class PersonalInformationAdvancedComponent
       genderId: this.genderId,
       genderName: this.genders.find((x) => x.id === Number(this.genderId))
         ?.name,
-      emiratesIdNumber: this.emirateIdNumber,
+      emiratesIDNumber: this.emirateIDNumber,
       passportNumber: this.passportNumber,
-      birthday: this.birthday,
+      birthdate: this.birthday,
       religionId: this.religionId,
       religionName: this.religions.find((r) => r.id === Number(this.religionId))
         ?.name,
@@ -135,7 +135,7 @@ export class PersonalInformationAdvancedComponent
       nation: new FormControl(0, [Validators.required, Validators.min(1)]),
       religion: new FormControl(0, [Validators.required, Validators.min(1)]),
       birthday: new FormControl('', Validators.required),
-      emirateIdNumber: new FormControl('', Validators.required),
+      emirateIDNumber: new FormControl('', Validators.required),
       passportNumber: new FormControl('', passportRequirements),
       genderId: new FormControl(0, Validators.min(1)),
     });

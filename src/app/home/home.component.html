@@ -108,7 +108,7 @@
             <ot-type-of-request
               (data)="updateData($event)"
               (nextStep)="next($event)"
-              [typeOfRequest]="request.typeOfRequest"
+              [typeOfRequest]="request.requestCategory"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-type-of-request>
@@ -125,7 +125,7 @@
           <ng-template #sPersonalBasic ngSwitchCase="sPersonalBasic">
             <ot-personal-information
               [fullName]="request.fullName"
-              [emailAddress]="request.emailAddress"
+              [email]="request.email"
               [address]="request.address"
               [fullAddress]="request.fullAddress"
               (data)="updateData($event)"
@@ -141,9 +141,9 @@
               (dataValidation)="updateValidation($event)"
               (nextStep)="next($event)"
               [nationId]="request.nationId"
-              [emirateIdNumber]="request.emiratesIdNumber"
+              [emirateIDNumber]="request.emiratesIDNumber"
               [passportNumber]="request.passportNumber"
-              [birthday]="request.birthday"
+              [birthday]="request.birthdate"
               [genderId]="request.genderId"
               [religionId]="request.religionId"
               [fileEmirateBack]="request.emiratesIdBack"
