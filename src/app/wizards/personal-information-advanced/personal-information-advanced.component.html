@@ -103,9 +103,11 @@
               <div class="col-lg-6 col-12 col-sm-6">
                 <ot-upload-image
                   (data)="fileProfilePic = $event"
-                  [isRequired]="true"
+                  (dataValidation)="dataValidation.emit($event)"
+                  isRequired="true"
                   [formSubmitted]="membershipForm.submitted"
                   [image]="fileProfilePic"
+                  controlName="Attach your Profice Picture"
                 ></ot-upload-image>
               </div>
               <div class="col-lg-6 flush col-12 col-sm-6">
@@ -114,10 +116,7 @@
                     [formSubmited]="membershipForm.submitted"
                     (data)="fileEmirateBack = $event"
                     (dataValidation)="dataValidation.emit($event)"
-                    [label]="
-                      'Attach Emirates ID Back' +
-                      (typeOfCustomer === 'tourist' ? '*' : '')
-                    "
+                    [label]="'Attach Emirates ID Back'"
                     constrolName="attach Emirates ID Back"
                     [isRequired]="typeOfCustomer === 'tourist' ? true : false"
                   >

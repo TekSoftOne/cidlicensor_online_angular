@@ -1,7 +1,9 @@
-<label class="form-label">Attach your Profice Picture</label>
+<label class="form-label"
+  >{{ controlName }}<span *ngIf="isRequired">*</span>
+</label>
 <div
   class="div-cirlce"
-  [ngClass]="{ 'is-invalid-profile-pic': isInvalid | async }"
+  [ngClass]="{ 'is-invalid-profile-pic': (isInvalid | async) }"
 >
   <div class="circle">
     <!-- User Profile Image -->

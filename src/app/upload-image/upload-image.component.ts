@@ -1,3 +1,4 @@
+import { CustomValidation } from './../interfaces';
 import {
   Component,
   OnInit,
@@ -37,7 +38,9 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
   @Input() formSubmitted = false;
   @Input() isRequired = false;
   @Input() image: File;
+  @Input() controlName = 'an image controller';
   @Output() data: EventEmitter<File>;
+  @Output() dataValidation: EventEmitter<CustomValidation>;
 
   private formSubmittedEvent: BehaviorSubject<boolean>;
 
@@ -45,7 +48,7 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
     this.image$ = new BehaviorSubject<File>(undefined);
     this.formSubmittedEvent = new BehaviorSubject<boolean>(false);
     this.data = new EventEmitter<File>();
-
+    this.dataValidation = new EventEmitter<CustomValidation>();
     this.imageUrl = this.image$.pipe(
       switchMap((file) => {
         if (!file) {
@@ -61,7 +64,13 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
     ]).pipe(
       map(([summitStatus, url]) => {
         return summitStatus && this.isRequired && !url;
-      })
+      }),
+      tap((v) =>
+        this.dataValidation.emit({
+          controlName: this.controlName,
+          isValid: v,
+        } as CustomValidation)
+      )
     );
 
     const imageFile = this.image$.pipe(
