@@ -21,7 +21,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
   public file: BehaviorSubject<File>;
   public sizeInvalid: Observable<boolean>;
   public lengthInvalid: Observable<boolean>;
-  public submitChange = new BehaviorSubject<boolean>(false);
+  public submitChange: BehaviorSubject<boolean>;
   public isValid: Observable<boolean>;
 
   @Output() data = new EventEmitter<File>();
@@ -33,8 +33,9 @@ export class UploadFileComponent implements OnInit, OnChanges {
 
   constructor() {
     this.file = new BehaviorSubject<File>(undefined);
+    this.submitChange = new BehaviorSubject<boolean>(false);
     const submit = this.submitChange.asObservable();
-    this.sizeInvalid = combineLatest([this.file, this.submitChange]).pipe(
+    this.sizeInvalid = combineLatest([this.file, submit]).pipe(
       map(([f, isSubmit]) => {
         if (!isSubmit && !f) {
           // not submit, dirty,.. => also valid

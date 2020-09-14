@@ -5,7 +5,7 @@
     'is-invalid': (lengthInvalid | async),
     'is-invalid-all': (isValid | async)
   }"
-  >{{ label }}</label
+  >{{ label }}<span *ngIf="isRequired">*</span></label
 >
 <input
   class="inputfile inputfile-1"
