@@ -1,4 +1,4 @@
-import { environment } from './../../environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import {
   CURRENT_DATA_TOKEN,
   CURRENT_STEP_TOKEN,
@@ -187,6 +187,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.createApplication().subscribe(
         (result) => {
           this.applicationNumber$.next(result);
+          // this.createLicensorRequest().subscribe((r) => {
+          //   console.log(r);
+          // });
         },
         (error) => {
           this.toastrservice.error(error);
@@ -204,7 +207,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private processSearch(): void {
     this.toastrservice.warning(
-      'Can not find the membership that you have registered!'
+      'Can not find this membership, please try another one!'
     );
   }
 
@@ -225,7 +228,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
           registerResult.errors &&
           registerResult.errors.length > 0
         ) {
-          throw new Error(registerResult.errors[0].code);
+          if (registerResult.errors[0].code !== 'DuplicateUserName') {
+            throw new Error(registerResult.errors[0].code);
+          }
         }
 
         return this.httpClient
@@ -252,6 +257,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     }
     return f;
+  }
+
+  private createLicensorRequest(): Observable<any> {
+    return this.httpClient
+      .post(
+        `${environment.licenseUrl}/api/SalesPoint/AddNewMembership`,
+        this.makeFormData()
+      )
+      .pipe();
   }
 
   private getIndex(value: string): number {
