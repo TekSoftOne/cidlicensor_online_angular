@@ -47,7 +47,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
           return false;
         }
 
-        return f.size > 100;
+        return f.size / 1024 / 1024 > 2;
       })
     );
 
