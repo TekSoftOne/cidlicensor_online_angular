@@ -8,6 +8,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { NgForm, FormGroup, FormControl } from '@angular/forms';
 import { MembershipRequest } from 'src/app/interfaces';
 import { ToastrService } from 'ngx-toastr';
+import { customerTypes } from 'src/app/constants';
 
 @Component({
   selector: 'ot-type-of-customer',
@@ -34,7 +35,12 @@ export class TypeOfCustomerComponent implements OnInit, IFormWizard {
     if (!f.valid) {
       this.toastrservice.warning('Please choose at least 1 Type Of Customer!');
     }
-    this.data.emit({ typeOfCustomer: this.typeOfCustomer });
+    this.data.emit({
+      typeOfCustomer: this.typeOfCustomer,
+      membershipTypeId: customerTypes.find(
+        (x) => x.name === this.typeOfCustomer
+      )?.id,
+    });
     this.nextStep.emit(f);
   }
 

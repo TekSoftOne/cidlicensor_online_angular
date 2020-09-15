@@ -85,9 +85,9 @@ export const showStepsFlowScreens = [
 export const dateFormat = 'MM/dd/yyyy';
 
 export const customerTypes = [
-  { id: 1, name: 'Resident' },
-  { id: 2, name: 'Diplomat' },
-  { id: 3, name: 'Tourist' },
+  { id: 1, name: 'resident' },
+  { id: 2, name: 'diplomat' },
+  { id: 3, name: 'tourist' },
 ];
 
 export const CURRENT_STEP_TOKEN = 'OT_STEP';

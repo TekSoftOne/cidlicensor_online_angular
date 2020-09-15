@@ -28,7 +28,8 @@ export interface MembershipRequest {
   passportAttachement?: File;
   profilePhoto?: File;
   authorizationLetter?: File;
-  typeOfCustomer?: any;
+  typeOfCustomer?: any; // membership type
+  membershipTypeId?: number;
   requestCategory?: any;
   membershipNumber?: string;
   emiratesIDNumber?: string;

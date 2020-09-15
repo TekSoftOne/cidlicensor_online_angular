@@ -1,3 +1,4 @@
+import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
 import { environment } from 'src/environments/environment';
 import {
   CURRENT_DATA_TOKEN,
@@ -58,7 +59,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public error: string;
   constructor(
     private httpClient: HttpClient,
-    private toastrservice: ToastrService
+    private toastrservice: ToastrService,
+    private licenseAuthenticationService: LicenseAuthenticationService
   ) {
     this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
     this.applicationNumber$ = new BehaviorSubject<string>(undefined);
@@ -103,6 +105,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     religionId: 0,
     genderId: 0,
     areaId: 1,
+    membershipNumber: '0',
+
     // locationId: 1,
   };
 
@@ -260,8 +264,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private createLicensorRequest(): Observable<any> {
-    return this.httpClient
-      .post(
+    return this.licenseAuthenticationService
+      .request(
         `${environment.licenseUrl}/api/SalesPoint/AddNewMembership`,
         this.makeFormData()
       )
