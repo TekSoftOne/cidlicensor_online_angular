@@ -82,8 +82,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
 
     this.isSearchStep = this.currentStep$.pipe(map((s) => s === 'serDiv1'));
-
-    localStorage.removeItem(CURRENT_STEP_TOKEN);
   }
   options = {
     center: { lat: 40, lng: -20 },
@@ -192,7 +190,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         (result) => {
           this.applicationNumber$.next(result);
           this.createLicensorRequest().subscribe((r) => {
-            console.log(r);
+            this.licenseAuthenticationService.removeAccessCache();
           });
         },
         (error) => {

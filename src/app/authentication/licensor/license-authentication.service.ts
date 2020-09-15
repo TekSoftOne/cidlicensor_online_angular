@@ -37,6 +37,10 @@ export class LicenseAuthenticationService {
       );
   }
 
+  public removeAccessCache(): void {
+    localStorage.removeItem(this.LICENSE_TOKEN);
+  }
+
   public request(url: string, body: any): Observable<any> {
     return this.httpClient.post(url, body, this.getOptions());
   }
