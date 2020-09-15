@@ -195,7 +195,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       tap(() => this.licenseAuthenticationService.removeAccessCache()),
 
       catchError((err) => {
-        this.toastrservice.error(err);
+        err.error
+          ? this.toastrservice.error(err.error)
+          : this.toastrservice.error(err);
         return of(undefined);
       })
     );
