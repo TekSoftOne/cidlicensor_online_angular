@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { LICENSE_ROLE_NAME } from 'src/app/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -21,12 +22,12 @@ export class LicenseAuthenticationService {
 
     return this.httpClient
       .post(`${environment.licenseUrl}/api/Auth/login`, {
-        username: 'sale003@gmail.com',
-        password: '123456',
+        username: `${environment.licenseUser}`,
+        password: `${environment.licensePassword}`,
       })
       .pipe(
         map((user: any) => {
-          if (user.role === 'SalesPoint') {
+          if (user.role === LICENSE_ROLE_NAME) {
             localStorage.setItem(this.LICENSE_TOKEN, JSON.stringify(user));
 
             return true;

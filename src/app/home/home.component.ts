@@ -5,23 +5,12 @@ import {
   CURRENT_STEP_TOKEN,
   showHomeScreens,
 } from './../constants';
-import {
-  Nationality,
-  MembershipRequest,
-  CustomValidation,
-} from './../interfaces';
-import {
-  AfterViewInit,
-  Component,
-  ViewChild,
-  ElementRef,
-  OnInit,
-} from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, pipe, of, throwError } from 'rxjs';
-import { map, tap, switchMap, switchMapTo, catchError } from 'rxjs/operators';
+import { MembershipRequest, CustomValidation } from './../interfaces';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { NgForm, FormControl, Validators, Form } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 
 import {
   steps,
@@ -30,9 +19,6 @@ import {
   showStepsFlowScreens,
 } from '../constants';
 
-import { FormGroup, ValidatorFn } from '@angular/forms';
-import { requireCheckboxesToBeCheckedValidator } from '../form';
-import { AuthenticationService } from '../authentication/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -175,7 +161,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       return;
     }
     const index = this.getIndex(this.currentStep$.value);
+
     let step = steps[index + 1];
+
     if (
       this.currentStep$.value === 'sTypeOfRequest' &&
       this.request.requestCategory === 'new'
@@ -186,30 +174,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      this.createApplication().subscribe(
-        (result) => {
-          this.applicationNumber$.next(result);
-          this.createLicensorRequest().subscribe(
-            (r) => {
-              this.licenseAuthenticationService.removeAccessCache();
-            },
-            (error) => {
-              this.toastrservice.error(error);
-            }
-          );
-        },
-        (error) => {
-          this.toastrservice.error(error);
-        }
-      );
+      this.processApplication().subscribe();
     } else if (this.currentStep$.value === 'serDiv1') {
       this.processSearch();
       return;
     }
+
     this.currentStep$.next(step);
-    this.cacheCurrentStep(step);
-    this.cacheCurrentData(this.request);
+    this.cacheCurrentStep();
+    this.cacheCurrentData();
     this.requestValidation = [];
+  }
+
+  private processApplication(): Observable<string | undefined> {
+    return this.createApplication().pipe(
+      map((appResult) => {
+        this.applicationNumber$.next(appResult);
+      }),
+      switchMap(() => this.createLicensorRequest()),
+      tap(() => this.licenseAuthenticationService.removeAccessCache()),
+
+      catchError((err) => {
+        this.toastrservice.error(err);
+        return of(undefined);
+      })
+    );
   }
 
   private processSearch(): void {
@@ -266,7 +255,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return f;
   }
 
-  private createLicensorRequest(): Observable<any> {
+  private createLicensorRequest(): Observable<string> {
     return this.licenseAuthenticationService
       .request(
         `${environment.licenseUrl}/api/SalesPoint/AddNewMembership`,
@@ -292,14 +281,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private setCurrentStep(step: string): void {
     this.currentStep$.next(step);
-    this.cacheCurrentStep(step);
+    this.cacheCurrentStep();
   }
 
-  private cacheCurrentStep(step: string): void {
+  private cacheCurrentStep(): void {
     // localStorage.setItem(CURRENT_STEP_TOKEN, step);
   }
 
-  private cacheCurrentData(data: MembershipRequest): void {
+  private cacheCurrentData(): void {
     // localStorage.setItem(CURRENT_DATA_TOKEN, JSON.stringify(data));
   }
 

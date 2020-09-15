@@ -92,3 +92,5 @@ export const customerTypes = [
 
 export const CURRENT_STEP_TOKEN = 'OT_STEP';
 export const CURRENT_DATA_TOKEN = 'OT_D';
+
+export const LICENSE_ROLE_NAME = 'SalesPoint';
