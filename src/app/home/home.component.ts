@@ -5,7 +5,11 @@ import {
   CURRENT_STEP_TOKEN,
   showHomeScreens,
 } from './../constants';
-import { MembershipRequest, CustomValidation } from './../interfaces';
+import {
+  MembershipRequest,
+  CustomValidation,
+  CreateUserResult,
+} from './../interfaces';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
@@ -90,7 +94,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     genderId: 0,
     areaId: 1,
     membershipNumber: '0',
-
     // locationId: 1,
   };
 
@@ -209,42 +212,46 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private createApplication(): Observable<string> {
-    const user = this.httpClient.post(
-      `${environment.apiUrl}/api/users/register`,
-      {
+  private createUser(): Observable<CreateUserResult> {
+    return this.httpClient
+      .post(`${environment.apiUrl}/api/users/register`, {
         userName: this.request.email,
         email: this.request.email,
         password: '123456',
-      }
-    );
-
-    const request = user.pipe(
-      switchMap((registerResult: any) => {
-        if (
-          !registerResult.succeeded &&
-          registerResult.errors &&
-          registerResult.errors.length > 0
-        ) {
-          if (registerResult.errors[0].code !== 'DuplicateUserName') {
-            throw new Error(registerResult.errors[0].code);
+      })
+      .pipe(
+        map((res) => res as CreateUserResult),
+        tap((registerResult) => {
+          if (
+            !registerResult.succeeded &&
+            registerResult.errors &&
+            registerResult.errors.length > 0
+          ) {
+            if (registerResult.errors[0].code !== 'DuplicateUserName') {
+              throw new Error(registerResult.errors[0].code);
+            }
           }
-        }
+        })
+      );
+  }
 
-        return this.httpClient
-          .post(
-            `${environment.apiUrl}/api/membershipRequests/New`,
-            this.makeFormData()
-          )
-          .pipe(
-            map((appId) => {
-              return appId as string;
-            })
-          );
+  private createRequestMembership(): Observable<string> {
+    return this.httpClient
+      .post(
+        `${environment.apiUrl}/api/membershipRequests/New`,
+        this.makeFormData()
+      )
+      .pipe(map((appId) => appId as string));
+  }
+
+  private createApplication(): Observable<string> {
+    return this.createUser().pipe(
+      switchMap(() => this.createRequestMembership()),
+      catchError((err) => {
+        this.toastrservice.error(err);
+        return of(undefined);
       })
     );
-
-    return request;
   }
 
   private makeFormData(): FormData {

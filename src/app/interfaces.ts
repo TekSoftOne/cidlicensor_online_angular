@@ -81,3 +81,13 @@ export interface CustomerType {
   name: string;
   id: number;
 }
+
+export interface CreateUserResult {
+  succeeded: boolean;
+  errors: CreateUserError[];
+}
+
+export interface CreateUserError {
+  code: string;
+  description: string;
+}
