@@ -38,7 +38,7 @@ export class MobileComponent implements OnInit, AfterViewInit, IFormWizard {
 
   public next(f: NgForm): void {
     if (!f.valid) {
-      this.toastrservice.warning('Please enter at least 8 numbers');
+      this.toastrservice.error('Please enter at least 8 numbers');
     }
     this.data.emit({ phoneNumber: this.phoneNumber } as MembershipRequest);
     this.nextStep.emit(f);

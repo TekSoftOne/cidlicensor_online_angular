@@ -33,7 +33,7 @@ export class TypeOfCustomerComponent implements OnInit, IFormWizard {
   }
   next(f: NgForm): void {
     if (!f.valid) {
-      this.toastrservice.warning('Please choose at least 1 Type Of Customer!');
+      this.toastrservice.error('Please choose at least 1 Type Of Customer!');
     }
     this.data.emit({
       typeOfCustomer: this.typeOfCustomer,

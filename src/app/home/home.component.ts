@@ -189,9 +189,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.createApplication().subscribe(
         (result) => {
           this.applicationNumber$.next(result);
-          this.createLicensorRequest().subscribe((r) => {
-            this.licenseAuthenticationService.removeAccessCache();
-          });
+          this.createLicensorRequest().subscribe(
+            (r) => {
+              this.licenseAuthenticationService.removeAccessCache();
+            },
+            (error) => {
+              this.toastrservice.error(error);
+            }
+          );
         },
         (error) => {
           this.toastrservice.error(error);
@@ -208,7 +213,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private processSearch(): void {
-    this.toastrservice.warning(
+    this.toastrservice.error(
       'Can not find this membership, please try another one!'
     );
   }

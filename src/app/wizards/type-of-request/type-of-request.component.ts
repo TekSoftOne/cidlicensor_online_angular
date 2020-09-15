@@ -31,7 +31,7 @@ export class TypeOfRequestComponent implements OnInit, IFormWizard {
   }
   next(f: NgForm): void {
     if (!f.valid) {
-      this.toastrservice.warning('Please choose at least 1 Type Of Request!');
+      this.toastrservice.error('Please choose at least 1 Type Of Request!');
     }
     this.data.emit({ requestCategory: this.typeOfRequest });
     this.nextStep.emit(f);

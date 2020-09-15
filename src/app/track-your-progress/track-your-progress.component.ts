@@ -33,7 +33,7 @@ export class TrackYourProgressComponent implements AfterViewInit {
 
   public OnSearchApplication(form: NgForm): void {
     if (!form.valid) {
-      this.toastrservice.warning('Application Number needs to be 8 numbers');
+      this.toastrservice.error('Application Number needs to be 8 numbers');
     }
 
     const appId = form.controls.applicationNumber.value;
@@ -54,7 +54,7 @@ export class TrackYourProgressComponent implements AfterViewInit {
       .subscribe(
         (appNumber) => {
           if (!appNumber) {
-            this.toastrservice.warning(
+            this.toastrservice.error(
               'Cannot find this application number, please try another one',
               'Search Result'
             );

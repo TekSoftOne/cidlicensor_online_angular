@@ -22,7 +22,7 @@ export class MobileVerificationComponent implements OnInit, IFormWizard {
   }
   next(f: NgForm): void {
     if (!f.valid) {
-      this.toastrservice.warning('Verification Number need to be 6 charaters!');
+      this.toastrservice.error('Verification Number need to be 6 charaters!');
     }
     this.data.emit({ verifyNumber: this.verifyNumber });
     this.nextStep.emit(f);
