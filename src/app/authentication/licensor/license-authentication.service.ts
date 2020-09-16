@@ -1,9 +1,10 @@
+import { LICENSE_PASSWORD } from './../../constants';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { LICENSE_ROLE_NAME } from 'src/app/constants';
+import { LICENSE_ROLE_NAME, LICENSE_USER } from 'src/app/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -22,8 +23,8 @@ export class LicenseAuthenticationService {
 
     return this.httpClient
       .post(`${environment.licenseUrl}/api/Auth/login`, {
-        username: `${environment.licenseUser}`,
-        password: `${environment.licensePassword}`,
+        username: LICENSE_USER,
+        password: LICENSE_PASSWORD,
       })
       .pipe(
         map((user: any) => {

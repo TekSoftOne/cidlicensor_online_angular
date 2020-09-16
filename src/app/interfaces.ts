@@ -49,6 +49,7 @@ export interface MembershipRequest {
   occupation?: string;
   visaResidency?: number;
   locationAddress?: string;
+  salespointUser?: string;
 }
 
 export interface Religion {
@@ -75,6 +76,7 @@ export interface Location {
   address: string;
   id: number;
   areaId: number;
+  salepointUser: string;
 }
 
 export interface CustomerType {
