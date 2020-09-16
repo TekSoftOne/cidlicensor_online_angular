@@ -15,7 +15,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
-
+import { createRandomPass } from '../authentication/password-generator';
 import {
   steps,
   showPreviousButtonScreens,
@@ -212,14 +212,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private createUser(): Observable<CreateUserResult> {
+    const password = createRandomPass(5, 3);
+    console.log(password);
+    this.request.randomPass = password;
     return this.httpClient
       .post(`${environment.apiUrl}/api/users/register`, {
         userName: this.request.email,
         email: this.request.email,
-        password: '123456',
+        fullName: this.request.fullName,
+        password,
       })
       .pipe(
-        map((res) => res as CreateUserResult),
+        map((res) => ({ ...res, password } as CreateUserResult)),
         tap((registerResult) => {
           if (
             !registerResult.succeeded &&
@@ -243,8 +247,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
       .pipe(map((appId) => appId as string));
   }
 
+  private sendRegistration(password: string): Observable<any> {
+    return this.httpClient
+      .post(`${environment.apiUrl}/api/Users/SendRegisterInformation`, {
+        userName: this.request.email,
+        email: this.request.email,
+        fullName: this.request.fullName,
+        password: btoa(password),
+      })
+      .pipe(tap((k) => console.log(k)));
+  }
+
   private createApplication(): Observable<string> {
     return this.createUser().pipe(
+      switchMap((res) => {
+        if (res.succeeded) {
+          return this.sendRegistration(res.password);
+        }
+        console.log('Email is already crewated');
+        return of(false);
+      }),
       switchMap(() => this.createRequestMembership()),
       catchError((err) => {
         this.toastrservice.error(err);
@@ -297,7 +319,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private cacheCurrentData(data): void {
-    localStorage.setItem(CURRENT_DATA_TOKEN, JSON.stringify(data));
+    // localStorage.setItem(CURRENT_DATA_TOKEN, JSON.stringify(data));
   }
 
   ngOnInit(): void {}

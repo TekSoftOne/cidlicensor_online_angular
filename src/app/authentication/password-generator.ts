@@ -1,4 +1,4 @@
-export function randPass(lettersLength, numbersLength): string {
+export function createRandomPass(lettersLength, numbersLength): string {
   let result = '';
   let x = '';
   let j;

@@ -40,7 +40,7 @@
                 last: locationIndex === currentLocations.length - 1,
                 selected: locationId && locationId === location.id
               }"
-              (click)="onLocationSelect(location.id, location.salespointUser)"
+              (click)="onLocationSelect(location.id, location.agentId)"
               *ngFor="
                 let location of currentLocations;
                 let locationIndex = index

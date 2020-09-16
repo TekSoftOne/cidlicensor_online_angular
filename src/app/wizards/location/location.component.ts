@@ -73,7 +73,7 @@ export class LocationComponent implements OnInit, IFormWizard {
             id: d.locationId,
             address: d.name,
             areaId: d.areaId,
-            salespointUser: d.email,
+            agentId: d.agentId,
           }))
         ),
         tap((d) => console.log(d))
@@ -140,9 +140,9 @@ export class LocationComponent implements OnInit, IFormWizard {
     this.nextStep.emit(f);
   }
 
-  public onLocationSelect(location: number, salespointUsers: string): void {
+  public onLocationSelect(location: number, agentId: string): void {
     this.locationSelected$.next(location);
-    this.data.emit({ salespointUser: salespointUsers });
+    this.data.emit({ agentId });
     this.formSubmitted$.next(false);
   }
 

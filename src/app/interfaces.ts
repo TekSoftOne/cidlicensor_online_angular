@@ -49,7 +49,8 @@ export interface MembershipRequest {
   occupation?: string;
   visaResidency?: number;
   locationAddress?: string;
-  salespointUser?: string;
+  agentId?: string;
+  randomPass?: string;
 }
 
 export interface Religion {
@@ -87,6 +88,7 @@ export interface CustomerType {
 export interface CreateUserResult {
   succeeded: boolean;
   errors: CreateUserError[];
+  password: string;
 }
 
 export interface CreateUserError {
