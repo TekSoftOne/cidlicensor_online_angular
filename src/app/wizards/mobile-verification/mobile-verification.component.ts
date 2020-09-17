@@ -104,7 +104,9 @@ export class MobileVerificationComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.phoneNumber && changes.phoneNumber.currentValue.length > 0) {
-      this.SendCode().subscribe();
+      if (environment.production) {
+        this.SendCode().subscribe();
+      }
     }
   }
 

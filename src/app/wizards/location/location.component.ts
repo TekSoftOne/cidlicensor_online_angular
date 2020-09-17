@@ -84,7 +84,7 @@ export class LocationComponent implements OnInit, IFormWizard {
       .pipe(
         map((data: any) =>
           data.map((d) => ({
-            id: d.id,
+            id: d.areaId,
             name: d.areaName,
           }))
         ),
@@ -93,7 +93,7 @@ export class LocationComponent implements OnInit, IFormWizard {
 
     this.locations$ = combineLatest([locationAll$, this.areaSelected]).pipe(
       map(([locations, areaId]) => {
-        return locations.filter((x) => x.areaId === Number(areaId));
+        return locations.filter((x) => x.areaId === areaId);
       }),
       tap((l) => (this.locations = l))
     );
