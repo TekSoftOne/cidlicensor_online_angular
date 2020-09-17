@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       map((s) => showHomeScreens.includes(s))
     );
 
-    this.isSearchStep = this.currentStep$.pipe(map((s) => s === 'serDiv1'));
+    this.isSearchStep = this.currentStep$.pipe(map((s) => s === 'sSearch'));
   }
   options = {
     center: { lat: 40, lng: -20 },
@@ -79,22 +79,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   };
 
   public request: MembershipRequest = {
-    // address: 'sdfdfsdf',
-    // emailAddress: 'sdfsdf@sdfsdf',
-    // emirateBackAttach: undefined,
-    // fullAddress: 'sdfsdfsdf',
-    // fullName: 'sdfsdf',
-    // membershipNumber: 'membership12343',
-    // phoneNumber: '+131231231',
-    // typeOfCustomer: 'diplomat',
-    // typeOfRequest: 'replacement',
-    // verifyNumber: '123456',
     nationId: 0,
     religionId: 0,
     genderId: 0,
     areaId: 1,
     membershipNumber: '0',
-    // locationId: 1,
   };
 
   public requestValidation: CustomValidation[] = [];
@@ -178,9 +167,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
       this.processApplication().subscribe();
-    } else if (this.currentStep$.value === 'serDiv1') {
+    } else if (this.currentStep$.value === 'sSearch') {
       this.processSearch();
       return;
+    } else if (
+      this.currentStep$.value === 'sTypeOfCustomer' &&
+      this.request.typeOfCustomer === 'tourist'
+    ) {
+      this.request.requestCategory = 'new';
+      step = steps[index + 3]; // tourist only have New, not Replacement or Renew
     }
 
     this.currentStep$.next(step);
@@ -302,8 +297,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const index = this.getIndex(this.currentStep$.value);
 
     let step = steps[index - 1];
-    if (step === 'serDiv1') {
+    if (this.currentStep$.value === 'sSearch') {
       step = steps[index - 2];
+    } else if (
+      this.currentStep$.value === 'sPersonalBasic' &&
+      this.request.typeOfCustomer === 'tourist'
+    ) {
+      step = steps[index - 3]; // tourist only have New, not Replacement or Renew
     }
     this.currentStep$.next(step);
     this.requestValidation = [];
