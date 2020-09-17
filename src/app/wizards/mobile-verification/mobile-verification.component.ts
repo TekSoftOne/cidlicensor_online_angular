@@ -1,9 +1,17 @@
-import { IFormWizard } from './../../interfaces';
+import { Observable, of } from 'rxjs';
+import { environment } from './../../../environments/environment.dev';
+import { HttpClient } from '@angular/common/http';
+import {
+  IFormWizard,
+  VerificationModel,
+  VerificationSendResult,
+} from './../../interfaces';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { isFormValid } from 'src/app/form';
 import { MembershipRequest } from 'src/app/interfaces';
 import { ToastrService } from 'ngx-toastr';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'ot-mobile-verification',
@@ -11,8 +19,14 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./mobile-verification.component.scss'],
 })
 export class MobileVerificationComponent implements OnInit, IFormWizard {
-  constructor(private toastrservice: ToastrService) {}
+  constructor(
+    private toastrservice: ToastrService,
+    private httpClient: HttpClient
+  ) {
+    this.SendCode().subscribe();
+  }
   @Input() verifyNumber: string;
+  @Input() phoneNumber: string;
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest
@@ -24,11 +38,51 @@ export class MobileVerificationComponent implements OnInit, IFormWizard {
     if (!f.valid) {
       this.toastrservice.error('Verification Number need to be 6 charaters!');
     }
-    this.data.emit({ verifyNumber: this.verifyNumber });
-    this.nextStep.emit(f);
+
+    this.checkAndVerify().pipe(
+      tap((res) => {
+        if (res) {
+          this.data.emit({ verifyNumber: this.verifyNumber });
+        }
+
+        throw Error('Verify Code is not valid!');
+      }),
+      tap(() => this.nextStep.emit(f)),
+      catchError((err) => {
+        this.toastrservice.error(err);
+        return of(undefined);
+      })
+    );
   }
-  checkFormInvalid(form: NgForm): boolean {
+  public checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
+  }
+
+  public SendCode(): Observable<VerificationSendResult> {
+    return this.httpClient
+      .post(`${environment.apiUrl}/api/phoneVerification/check`, {
+        phoneNumber: this.phoneNumber,
+      } as VerificationModel)
+      .pipe(map((data) => data as VerificationSendResult));
+  }
+
+  private checkAndVerify(): Observable<boolean> {
+    if (!this.phoneNumber) {
+      return of(false);
+    }
+
+    return this.VerifyCode();
+  }
+
+  private VerifyCode(): Observable<boolean> {
+    return this.httpClient
+      .post(`${environment.apiUrl}/api/phoneVerification/check`, {
+        phoneNumber: this.phoneNumber,
+      } as VerificationModel)
+      .pipe(
+        map((data) => data as VerificationSendResult),
+        map((res) => res.isValid)
+      );
   }
 
   ngOnInit(): void {}

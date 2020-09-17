@@ -95,3 +95,18 @@ export interface CreateUserError {
   code: string;
   description: string;
 }
+
+export interface VerificationModel {
+  phoneNumber: string;
+  code: string;
+}
+
+export interface VerificationSendResult {
+  isValid: boolean;
+  errors: any;
+}
+
+export interface VerificationCheckCodeResult {
+  isValid: boolean;
+  errors: any;
+}
