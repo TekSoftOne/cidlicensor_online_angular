@@ -1,4 +1,4 @@
-import { environment } from './../../../environments/environment.dev';
+import { environment } from './../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, combineLatest, forkJoin } from 'rxjs';
 import { isFormValid, isControlValid } from 'src/app/form';

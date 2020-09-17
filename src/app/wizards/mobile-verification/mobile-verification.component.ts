@@ -1,5 +1,5 @@
 import { Observable, of } from 'rxjs';
-import { environment } from './../../../environments/environment.dev';
+import { environment } from './../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import {
   IFormWizard,
@@ -39,20 +39,22 @@ export class MobileVerificationComponent implements OnInit, IFormWizard {
       this.toastrservice.error('Verification Number need to be 6 charaters!');
     }
 
-    this.checkAndVerify().pipe(
-      tap((res) => {
-        if (res) {
-          this.data.emit({ verifyNumber: this.verifyNumber });
-        }
+    this.checkAndVerify()
+      .pipe(
+        tap((res) => {
+          if (res) {
+            this.data.emit({ verifyNumber: this.verifyNumber });
+          }
 
-        throw Error('Verify Code is not valid!');
-      }),
-      tap(() => this.nextStep.emit(f)),
-      catchError((err) => {
-        this.toastrservice.error(err);
-        return of(undefined);
-      })
-    );
+          throw Error('Verify Code is not valid!');
+        }),
+        tap(() => this.nextStep.emit(f)),
+        catchError((err) => {
+          this.toastrservice.error(err);
+          return of(undefined);
+        })
+      )
+      .subscribe();
   }
   public checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
@@ -76,8 +78,9 @@ export class MobileVerificationComponent implements OnInit, IFormWizard {
 
   private VerifyCode(): Observable<boolean> {
     return this.httpClient
-      .post(`${environment.apiUrl}/api/phoneVerification/check`, {
+      .post(`${environment.apiUrl}/api/phoneVerification/checkCode`, {
         phoneNumber: this.phoneNumber,
+        code: this.verifyNumber,
       } as VerificationModel)
       .pipe(
         map((data) => data as VerificationSendResult),
