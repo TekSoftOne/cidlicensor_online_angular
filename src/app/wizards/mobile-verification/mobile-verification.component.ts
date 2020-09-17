@@ -48,23 +48,27 @@ export class MobileVerificationComponent
       return;
     }
 
-    this.checkAndVerify()
-      .pipe(
-        tap((res) => {
-          if (res) {
-            this.data.emit({ verifyNumber: this.verifyNumber });
-            return true;
-          }
+    if (environment.production) {
+      this.checkAndVerify()
+        .pipe(
+          tap((res) => {
+            if (res) {
+              this.data.emit({ verifyNumber: this.verifyNumber });
+              return true;
+            }
 
-          throw Error('Verify Code is not valid!');
-        }),
-        tap(() => this.nextStep.emit(f)),
-        catchError((err) => {
-          this.toastrservice.error(err);
-          return of(false);
-        })
-      )
-      .subscribe();
+            throw Error('Verify Code is not valid!');
+          }),
+          tap(() => this.nextStep.emit(f)),
+          catchError((err) => {
+            this.toastrservice.error(err);
+            return of(false);
+          })
+        )
+        .subscribe();
+    } else {
+      this.nextStep.emit(f);
+    }
   }
   public checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
