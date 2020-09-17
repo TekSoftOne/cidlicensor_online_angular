@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private readonly defaultStep = 'sPhoneNumber';
   public currentStep$: BehaviorSubject<string>;
+  public previousSteps$: BehaviorSubject<string[]>;
   public isMobileSend = false;
   public googleApiLoad: any;
   public applicationNumber$: BehaviorSubject<string>;
@@ -53,6 +54,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private licenseAuthenticationService: LicenseAuthenticationService
   ) {
     this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
+    this.previousSteps$ = new BehaviorSubject<string[]>([]);
     this.applicationNumber$ = new BehaviorSubject<string>(undefined);
 
     this.isNextButtonShowed = this.currentStep$.pipe(
@@ -178,6 +180,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       step = steps[index + 3]; // tourist only have New, not Replacement or Renew
     }
 
+    const previousSteps = this.previousSteps$.value;
+    previousSteps.push(this.currentStep$.value);
+
+    this.previousSteps$.next(previousSteps);
     this.currentStep$.next(step);
     this.cacheCurrentStep(step);
     this.requestValidation = [];
@@ -294,18 +300,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public previous(): void {
-    const index = this.getIndex(this.currentStep$.value);
-
-    let step = steps[index - 1];
-    if (this.currentStep$.value === 'sSearch') {
-      step = steps[index - 2];
-    } else if (
-      this.currentStep$.value === 'sPersonalBasic' &&
-      this.request.typeOfCustomer === 'tourist'
-    ) {
-      step = steps[index - 3]; // tourist only have New, not Replacement or Renew
-    }
-    this.currentStep$.next(step);
+    const lastOne = this.previousSteps$.value.pop();
+    this.currentStep$.next(lastOne);
     this.requestValidation = [];
   }
 
