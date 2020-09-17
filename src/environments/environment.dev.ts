@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://or-api-test.cidlicensor.com',
+  apiUrl: 'http://onlinerequest-api.cidlicensor.support',
   licenseUrl: 'https://newadministration-test.cidlicensor.com',
 };
