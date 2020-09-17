@@ -315,11 +315,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private cacheCurrentStep(step): void {
-    // localStorage.setItem(CURRENT_STEP_TOKEN, step);
+    if (!environment.production) {
+      // localStorage.setItem(CURRENT_STEP_TOKEN, step);
+    }
   }
 
   private cacheCurrentData(data): void {
-    // localStorage.setItem(CURRENT_DATA_TOKEN, JSON.stringify(data));
+    if (!environment.production) {
+      // localStorage.setItem(CURRENT_DATA_TOKEN, JSON.stringify(data));
+    }
   }
 
   ngOnInit(): void {}
