@@ -6,7 +6,15 @@ import {
   VerificationModel,
   VerificationSendResult,
 } from './../../interfaces';
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { isFormValid } from 'src/app/form';
 import { MembershipRequest } from 'src/app/interfaces';
@@ -18,13 +26,13 @@ import { catchError, map, tap } from 'rxjs/operators';
   templateUrl: './mobile-verification.component.html',
   styleUrls: ['./mobile-verification.component.scss'],
 })
-export class MobileVerificationComponent implements OnInit, IFormWizard {
+export class MobileVerificationComponent
+  implements OnInit, IFormWizard, OnChanges {
   constructor(
     private toastrservice: ToastrService,
     private httpClient: HttpClient
-  ) {
-    this.SendCode().subscribe();
-  }
+  ) {}
+
   @Input() verifyNumber: string;
   @Input() phoneNumber: string;
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
@@ -37,6 +45,7 @@ export class MobileVerificationComponent implements OnInit, IFormWizard {
   next(f: NgForm): void {
     if (!f.valid) {
       this.toastrservice.error('Verification Number need to be 6 charaters!');
+      return;
     }
 
     this.checkAndVerify()
@@ -44,6 +53,7 @@ export class MobileVerificationComponent implements OnInit, IFormWizard {
         tap((res) => {
           if (res) {
             this.data.emit({ verifyNumber: this.verifyNumber });
+            return true;
           }
 
           throw Error('Verify Code is not valid!');
@@ -51,7 +61,7 @@ export class MobileVerificationComponent implements OnInit, IFormWizard {
         tap(() => this.nextStep.emit(f)),
         catchError((err) => {
           this.toastrservice.error(err);
-          return of(undefined);
+          return of(false);
         })
       )
       .subscribe();
@@ -86,6 +96,12 @@ export class MobileVerificationComponent implements OnInit, IFormWizard {
         map((data) => data as VerificationSendResult),
         map((res) => res.isValid)
       );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.phoneNumber && changes.phoneNumber.currentValue.length > 0) {
+      this.SendCode().subscribe();
+    }
   }
 
   ngOnInit(): void {}
