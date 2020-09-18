@@ -176,7 +176,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     ) {
       step = steps[index + 2];
     } else if (this.currentStep$.value === 'sReview') {
-      if (!this.request.email || !this.request.fullName) {
+      if (
+        !this.request.email ||
+        !this.request.fullName ||
+        !this.request.phoneNumber
+      ) {
+        this.toastrservice.error('Email and PhoneNumber is required');
         return;
       }
 
