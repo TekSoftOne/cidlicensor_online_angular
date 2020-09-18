@@ -8,6 +8,7 @@ import { LoginComponent } from './authentication/login/login.component';
 import { TrackYourProgressComponent } from './track-your-progress/track-your-progress.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { LicenseAuthenticationService } from './authentication/licensor/license-authentication.service';
+import { StateService } from './state-service';
 import {
   HttpClientModule,
   HttpClient,
@@ -79,7 +80,12 @@ export function createTranslateLoader(http: HttpClient) {
       },
     }),
   ],
-  providers: [DatePipe, AuthenticationService, LicenseAuthenticationService],
+  providers: [
+    DatePipe,
+    AuthenticationService,
+    LicenseAuthenticationService,
+    StateService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -70,7 +70,10 @@
       <ot-header></ot-header>
     </div>
     <!-- Wizard part -->
-    <div class="form-content">
+    <div
+      class="form-content"
+      [ngClass]="{ 'application-active': (applicationNumber | async) }"
+    >
       <div class="form-items">
         <ng-container [ngSwitch]="currentStep$ | async">
           <!-- phone number -->
@@ -283,7 +286,7 @@
                     <div ngif class="col-lg-12 col-12 col-sm-12 text-center">
                       <h3
                         *ngIf="
-                          applicationNumber$ | async as appId;
+                          applicationNumber | async as appId;
                           else creatingAppNumber
                         "
                       >

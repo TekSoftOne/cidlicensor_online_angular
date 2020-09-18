@@ -1,3 +1,5 @@
+import { MembershipRequest } from 'src/app/interfaces';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
@@ -5,6 +7,8 @@ import { AfterViewInit, Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { isFormValid } from '../form';
+import { StateService } from '../state-service';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'ot-track-your-progress',
@@ -16,11 +20,13 @@ import { isFormValid } from '../form';
   },
 })
 export class TrackYourProgressComponent implements AfterViewInit {
-  public appResult$: BehaviorSubject<any>;
-  public appResult: Observable<any>;
+  public appResult$: BehaviorSubject<MembershipRequest>;
+  public appResult: Observable<MembershipRequest>;
   constructor(
     private toastrservice: ToastrService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private stateService: StateService,
+    private router: Router
   ) {
     this.appResult$ = new BehaviorSubject<any>(undefined);
     this.appResult = this.appResult$.asObservable();
@@ -37,33 +43,44 @@ export class TrackYourProgressComponent implements AfterViewInit {
     }
 
     const appId = form.controls.applicationNumber.value;
+
+    this.appResult = this.getApplication(appId).pipe(
+      tap((app) => (this.stateService.data.request = app)),
+      tap(() => this.router.navigateByUrl('home'))
+    );
+  }
+
+  private getApplication(
+    applicationNumber: string
+  ): Observable<MembershipRequest | undefined> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Accept: 'application/json',
       }),
     };
-    this.httpClient
+    return this.httpClient
       .post(
         `${environment.apiUrl}/api/MembershipRequests/search`,
         {
-          applicationNumber: Number(appId),
+          applicationNumber: Number(applicationNumber),
         },
         httpOptions
       )
-      .subscribe(
-        (appNumber) => {
-          if (!appNumber) {
+      .pipe(
+        map((app) => {
+          if (!app) {
             this.toastrservice.error(
               'Cannot find this application number, please try another one',
               'Search Result'
             );
           }
-          this.appResult$.next(appNumber);
-        },
-        (error) => {
-          this.toastrservice.error(error, 'Error when searching application');
-        }
+          return app;
+        }),
+        catchError((err) => {
+          this.toastrservice.error(err, 'Error when searching application');
+          return undefined;
+        })
       );
   }
 }

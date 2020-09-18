@@ -17,7 +17,9 @@ import { customerTypes } from 'src/app/constants';
 })
 export class TypeOfCustomerComponent implements OnInit, IFormWizard {
   public formCustomerType: FormGroup;
-  constructor(private toastrservice: ToastrService) {}
+  constructor(private toastrservice: ToastrService) {
+    console.log();
+  }
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest

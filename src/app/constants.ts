@@ -1,5 +1,5 @@
 import { environment } from './../environments/environment';
-export const steps = [
+export const stepsAll = [
   'sPhoneNumber',
   'sVerifyPhone',
   'sTypeOfCustomer',

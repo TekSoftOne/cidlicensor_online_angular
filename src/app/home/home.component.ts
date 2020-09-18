@@ -1,3 +1,6 @@
+import { AuthenticationService } from './../authentication/authentication.service';
+import { LoginComponent } from './../authentication/login/login.component';
+import { StateService } from './../state-service';
 import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
 import { environment } from 'src/environments/environment';
 import {
@@ -18,7 +21,7 @@ import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { createRandomPass } from '../authentication/password-generator';
 import {
-  steps,
+  stepsAll,
   showPreviousButtonScreens,
   showNextButtonScreens,
   showStepsFlowScreens,
@@ -48,17 +51,42 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isMobileSend = false;
   public googleApiLoad: any;
   public applicationNumber$: BehaviorSubject<string>;
+  public applicationNumber: Observable<string>;
   public error: string;
+  public steps: string[] = [];
   constructor(
     private httpClient: HttpClient,
     private toastrservice: ToastrService,
-    private licenseAuthenticationService: LicenseAuthenticationService
+    private licenseAuthenticationService: LicenseAuthenticationService,
+    private stateService: StateService,
+    private authenticationService: AuthenticationService
   ) {
+    this.steps = stepsAll.filter((s) => {
+      if (
+        this.authenticationService.loginSilently() &&
+        (s === 'sPhoneNumber' || s === 'sVerifyPhone')
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+
     this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
     this.previousSteps$ = new BehaviorSubject<string[]>(
       this.loadPreviousSteps()
     );
-    this.applicationNumber$ = new BehaviorSubject<string>(undefined);
+    this.applicationNumber$ = new BehaviorSubject<string>(
+      this.stateService.data.request?.applicationNumber
+    );
+
+    this.applicationNumber = this.applicationNumber$.asObservable().pipe(
+      tap((application) => {
+        if (application) {
+          this.request = this.stateService.data.request;
+        }
+      })
+    );
 
     this.isNextButtonShowed = this.currentStep$.pipe(
       map((s) => showNextButtonScreens.includes(s))
@@ -126,7 +154,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       return cacheStep;
     }
 
-    return this.defaultStep;
+    return this.steps[0];
   }
 
   public loadPreviousSteps(): string[] {
@@ -168,13 +196,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
     const index = this.getIndex(this.currentStep$.value);
 
-    let step = steps[index + 1];
+    let step = this.steps[index + 1];
 
     if (
       this.currentStep$.value === 'sTypeOfRequest' &&
       this.request.requestCategory === 'new'
     ) {
-      step = steps[index + 2];
+      step = this.steps[index + 2];
     } else if (this.currentStep$.value === 'sReview') {
       if (
         !this.request.email ||
@@ -194,7 +222,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.request.typeOfCustomer === 'tourist'
     ) {
       this.request.requestCategory = 'new';
-      step = steps[index + 3]; // tourist only have New, not Replacement or Renew
+      step = this.steps[index + 3]; // tourist only have New, not Replacement or Renew
     }
 
     const previousSteps = this.previousSteps$.value;
@@ -314,7 +342,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private getIndex(value: string): number {
-    return steps.findIndex((x) => x === value);
+    return this.steps.findIndex((x) => x === value);
   }
 
   public previous(): void {
@@ -330,8 +358,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private cacheCurrentStep(step: string, previousSteps: string[]): void {
     if (!environment.production) {
-      localStorage.setItem(CURRENT_STEP_TOKEN, step);
-      localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
+      // localStorage.setItem(CURRENT_STEP_TOKEN, step);
+      // localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
     }
   }
 

@@ -21,10 +21,7 @@
             <ng-container
               *ngIf="appResult | async as app; else formSearchTemplate"
             >
-              <h3>
-                Hi {{ app.name }}, your address: {{ app.fullAddress }}, we are
-                processing your application!
-              </h3>
+              <h3></h3>
             </ng-container>
             <ng-template #formSearchTemplate>
               <form
