@@ -19,10 +19,10 @@ export class AuthenticationService {
     @Inject(WINDOW) private window: Window
   ) {}
 
-  public login(userName: string, password: string): Observable<UserToken> {
+  public login(phoneNumber: string, password: string): Observable<UserToken> {
     return this.httpClient
       .post<UserToken>(`${environment.apiUrl}/api/auth/login`, {
-        userName,
+        phoneNumber,
         password,
       })
       .pipe(

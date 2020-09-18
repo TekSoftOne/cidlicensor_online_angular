@@ -35,11 +35,11 @@
                 <h2>LOGIN</h2>
                 <input
                   name="userName"
-                  placeholder="Email"
+                  placeholder="Phone number"
                   type="text"
                   ngModel
                   required
-                  email
+                  pattern="[\+][0-9]{5}[0-9]*"
                   [ngClass]="{
                     'form-control': true,
                     'is-invalid': checkControlInvalid(

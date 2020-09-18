@@ -213,12 +213,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private createUser(): Observable<CreateUserResult> {
-    const password = createRandomPass(5, 3);
+    const password = environment.production ? createRandomPass(5, 3) : '123456';
+
     console.log(password);
     this.request.randomPass = password;
     return this.httpClient
       .post(`${environment.apiUrl}/api/users/register`, {
-        userName: this.request.email,
+        phoneNumber: this.request.phoneNumber,
         email: this.request.email,
         fullName: this.request.fullName,
         password,
