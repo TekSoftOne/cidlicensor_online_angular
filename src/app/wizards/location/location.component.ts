@@ -9,7 +9,15 @@ import {
   Area,
   CustomValidation,
 } from './../../interfaces';
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { map, tap, shareReplay } from 'rxjs/operators';
 
@@ -18,7 +26,7 @@ import { map, tap, shareReplay } from 'rxjs/operators';
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.scss'],
 })
-export class LocationComponent implements OnInit, IFormWizard {
+export class LocationComponent implements OnInit, IFormWizard, OnChanges {
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest
@@ -28,12 +36,12 @@ export class LocationComponent implements OnInit, IFormWizard {
   >();
 
   @Input() locationId: number;
-  @Input() areaId: number;
+  @Input() areaId: string;
 
   public formSubmitted$: BehaviorSubject<boolean>;
   public locationSelected$: BehaviorSubject<number | undefined>;
-  public areaSelected$: BehaviorSubject<number | undefined>;
-  public areaSelected: Observable<number>;
+  public areaSelected$: BehaviorSubject<string | undefined>;
+  public areaSelected: Observable<string>;
   public isValid: Observable<boolean>;
   public locations$: Observable<Location[]>;
   public locations: Location[] = [];
@@ -42,8 +50,10 @@ export class LocationComponent implements OnInit, IFormWizard {
 
   constructor(private httpClient: HttpClient) {
     this.formSubmitted$ = new BehaviorSubject<boolean>(false);
-    this.locationSelected$ = new BehaviorSubject<number | undefined>(undefined);
-    this.areaSelected$ = new BehaviorSubject<number | undefined>(this.areaId);
+    this.locationSelected$ = new BehaviorSubject<number | undefined>(
+      this.locationId
+    );
+    this.areaSelected$ = new BehaviorSubject<string | undefined>(this.areaId);
     this.areaSelected = this.areaSelected$.asObservable().pipe(
       map((area) => {
         if (!area) {
@@ -53,17 +63,6 @@ export class LocationComponent implements OnInit, IFormWizard {
         return area;
       })
     );
-
-    // const locationAll$ = of([
-    //   {
-    //     address: 'Shop 202 , Business Bay Branch , AE , Dubai',
-    //     id: 1,
-    //     areaId: 1,
-    //   },
-    //   { address: 'Shop 302 , Jumirah Branch , MMI , Dubai', id: 2, areaId: 1 },
-    //   { address: 'Address 3', id: 3, areaId: 2 },
-    //   { address: 'Address 4', id: 4, areaId: 2 },
-    // ]);
 
     const locationAll$ = this.httpClient
       .get(`${environment.licenseUrl}/api/ManageAreas/GetLocations`)
@@ -121,6 +120,11 @@ export class LocationComponent implements OnInit, IFormWizard {
         this.dataValidation.emit({ controlName: 'Location', isValid: s })
       )
     );
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.locationId) {
+      this.locationSelected$.next(changes.locationId.currentValue);
+    }
   }
 
   checkFormInvalid(form: NgForm): boolean {

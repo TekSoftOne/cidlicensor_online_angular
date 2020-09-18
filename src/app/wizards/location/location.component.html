@@ -10,51 +10,56 @@
             (ngModelChange)="areaSelected$.next($event)"
             *ngIf="areas$ | async as areas"
           >
+            <option value="0">Choose an area*</option>
             <option [value]="area.id" *ngFor="let area of areas">
               {{ area.name }}
             </option>
           </select>
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-12 tps2 col-12 col-sm-12">
-          <h2>LOCATION:</h2>
-        </div>
-        <div class="col-lg-12 tp col-12 col-sm-12">
-          <p class="desc">
-            Please select any of our nearest Branch office from your location,
-            and we will process your application there
-          </p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12 col-12 col-sm-12 multi">
-          <div
-            class="table"
-            [ngClass]="{ 'is-invalid-location': !(isValid | async) }"
-            *ngIf="locations$ | async as currentLocations"
-          >
-            <div
-              class="location"
-              [ngClass]="{
-                last: locationIndex === currentLocations.length - 1,
-                selected: locationId && locationId === location.id
-              }"
-              (click)="onLocationSelect(location.id, location.agentId)"
-              *ngFor="
-                let location of currentLocations;
-                let locationIndex = index
-              "
-            >
-              <span>
-                Location#{{ locationIndex }}:<br />
-                {{ location.address }}
-                <!-- <a href="#">X</a> -->
-              </span>
+      <ng-container *ngIf="areaSelected | async as area">
+        <ng-container *ngIf="area !== '0'">
+          <div class="row">
+            <div class="col-lg-12 tps2 col-12 col-sm-12">
+              <h2>LOCATION:</h2>
+            </div>
+            <div class="col-lg-12 tp col-12 col-sm-12">
+              <p class="desc">
+                Please select any of our nearest Branch office from your
+                location, and we will process your application there
+              </p>
             </div>
           </div>
-        </div>
-      </div>
+          <div class="row">
+            <div class="col-lg-12 col-12 col-sm-12 multi">
+              <div
+                class="table"
+                [ngClass]="{ 'is-invalid-location': !(isValid | async) }"
+                *ngIf="locations$ | async as currentLocations"
+              >
+                <div
+                  class="location"
+                  [ngClass]="{
+                    last: locationIndex === currentLocations.length - 1,
+                    selected: locationId && locationId === location.id
+                  }"
+                  (click)="onLocationSelect(location.id, location.agentId)"
+                  *ngFor="
+                    let location of currentLocations;
+                    let locationIndex = index
+                  "
+                >
+                  <span>
+                    Location#{{ locationIndex }}:<br />
+                    {{ location.address }}
+                    <!-- <a href="#">X</a> -->
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
     </div>
   </div>
   <ng-content></ng-content>

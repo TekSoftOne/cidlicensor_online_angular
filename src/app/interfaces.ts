@@ -44,7 +44,7 @@ export interface MembershipRequest {
   monthlyQuota?: number;
   comment?: string;
   // step
-  areaId?: number;
+  areaId?: string;
   locationId?: number;
   occupation?: string;
   visaResidency?: number;
@@ -76,8 +76,9 @@ export interface Area {
 export interface Location {
   address: string;
   id: number;
-  areaId: number;
+  areaId: string;
   salepointUser: string;
+  agentId: number;
 }
 
 export interface CustomerType {

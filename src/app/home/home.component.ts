@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import {
   CURRENT_DATA_TOKEN,
   CURRENT_STEP_TOKEN,
+  PREVIOUS_STEP_TOKEN,
   showHomeScreens,
 } from './../constants';
 import {
@@ -54,7 +55,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private licenseAuthenticationService: LicenseAuthenticationService
   ) {
     this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
-    this.previousSteps$ = new BehaviorSubject<string[]>([]);
+    this.previousSteps$ = new BehaviorSubject<string[]>(
+      this.loadPreviousSteps()
+    );
     this.applicationNumber$ = new BehaviorSubject<string>(undefined);
 
     this.isNextButtonShowed = this.currentStep$.pipe(
@@ -84,7 +87,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     nationId: 0,
     religionId: 0,
     genderId: 0,
-    areaId: 1,
+    areaId: '0',
     membershipNumber: '0',
   };
 
@@ -124,6 +127,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     return this.defaultStep;
+  }
+
+  public loadPreviousSteps(): string[] {
+    const cacheSteps = localStorage.getItem(PREVIOUS_STEP_TOKEN);
+    if (!cacheSteps) {
+      return [];
+    }
+
+    return JSON.parse(cacheSteps);
   }
 
   public loadCurrentData(): MembershipRequest {
@@ -185,7 +197,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.previousSteps$.next(previousSteps);
     this.currentStep$.next(step);
-    this.cacheCurrentStep(step);
+    this.cacheCurrentStep(step, this.previousSteps$.value);
     this.requestValidation = [];
   }
 
@@ -308,12 +320,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private setCurrentStep(step: string): void {
     this.currentStep$.next(step);
-    this.cacheCurrentStep(step);
+    this.cacheCurrentStep(step, this.previousSteps$.value);
   }
 
-  private cacheCurrentStep(step): void {
+  private cacheCurrentStep(step: string, previousSteps: string[]): void {
     if (!environment.production) {
-      // localStorage.setItem(CURRENT_STEP_TOKEN, step);
+      localStorage.setItem(CURRENT_STEP_TOKEN, step);
+      localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
     }
   }
 
