@@ -7,6 +7,7 @@ import { throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { isControlValid } from 'src/app/form';
 import { ToastrService } from 'ngx-toastr';
+import * as nationPickerHelper from '../../nation-picker-helper.js';
 
 @Component({
   selector: 'ot-login',
@@ -25,7 +26,9 @@ export class LoginComponent implements AfterViewInit {
   ) {}
   public loading = false;
   public error: any;
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    nationPickerHelper();
+  }
   public onSubmitLogin(form: NgForm): void {
     if (!form.form.valid) {
       return;

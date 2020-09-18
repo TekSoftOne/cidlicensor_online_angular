@@ -7,7 +7,7 @@
   </div>
   <div class="col-4 rt-menubar col-sm-6 text-right">
     <p>
-      <a *ngIf="!isIn()" [routerLink]="['/login']">LOGIN</a>
+      <a *ngIf="!isIn()" href="/login">LOGIN</a>
     </p>
     <div *ngIf="isIn()" class="dropdown user user-menu">
       <a

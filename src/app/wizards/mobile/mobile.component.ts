@@ -10,7 +10,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { isFormValid } from '../../form';
-import * as nationPickerHelper from './nation-picker-helper.js';
+import * as nationPickerHelper from '../../nation-picker-helper.js';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
