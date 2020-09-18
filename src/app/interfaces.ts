@@ -38,7 +38,7 @@ export interface MembershipRequest {
   passportNumber?: string;
   genderId?: number;
   genderName?: string;
-  birthdate?: string;
+  birthDate?: string;
   religionId?: number;
   religionName?: string;
   // step

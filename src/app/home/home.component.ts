@@ -200,7 +200,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     if (
       this.currentStep$.value === 'sTypeOfRequest' &&
-      this.request.requestCategory === 'new'
+      this.request.requestCategory === 'New'
     ) {
       step = this.steps[index + 2];
     } else if (this.currentStep$.value === 'sReview') {
@@ -219,9 +219,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       return;
     } else if (
       this.currentStep$.value === 'sTypeOfCustomer' &&
-      this.request.typeOfCustomer === 'tourist'
+      this.request.typeOfCustomer === 'Tourist'
     ) {
-      this.request.requestCategory = 'new';
+      this.request.requestCategory = 'New';
       step = this.steps[index + 3]; // tourist only have New, not Replacement or Renew
     }
 
@@ -288,7 +288,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private createRequestMembership(): Observable<string> {
     return this.httpClient
       .post(
-        `${environment.apiUrl}/api/membershipRequests/New`,
+        `${environment.apiUrl}/api/membershipRequests/update`,
         this.makeFormData()
       )
       .pipe(map((appId) => appId as string));

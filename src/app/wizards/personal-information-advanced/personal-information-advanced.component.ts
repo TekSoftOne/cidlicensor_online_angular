@@ -120,7 +120,7 @@ export class PersonalInformationAdvancedComponent
         ?.name,
       emiratesIDNumber: this.emirateIDNumber,
       passportNumber: this.passportNumber,
-      birthdate: this.birthday,
+      birthDate: this.birthday,
       religionId: this.religionId,
       religionName: this.religions.find((r) => r.id === Number(this.religionId))
         ?.name,
