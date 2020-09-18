@@ -1,4 +1,8 @@
-<form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+<form
+  #membershipForm="ngForm"
+  [formGroup]="formLocation"
+  (ngSubmit)="next(membershipForm)"
+>
   <div class="row">
     <div class="col-lg-12 col-12 col-sm-12" id="td-div">
       <div class="row">
@@ -8,6 +12,14 @@
             [(ngModel)]="areaId"
             name="areaId"
             (ngModelChange)="areaSelected$.next($event)"
+            formControlName="areaId"
+            [ngClass]="{
+              'form-control': true,
+              'is-invalid': checkControlInvalid(
+                membershipForm,
+                formLocation.controls.areaId
+              )
+            }"
             *ngIf="areas$ | async as areas"
           >
             <option value="0">Choose an area*</option>
@@ -41,7 +53,7 @@
                   class="location"
                   [ngClass]="{
                     last: locationIndex === currentLocations.length - 1,
-                    selected: locationId && locationId === location.id
+                    selected: (locationSelected | async) === location.id
                   }"
                   (click)="onLocationSelect(location.id, location.agentId)"
                   *ngFor="

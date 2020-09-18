@@ -40,6 +40,7 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
 
   public formSubmitted$: BehaviorSubject<boolean>;
   public locationSelected$: BehaviorSubject<number | undefined>;
+  public locationSelected: Observable<number> | undefined;
   public areaSelected$: BehaviorSubject<string | undefined>;
   public areaSelected: Observable<string>;
   public isValid: Observable<boolean>;
@@ -47,6 +48,8 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
   public locations: Location[] = [];
   // public locationAll$: Observable<Location[]>;
   public areas$: Observable<Area[]>;
+
+  public formLocation: FormGroup;
 
   constructor(private httpClient: HttpClient) {
     this.formSubmitted$ = new BehaviorSubject<boolean>(false);
@@ -97,15 +100,25 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
       tap((l) => (this.locations = l))
     );
 
-    const locationSelected = this.locationSelected$
-      .asObservable()
-      .pipe(tap((l) => (this.locationId = l)));
+    this.locationSelected = combineLatest([
+      this.locationSelected$,
+      this.areaSelected,
+    ]).pipe(
+      map(([l, a]) => {
+        if (a === '0') {
+          // when not choosing area any more, also unchoose location to handle validation of the form
+          return 0;
+        }
 
-    locationSelected.subscribe();
+        return l;
+      })
+    );
 
+    // this is to validation a customed control: Location is a div
     this.isValid = combineLatest([
       this.formSubmitted$,
       this.locationSelected$,
+      this.areaSelected$,
     ]).pipe(
       map(([submitted, id]) => {
         if (!submitted) {
@@ -136,8 +149,8 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
   next(f: NgForm): void {
     this.formSubmitted$.next(true);
     this.data.emit({
-      areaId: this.areaId,
-      locationId: this.locationId,
+      areaId: this.areaSelected$.value,
+      locationId: this.locationSelected$.value,
       locationAddress: this.locations.find((l) => l.id === this.locationId)
         ?.address,
     });
@@ -150,5 +163,9 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
     this.formSubmitted$.next(false);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.formLocation = new FormGroup({
+      areaId: new FormControl('0', [Validators.required, Validators.min(1)]),
+    });
+  }
 }
