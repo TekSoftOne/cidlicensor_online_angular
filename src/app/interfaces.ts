@@ -48,11 +48,11 @@ export interface MembershipRequest {
   // step
   areaId?: string;
   locationId?: number;
-  occupation?: string;
   visaResidency?: number;
   locationAddress?: string;
   agentId?: string;
   randomPass?: string;
+  occupation?: string;
 }
 
 export interface ApplicationState {
