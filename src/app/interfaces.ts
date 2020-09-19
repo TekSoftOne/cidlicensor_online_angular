@@ -15,7 +15,7 @@ export interface Nationality {
 
 export interface MembershipRequest {
   loggedIn?: boolean;
-  applicationNumber?: string;
+  applicationNumber?: number;
   membershipRequestId?: number;
   phoneNumber?: string;
   verifyNumber?: string;
@@ -52,7 +52,6 @@ export interface MembershipRequest {
   locationAddress?: string;
   agentId?: string;
   randomPass?: string;
-  occupation?: string;
   membershipRequestType?: number;
 }
 

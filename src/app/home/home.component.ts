@@ -50,8 +50,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public previousSteps$: BehaviorSubject<string[]>;
   public isMobileSend = false;
   public googleApiLoad: any;
-  public applicationNumber$: BehaviorSubject<string>;
-  public applicationNumber: Observable<string>;
+  public applicationNumber$: BehaviorSubject<number>;
+  public applicationNumber: Observable<number>;
   public error: string;
   public steps: string[] = [];
   constructor(
@@ -76,17 +76,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.previousSteps$ = new BehaviorSubject<string[]>(
       this.loadPreviousSteps()
     );
-    this.applicationNumber$ = new BehaviorSubject<string>(
+    this.applicationNumber$ = new BehaviorSubject<number>(
       this.stateService.data.request?.applicationNumber
     );
 
-    // this.applicationNumber = this.applicationNumber$.asObservable().pipe(
-    //   tap((application) => {
-    //     if (application) {
-    //       this.request = this.stateService.data.request;
-    //     }
-    //   })
-    // );
+    this.applicationNumber = this.applicationNumber$.asObservable().pipe(
+      tap((application) => {
+        if (
+          (!this.request.applicationNumber ||
+            this.request.applicationNumber < 0) &&
+          this.stateService.data.request
+        ) {
+          this.request = this.stateService.data.request;
+          this.openType = 'Update';
+        }
+      })
+    );
 
     this.isNextButtonShowed = this.currentStep$.pipe(
       map((s) => showNextButtonScreens.includes(s))
@@ -119,6 +124,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     membershipNumber: '0',
     membershipRequestType: 2,
   };
+
+  public openType = 'New'; // Update
+
+  public updateStatus: Observable<boolean>;
 
   public requestValidation: CustomValidation[] = [];
 
@@ -214,7 +223,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      this.processApplication().subscribe();
+      this.updateStatus = this.processApplication();
     } else if (this.currentStep$.value === 'sSearch') {
       this.processSearch();
       return;
@@ -235,19 +244,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.requestValidation = [];
   }
 
-  private processApplication(): Observable<string | undefined> {
+  private processApplication(): Observable<boolean | undefined> {
     return this.createApplication().pipe(
       map((appResult) => {
         this.applicationNumber$.next(appResult);
       }),
       switchMap(() => this.createLicensorRequest()),
       tap(() => this.licenseAuthenticationService.removeAccessCache()),
-
+      map(() => true),
       catchError((err) => {
         err.error
           ? this.toastrservice.error(err.error)
           : this.toastrservice.error(err);
-        return of(undefined);
+        return of(false);
       })
     );
   }
@@ -306,7 +315,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       .pipe(tap((k) => console.log(k)));
   }
 
-  private createApplication(): Observable<string> {
+  private createApplication(): Observable<number> {
     return this.createUser().pipe(
       switchMap((res) => {
         if (res.succeeded) {
@@ -327,7 +336,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const f = new FormData();
     for (const key in this.request) {
       if (key) {
-        f.append(key, this.request[key]);
+        if (key === 'emiratesIDNumber' && this.openType === 'Update') {
+          f.append(key, null); // this is because in License system has a check
+        } else {
+          f.append(key, this.request[key]);
+        }
       }
     }
     return f;

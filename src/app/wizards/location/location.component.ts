@@ -20,6 +20,7 @@ import {
 } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { map, tap, shareReplay } from 'rxjs/operators';
+import { InvokeFunctionExpr } from '@angular/compiler';
 
 @Component({
   selector: 'ot-location',
@@ -37,7 +38,7 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
 
   @Input() locationId: number;
   @Input() areaId: string;
-
+  @Input() agentId: number;
   public formSubmitted$: BehaviorSubject<boolean>;
   public locationSelected$: BehaviorSubject<number | undefined>;
   public locationSelected: Observable<number> | undefined;

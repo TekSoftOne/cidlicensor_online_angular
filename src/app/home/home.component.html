@@ -284,22 +284,46 @@
                 <div class="col-lg-12 col-12 col-sm-12" id="last-div-4">
                   <div class="row">
                     <div ngif class="col-lg-12 col-12 col-sm-12 text-center">
-                      <h3
-                        *ngIf="
-                          applicationNumber | async as appId;
-                          else creatingAppNumber
-                        "
+                      <ng-container
+                        *ngIf="openType === 'New'; else applicationUpdate"
                       >
-                        Your Application Number is:
-                        {{ appId }}
-                      </h3>
-                      <ng-template #creatingAppNumber>
-                        <div *ngIf="!error; else errorCreatingApp">
-                          <h3>We are processing...</h3>
-                        </div>
-                        <ng-template #errorCreatingApp
-                          ><h3>{{ error }}</h3></ng-template
+                        <h3
+                          *ngIf="
+                            applicationNumber | async as appId;
+                            else creatingAppNumber
+                          "
                         >
+                          Your Application Number is:
+                          {{ appId }}
+                        </h3>
+                        <ng-template #creatingAppNumber>
+                          <div *ngIf="!error; else errorCreatingApp">
+                            <h3>Creating...</h3>
+                          </div>
+                          <ng-template #errorCreatingApp
+                            ><h3>{{ error }}</h3></ng-template
+                          >
+                        </ng-template>
+                      </ng-container>
+                      <ng-template #applicationUpdate>
+                        <h3
+                          *ngIf="
+                            updateStatus | async as status;
+                            else updatingAppNumber
+                          "
+                        >
+                          Your application
+                          {{ request.applicationNumber }} has been updated
+                          success!
+                        </h3>
+                        <ng-template #updatingAppNumber>
+                          <div *ngIf="!error; else errorUpdatingApp">
+                            <h3>Updating...</h3>
+                          </div>
+                          <ng-template #errorUpdatingApp
+                            ><h3>{{ error }}</h3></ng-template
+                          >
+                        </ng-template>
                       </ng-template>
                     </div>
                   </div>

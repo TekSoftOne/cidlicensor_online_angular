@@ -33,7 +33,7 @@ export class PersonalInformationComponent
 
   @Input() fullName: string;
   @Input() email: string;
-  @Input() occupation: string;
+  @Input() address: string;
   @Input() fullAddress: string;
   ngAfterViewInit(): void {
     try {
@@ -54,7 +54,7 @@ export class PersonalInformationComponent
     this.data.emit({
       fullName: this.fullName,
       email: this.email,
-      address: this.occupation,
+      address: this.address,
       fullAddress: this.fullAddress,
     });
     this.nextStep.emit(f);
