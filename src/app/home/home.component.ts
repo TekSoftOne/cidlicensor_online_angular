@@ -80,13 +80,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.stateService.data.request?.applicationNumber
     );
 
-    this.applicationNumber = this.applicationNumber$.asObservable().pipe(
-      tap((application) => {
-        if (application) {
-          this.request = this.stateService.data.request;
-        }
-      })
-    );
+    // this.applicationNumber = this.applicationNumber$.asObservable().pipe(
+    //   tap((application) => {
+    //     if (application) {
+    //       this.request = this.stateService.data.request;
+    //     }
+    //   })
+    // );
 
     this.isNextButtonShowed = this.currentStep$.pipe(
       map((s) => showNextButtonScreens.includes(s))
@@ -117,6 +117,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     genderId: 0,
     areaId: '0',
     membershipNumber: '0',
+    membershipRequestType: 2,
   };
 
   public requestValidation: CustomValidation[] = [];

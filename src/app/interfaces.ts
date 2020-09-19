@@ -53,6 +53,7 @@ export interface MembershipRequest {
   agentId?: string;
   randomPass?: string;
   occupation?: string;
+  membershipRequestType?: number;
 }
 
 export interface ApplicationState {

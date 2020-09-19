@@ -151,8 +151,9 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
     this.data.emit({
       areaId: this.areaSelected$.value,
       locationId: this.locationSelected$.value,
-      locationAddress: this.locations.find((l) => l.id === this.locationId)
-        ?.address,
+      locationAddress: this.locations.find(
+        (l) => l.id === this.locationSelected$.value
+      )?.address,
     });
     this.nextStep.emit(f);
   }
