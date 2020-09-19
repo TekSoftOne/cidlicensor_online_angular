@@ -53,6 +53,12 @@ export interface MembershipRequest {
   agentId?: string;
   randomPass?: string;
   membershipRequestType?: number;
+  membershipId?: number;
+}
+
+export interface LicenseMembershipInfo {
+  membershipId: number;
+  membershipNumber: string;
 }
 
 export interface ApplicationState {

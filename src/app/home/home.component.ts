@@ -1,7 +1,7 @@
+import { LicenseAuthenticationService } from './../authentication/licensor/license-authentication.service';
 import { AuthenticationService } from './../authentication/authentication.service';
 import { LoginComponent } from './../authentication/login/login.component';
 import { StateService } from './../state-service';
-import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
 import { environment } from 'src/environments/environment';
 import {
   CURRENT_DATA_TOKEN,
@@ -13,6 +13,7 @@ import {
   MembershipRequest,
   CustomValidation,
   CreateUserResult,
+  LicenseMembershipInfo,
 } from './../interfaces';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -87,7 +88,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.request.applicationNumber < 0) &&
           this.stateService.data.request
         ) {
-          this.request = this.stateService.data.request;
+          this.request = {
+            ...this.stateService.data.request,
+            membershipRequestType: 2, // always = 2 whatever
+          };
           this.openType = 'Update';
         }
       })
@@ -245,11 +249,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private processApplication(): Observable<boolean | undefined> {
-    return this.createApplication().pipe(
+    return this.createLicensorRequest().pipe(
+      switchMap((membershipInfo: LicenseMembershipInfo) =>
+        this.createApplication(membershipInfo)
+      ),
       map((appResult) => {
         this.applicationNumber$.next(appResult);
       }),
-      switchMap(() => this.createLicensorRequest()),
       tap(() => this.licenseAuthenticationService.removeAccessCache()),
       map(() => true),
       catchError((err) => {
@@ -295,13 +301,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
       );
   }
 
-  private createRequestMembership(): Observable<string> {
+  private createRequestMembership(): Observable<number> {
     return this.httpClient
       .post(
         `${environment.apiUrl}/api/membershipRequests/update`,
         this.makeFormData()
       )
-      .pipe(map((appId) => appId as string));
+      .pipe(map((appId) => appId as number));
   }
 
   private sendRegistration(password: string): Observable<any> {
@@ -315,7 +321,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       .pipe(tap((k) => console.log(k)));
   }
 
-  private createApplication(): Observable<number> {
+  private createApplication(
+    membershipInfo: LicenseMembershipInfo
+  ): Observable<number> {
+    this.request.membershipNumber = membershipInfo.membershipNumber;
+    this.request.membershipId = membershipInfo.membershipId;
     return this.createUser().pipe(
       switchMap((res) => {
         if (res.succeeded) {
@@ -325,6 +335,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return of(false);
       }),
       switchMap(() => this.createRequestMembership()),
+      tap((appId) => (this.request.applicationNumber = appId)),
       catchError((err) => {
         this.toastrservice.error(err);
         return of(undefined);
@@ -346,7 +357,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return f;
   }
 
-  private createLicensorRequest(): Observable<string> {
+  private createLicensorRequest(): Observable<LicenseMembershipInfo> {
     return this.licenseAuthenticationService
       .request(
         `${environment.licenseUrl}/api/SalesPoint/AddNewMembership`,

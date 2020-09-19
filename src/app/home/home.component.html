@@ -289,12 +289,12 @@
                       >
                         <h3
                           *ngIf="
-                            applicationNumber | async as appId;
+                            updateStatus | async as status;
                             else creatingAppNumber
                           "
                         >
                           Your Application Number is:
-                          {{ appId }}
+                          {{ this.request.applicationNumber }}
                         </h3>
                         <ng-template #creatingAppNumber>
                           <div *ngIf="!error; else errorCreatingApp">
