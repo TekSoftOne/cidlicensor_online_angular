@@ -40,7 +40,7 @@ declare var $: any;
   styleUrls: ['./personal-information-advanced.component.scss'],
 })
 export class PersonalInformationAdvancedComponent
-  implements OnInit, IFormWizard, AfterViewInit {
+  implements OnInit, IFormWizard, AfterViewInit, OnChanges {
   constructor(
     private datePipe: DatePipe,
     private licenseAuthenticationService: LicenseAuthenticationService
@@ -113,6 +113,15 @@ export class PersonalInformationAdvancedComponent
 
   ngAfterViewInit(): void {
     this.initDatePicker();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.birthday) {
+      this.birthday = this.datePipe.transform(
+        changes.birthday.currentValue,
+        dateFormat
+      );
+    }
   }
 
   checkFormInvalid(form: NgForm): boolean {
