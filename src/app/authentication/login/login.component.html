@@ -28,14 +28,42 @@
     <!-- login part -->
     <div class="form-content">
       <div class="form-items">
-        <form>
-          <div class="row">
-            <form #loginForm="ngForm" (ngSubmit)="onSubmitLogin(loginForm)">
-              <div class="col-lg-12 login text-center col-12 col-sm-12">
-                <h2>LOGIN</h2>
+        <div class="row">
+          <div class="col-lg-12 login text-center col-12 col-sm-12">
+            <h2>LOGIN</h2>
+
+            <ng-container *ngIf="codeSent$ | async as sent; else loginButton">
+              <form
+                #sendCodeForm="ngForm"
+                (ngSubmit)="onSendCode(sendCodeForm)"
+              >
+                <input
+                  id="verifyCode"
+                  name="verifyCode"
+                  placeholder="Verify Code"
+                  type="text"
+                  ngModel
+                  required
+                  pattern="[0-9]{6}"
+                  [ngClass]="{
+                    'form-control': true,
+                    'is-invalid': checkControlInvalid(
+                      sendCodeForm,
+                      sendCodeForm.controls.verifyCode
+                    )
+                  }"
+                />
+                <input class="submit" name="" type="submit" value="Login" />
+              </form>
+            </ng-container>
+            <ng-template #loginButton>
+              <form
+                #sendPhoneForm="ngForm"
+                (ngSubmit)="onSendPhone(sendPhoneForm)"
+              >
                 <input
                   id="mobile-number"
-                  name="userName"
+                  name="phoneNumber"
                   placeholder="e.g. +17021234567"
                   type="text"
                   ngModel
@@ -44,30 +72,19 @@
                   [ngClass]="{
                     'form-control': true,
                     'is-invalid': checkControlInvalid(
-                      loginForm,
-                      loginForm.controls.userName
+                      sendPhoneForm,
+                      sendPhoneForm.controls.phoneNumber
                     )
                   }"
                 />
-                <input
-                  name="password"
-                  placeholder="Password"
-                  type="password"
-                  ngModel
-                  required
-                  [ngClass]="{
-                    'form-control': true,
-                    'is-invalid': checkControlInvalid(
-                      loginForm,
-                      loginForm.controls.password
-                    )
-                  }"
-                />
-                <input class="submit" name="" type="submit" value="Login" />
-              </div>
-            </form>
+                <div class="spinner-border" *ngIf="loading">
+                  Sending Code ...
+                </div>
+                <input class="submit" name="" type="submit" value="Next" />
+              </form>
+            </ng-template>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>

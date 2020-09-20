@@ -7,6 +7,10 @@ import {
   CURRENT_DATA_TOKEN,
   CURRENT_STEP_TOKEN,
   PREVIOUS_STEP_TOKEN,
+  STEPS_PERSONAL,
+  STEPS_LIMIT,
+  STEPS_LOCATION,
+  STEPS_SUBMIT,
   showHomeScreens,
 } from './../constants';
 import {
@@ -201,13 +205,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public next(f: NgForm): void {
-    if (
-      !f.form.valid ||
-      this.requestValidation.filter((x) => !x.isValid).length > 0
-    ) {
-      console.log('invalid');
-      return;
-    }
+    // if (
+    //   !f.form.valid ||
+    //   this.requestValidation.filter((x) => !x.isValid).length > 0
+    // ) {
+    //   console.log('invalid');
+    //   return;
+    // }
     const index = this.getIndex(this.currentStep$.value);
 
     let step = this.steps[index + 1];
@@ -310,13 +314,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
       .pipe(map((appId) => appId as number));
   }
 
-  private sendRegistration(password: string): Observable<any> {
+  private sendRegistration(): Observable<any> {
     return this.httpClient
       .post(`${environment.apiUrl}/api/Users/SendRegisterInformation`, {
         userName: this.request.email,
         email: this.request.email,
         fullName: this.request.fullName,
-        password: btoa(password),
+        password: undefined,
       })
       .pipe(tap((k) => console.log(k)));
   }
@@ -329,7 +333,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return this.createUser().pipe(
       switchMap((res) => {
         if (res.succeeded) {
-          return this.sendRegistration(res.password);
+          // return this.sendRegistration();
         }
         console.log('Email is already crewated');
         return of(false);
@@ -392,6 +396,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (!environment.production) {
       // localStorage.setItem(CURRENT_DATA_TOKEN, JSON.stringify(data));
     }
+  }
+
+  public isPersonalLeftStep(step: string): boolean {
+    return STEPS_PERSONAL.findIndex((s) => s === step) >= 0;
+  }
+
+  public isLimitLeftStep(step: string): boolean {
+    return STEPS_LIMIT.findIndex((s) => s === step) >= 0;
+  }
+
+  public isSubmitLeftStep(step: string): boolean {
+    return STEPS_SUBMIT.findIndex((s) => s === step) >= 0;
+  }
+
+  public isLocationLeftStep(step: string): boolean {
+    return STEPS_LOCATION.findIndex((s) => s === step) > 0;
   }
 
   ngOnInit(): void {}

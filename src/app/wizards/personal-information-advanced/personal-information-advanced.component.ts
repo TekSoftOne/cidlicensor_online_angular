@@ -1,3 +1,4 @@
+import { nationalities, religions } from './../../constants';
 import {
   isFormValid,
   isControlValid,
@@ -65,15 +66,11 @@ export class PersonalInformationAdvancedComponent
       { id: 2, name: 'Female' },
     ]).pipe(tap((g) => (this.genders = g)));
 
-    this.nationalities$ = of([
-      { id: 1, name: 'Ameria' },
-      { id: 2, name: 'Netherland' },
-    ]).pipe(tap((n) => (this.nationalities = n)));
+    this.nationalities$ = of(nationalities).pipe(
+      tap((n) => (this.nationalities = n))
+    );
 
-    this.religions$ = of([
-      { id: 1, name: 'Islam' },
-      { id: 2, name: 'Kristian' },
-    ]).pipe(tap((r) => (this.religions = r)));
+    this.religions$ = of(religions).pipe(tap((r) => (this.religions = r)));
   }
 
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
