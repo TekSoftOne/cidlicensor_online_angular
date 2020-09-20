@@ -1,3 +1,4 @@
+import { UserToken } from './../interface';
 import { AuthenticationService } from './../authentication.service';
 import { NgForm } from '@angular/forms';
 import {
@@ -45,58 +46,76 @@ export class LoginComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     nationPickerHelper();
   }
-  public login(phoneNumber: string): void {
+  public login(phoneNumber: string): Observable<UserToken> {
     this.loading = true;
-    this.authenticationService
-      .login(phoneNumber, undefined)
-      .pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.loading = false;
-          this.error = err.error ?? err.message;
-          this.toastrservice.error(err.error, 'Error');
-          return throwError(err);
-        })
-      )
-      .subscribe();
+    return this.authenticationService.login(phoneNumber, undefined).pipe(
+      tap(() => (this.loading = true)),
+
+      catchError((err: HttpErrorResponse) => {
+        this.loading = false;
+        this.error = err.error ?? err.message;
+        this.toastrservice.error(err.error, 'Error');
+        return throwError(err);
+      })
+    );
   }
 
   public checkControlInvalid(form: NgForm, control: any): boolean {
     return isControlValid(form, control);
   }
 
-  public onSendPhone(form: NgForm): void {
+  public onSendPhone(form: NgForm): Observable<boolean> {
     if (!form.valid) {
       return;
     }
+
+    const verifyPhoneResult = this.VerifyPhone(
+      form.controls.phoneNumber.value
+    ).pipe(
+      tap(() => {
+        console.log('');
+        this.codeSent$.next(true);
+      })
+    );
+    verifyPhoneResult.subscribe();
+    return verifyPhoneResult;
+  }
+
+  public VerifyPhone(phone: string): Observable<boolean> {
+    if (!environment.production) {
+      this.phoneNumber = phone;
+      return of(true);
+    }
+
     this.loading = true;
-    this.httpClient
+    return this.httpClient
       .post(`${environment.apiUrl}/api/phoneVerification/check`, {
-        phoneNumber: form.controls.phoneNumber.value,
+        phoneNumber: phone,
       } as VerificationModel)
       .pipe(
-        tap(() => this.codeSent$.next(true)),
         tap(() => (this.loading = false)),
-        tap(() => (this.phoneNumber = form.controls.phoneNumber.value)),
-        tap(() => this.router.navigateByUrl('track-your-request')),
-        tap(() => (this.loading = false))
-      )
-
-      .subscribe();
+        tap(() => (this.phoneNumber = phone)),
+        map(() => true)
+      );
   }
 
   public onSendCode(form: NgForm): Observable<boolean> {
     if (!form.valid) {
       return;
     }
+    const verifyCode = form.controls.verifyCode.value;
 
-    this.verifyCode(this.phoneNumber, form.controls.verifyCode.value)
+    this.verifyCode(this.phoneNumber, verifyCode)
       .pipe(
         map((res) => {
           if (!res) {
             throw new Error('The verify code is not valid');
           }
+
+          return true;
         }),
-        tap(() => this.login(this.phoneNumber)),
+        switchMap(() => this.login(this.phoneNumber)),
+        tap(() => this.router.navigateByUrl('track-your-request')),
         catchError((err) => {
           this.toastrservice.error(err);
           return of(undefined);
@@ -105,7 +124,7 @@ export class LoginComponent implements AfterViewInit {
       .subscribe();
   }
 
-  private verifyCode(phoneNumber: string, code: string): Observable<boolean> {
+  public verifyCode(phoneNumber: string, code: string): Observable<boolean> {
     if (!environment.production) {
       return of(true);
     }
