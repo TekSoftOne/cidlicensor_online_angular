@@ -54,8 +54,7 @@ export class LoginComponent implements AfterViewInit {
       catchError((err: HttpErrorResponse) => {
         this.loading = false;
         this.error = err.error ?? err.message;
-        this.toastrservice.error(err.error, 'Error');
-        return throwError(err);
+        return throwError(this.error);
       })
     );
   }
