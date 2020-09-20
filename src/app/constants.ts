@@ -97,6 +97,7 @@ export const STEPS_LIMIT = ['sWorkInformation'];
 export const STEPS_LOCATION = ['sLocationAreas'];
 
 export const STEPS_SUBMIT = [
+  'lastDiv',
   'sReview',
   'sPaymentChoices',
   'sApplicationIdNotice',

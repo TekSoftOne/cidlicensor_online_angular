@@ -411,7 +411,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public isLocationLeftStep(step: string): boolean {
-    return STEPS_LOCATION.findIndex((s) => s === step) > 0;
+    return STEPS_LOCATION.findIndex((s) => s === step) >= 0;
   }
 
   ngOnInit(): void {}
