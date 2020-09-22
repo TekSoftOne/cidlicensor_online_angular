@@ -8,7 +8,10 @@
           id="first-bg"
           *ngIf="isHomeShowed | async"
         >
-          <ot-welcome></ot-welcome>
+          <ot-welcome
+            [requestStatus]="request.status"
+            [applicationNumber]="request.applicationNumber"
+          ></ot-welcome>
         </div>
         <div class="vertical" *ngIf="isStepsFlowShowed | async">
           <div class="steps">

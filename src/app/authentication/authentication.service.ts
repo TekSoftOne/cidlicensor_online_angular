@@ -27,7 +27,7 @@ export class AuthenticationService {
       })
       .pipe(
         tap((token) => {
-          localStorage.setItem(this.USERTOKEN, JSON.stringify(token));
+          localStorage.setItem(this.USERTOKEN, JSON.stringify({ token }));
         })
       );
   }
@@ -37,13 +37,17 @@ export class AuthenticationService {
     this.window.open(this.REDIRECT_LOGOUT, '_self');
   }
 
-  public loginSilently(): UserToken | null {
+  public getUser(): UserToken | null {
     const cachedUser = localStorage.getItem(this.USERTOKEN);
     if (!cachedUser) {
       return null;
     }
 
     return JSON.parse(cachedUser);
+  }
+
+  public loginSilently(): UserToken | null {
+    return this.getUser();
   }
 
   public isTokenValid(): boolean {

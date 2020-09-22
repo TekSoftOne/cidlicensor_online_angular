@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ) {
     this.steps = stepsAll.filter((s) => {
       if (
-        this.authenticationService.loginSilently() &&
+        this.authenticationService.getUser() &&
         (s === 'sPhoneNumber' || s === 'sVerifyPhone')
       ) {
         return false;

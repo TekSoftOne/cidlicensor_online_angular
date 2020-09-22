@@ -111,6 +111,13 @@ export const customerTypes = [
   { id: 3, name: 'Tourist' },
 ];
 
+export const statuses = [
+  { id: 1, name: 'New' },
+  { id: 2, name: 'Pending' },
+  { id: 3, name: 'Rejected' },
+  { id: 4, name: 'Approved' },
+];
+
 export const nationalities = [
   { name: 'Afghanistan', id: 1 },
   { name: 'Albania', id: 2 },

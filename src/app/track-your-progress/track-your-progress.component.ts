@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { isFormValid } from '../form';
 import { StateService } from '../state-service';
 import { catchError, map, tap } from 'rxjs/operators';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Component({
   selector: 'ot-track-your-progress',
@@ -26,7 +27,8 @@ export class TrackYourProgressComponent implements AfterViewInit {
     private toastrservice: ToastrService,
     private httpClient: HttpClient,
     private stateService: StateService,
-    private router: Router
+    private router: Router,
+    private authenticationService: AuthenticationService
   ) {
     this.appResult$ = new BehaviorSubject<any>(undefined);
     this.appResult = this.appResult$.asObservable();
@@ -64,6 +66,7 @@ export class TrackYourProgressComponent implements AfterViewInit {
         `${environment.apiUrl}/api/MembershipRequests/search`,
         {
           applicationNumber: Number(applicationNumber),
+          phoneNumber: this.authenticationService.getUser().email,
         },
         httpOptions
       )
