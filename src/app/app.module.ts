@@ -36,6 +36,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RequestStatusComponent } from './request-status/request-status.component';
+import { LayerDisableComponent } from './layer-disable/layer-disable.component';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -62,6 +63,7 @@ export function createTranslateLoader(http: HttpClient) {
     HeaderComponent,
     WelcomeComponent,
     RequestStatusComponent,
+    LayerDisableComponent,
   ],
   imports: [
     BrowserModule,
