@@ -127,7 +127,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public request: MembershipRequest = {
     nationId: 0,
     religionId: 0,
-    genderId: 0,
+    gender: 0,
     areaId: '0',
     membershipNumber: '0',
     membershipRequestType: 2,
@@ -141,6 +141,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public updateData(request: MembershipRequest): void {
     this.request = { ...this.request, ...request };
+  }
+
+  public updateSearchMembershipData(request: MembershipRequest): void {
+    this.updateData({
+      ...request,
+      requestCategory: this.request.requestCategory,
+    });
   }
 
   public updateValidation(validation: CustomValidation): void {
@@ -232,9 +239,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
       this.updateStatus = this.processApplication();
-    } else if (this.currentStep$.value === 'sSearch') {
-      this.processSearch();
-      return;
+      // } else if (this.currentStep$.value === 'sSearch') {
+      //   this.processSearch();
+      //   return;
+      //
     } else if (
       this.currentStep$.value === 'sTypeOfCustomer' &&
       this.request.typeOfCustomer === 'Tourist'
@@ -339,11 +347,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return of(false);
       }),
       switchMap(() => this.createRequestMembership()),
-      tap((appId) => (this.request.applicationNumber = appId)),
-      catchError((err) => {
-        this.toastrservice.error(err);
-        return of(undefined);
-      })
+      tap((appId) => (this.request.applicationNumber = appId))
     );
   }
 

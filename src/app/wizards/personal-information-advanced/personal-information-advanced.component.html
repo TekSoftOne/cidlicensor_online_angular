@@ -135,13 +135,13 @@
                   <select
                     name=""
                     id=""
-                    [(ngModel)]="genderId"
-                    formControlName="genderId"
+                    [(ngModel)]="gender"
+                    formControlName="gender"
                     [ngClass]="{
                       'form-control': true,
                       'is-invalid': checkControlInvalid(
                         membershipForm,
-                        formPersonal.controls.genderId
+                        formPersonal.controls.gender
                       )
                     }"
                   >

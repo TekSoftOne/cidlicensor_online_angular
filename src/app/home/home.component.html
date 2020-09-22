@@ -155,7 +155,7 @@
           <!-- MEMBERSHIP NUMBER -->
           <ng-template #sSearch ngSwitchCase="sSearch">
             <ot-search-membership-number
-              (data)="updateData($event)"
+              (data)="updateSearchMembershipData($event)"
               (nextStep)="next($event)"
             >
             </ot-search-membership-number>
@@ -183,7 +183,7 @@
               [emirateIDNumber]="request.emiratesIDNumber"
               [passportNumber]="request.passportNumber"
               [birthday]="request.birthDate"
-              [genderId]="request.genderId"
+              [gender]="request.gender"
               [religionId]="request.religionId"
               [fileEmirateBack]="request.emiratesIdBack"
               [fileEmirateFront]="request.emiratesIdFront"

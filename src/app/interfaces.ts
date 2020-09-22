@@ -36,7 +36,7 @@ export interface MembershipRequest {
   membershipNumber?: string;
   emiratesIDNumber?: string;
   passportNumber?: string;
-  genderId?: number;
+  gender?: number;
   genderName?: string;
   birthDate?: string;
   religionId?: number;

@@ -1,6 +1,9 @@
 import { MembershipRequest, IFormWizard } from './../../interfaces';
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
+import { switchMap, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'ot-summary',
@@ -9,7 +12,14 @@ import { NgForm } from '@angular/forms';
 })
 export class SummaryComponent implements OnInit, IFormWizard {
   @Input() request: MembershipRequest;
-  constructor() {}
+  constructor(
+    private licenseAuthenticationService: LicenseAuthenticationService
+  ) {
+    this.licenseAuthenticationService
+      .get(`${environment.licenseUrl}/api/salesPoint/generateMemberShipNumber`)
+      .pipe(tap((no) => this.data.emit({ membershipNumber: no })))
+      .subscribe();
+  }
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest

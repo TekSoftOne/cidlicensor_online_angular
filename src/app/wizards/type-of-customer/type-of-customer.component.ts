@@ -9,6 +9,7 @@ import { NgForm, FormGroup, FormControl } from '@angular/forms';
 import { MembershipRequest } from 'src/app/interfaces';
 import { ToastrService } from 'ngx-toastr';
 import { customerTypes } from 'src/app/constants';
+import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
 
 @Component({
   selector: 'ot-type-of-customer',
@@ -17,8 +18,11 @@ import { customerTypes } from 'src/app/constants';
 })
 export class TypeOfCustomerComponent implements OnInit, IFormWizard {
   public formCustomerType: FormGroup;
-  constructor(private toastrservice: ToastrService) {
-    console.log();
+  constructor(
+    private toastrservice: ToastrService,
+    private licenseAuthenticationService: LicenseAuthenticationService
+  ) {
+    this.licenseAuthenticationService.getAccess().subscribe();
   }
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
