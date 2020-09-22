@@ -1,3 +1,3 @@
 module.exports = () => {
-  $("#ot-overlay").show();
+  $(".ot-overlay").show();
 };

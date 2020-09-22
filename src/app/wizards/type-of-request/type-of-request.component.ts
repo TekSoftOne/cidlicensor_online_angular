@@ -21,7 +21,7 @@ export class TypeOfRequestComponent implements OnInit, IFormWizard {
   >();
 
   public formRequestType: FormGroup;
-
+  @Input() enabled: boolean;
   @Input() typeOfRequest: any;
   checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
