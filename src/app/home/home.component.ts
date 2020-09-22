@@ -239,10 +239,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
       this.updateStatus = this.processApplication();
-      // } else if (this.currentStep$.value === 'sSearch') {
-      //   this.processSearch();
-      //   return;
-      //
     } else if (
       this.currentStep$.value === 'sTypeOfCustomer' &&
       this.request.typeOfCustomer === 'Tourist'
@@ -261,7 +257,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private processApplication(): Observable<boolean | undefined> {
-    return this.createLicensorRequest().pipe(
+    return this.generateMembershipNumber().pipe(
+      tap((membershipNo) => (this.request.membershipNumber = membershipNo)),
+      switchMap(() => this.createLicensorRequest()),
       switchMap((membershipInfo: LicenseMembershipInfo) =>
         this.createApplication(membershipInfo)
       ),
@@ -279,9 +277,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private processSearch(): void {
-    this.toastrservice.error(
-      'Can not find this membership, please try another one!'
+  private generateMembershipNumber(): Observable<string> {
+    return this.licenseAuthenticationService.get(
+      `${environment.licenseUrl}/api/salesPoint/generateMemberShipNumber`
     );
   }
 

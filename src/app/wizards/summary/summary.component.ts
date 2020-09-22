@@ -12,14 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SummaryComponent implements OnInit, IFormWizard {
   @Input() request: MembershipRequest;
-  constructor(
-    private licenseAuthenticationService: LicenseAuthenticationService
-  ) {
-    this.licenseAuthenticationService
-      .get(`${environment.licenseUrl}/api/salesPoint/generateMemberShipNumber`)
-      .pipe(tap((no) => this.data.emit({ membershipNumber: no })))
-      .subscribe();
-  }
+  constructor() {}
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest
