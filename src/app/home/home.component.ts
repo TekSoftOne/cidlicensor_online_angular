@@ -12,6 +12,7 @@ import {
   STEPS_LOCATION,
   STEPS_SUBMIT,
   showHomeScreens,
+  getStatusFromId,
 } from './../constants';
 import {
   MembershipRequest,
@@ -211,6 +212,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
+  public isApproved(): boolean {
+    return getStatusFromId(this.request.status) === 'Approved';
+  }
+
   public next(f: NgForm): void {
     // if (
     //   !f.form.valid ||
@@ -393,8 +398,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private cacheCurrentStep(step: string, previousSteps: string[]): void {
     if (!environment.production) {
-      // localStorage.setItem(CURRENT_STEP_TOKEN, step);
-      // localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
+      localStorage.setItem(CURRENT_STEP_TOKEN, step);
+      localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
     }
   }
 

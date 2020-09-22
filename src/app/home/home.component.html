@@ -154,6 +154,7 @@
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [typeOfCustomer]="request.typeOfCustomer"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-type-of-customer>

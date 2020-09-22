@@ -54,7 +54,7 @@ export interface MembershipRequest {
   randomPass?: string;
   membershipRequestType?: number;
   membershipId?: number;
-  status?: string;
+  status?: number;
 }
 
 export interface LicenseMembershipInfo {

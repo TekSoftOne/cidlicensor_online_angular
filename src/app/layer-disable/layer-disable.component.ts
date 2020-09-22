@@ -18,7 +18,7 @@ import * as overlayHelper from './overlay-helper.js';
   styleUrls: ['./layer-disable.component.scss'],
 })
 export class LayerDisableComponent implements OnInit, OnChanges {
-  @Input() activated = false;
+  @Input() activated: boolean;
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.activated && changes.activated.currentValue) {

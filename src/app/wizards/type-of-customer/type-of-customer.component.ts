@@ -4,7 +4,15 @@ import {
   requireCheckboxesToBeCheckedValidator,
 } from 'src/app/form';
 import { IFormWizard } from './../../interfaces';
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { NgForm, FormGroup, FormControl } from '@angular/forms';
 import { MembershipRequest } from 'src/app/interfaces';
 import { ToastrService } from 'ngx-toastr';
@@ -24,12 +32,14 @@ export class TypeOfCustomerComponent implements OnInit, IFormWizard {
   ) {
     this.licenseAuthenticationService.getAccess().subscribe();
   }
+
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest
   >();
 
   @Input() typeOfCustomer: any;
+  @Input() enabled: boolean;
 
   checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
