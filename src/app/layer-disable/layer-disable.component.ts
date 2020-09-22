@@ -1,4 +1,11 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import * as overlayHelper from './overlay-helper.js';
 
 @Component({
@@ -10,10 +17,13 @@ import * as overlayHelper from './overlay-helper.js';
   },
   styleUrls: ['./layer-disable.component.scss'],
 })
-export class LayerDisableComponent implements OnInit, AfterViewInit {
+export class LayerDisableComponent implements OnInit, OnChanges {
+  @Input() activated = false;
   constructor() {}
-  ngAfterViewInit(): void {
-    overlayHelper();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.activated && changes.activated.currentValue) {
+      overlayHelper();
+    }
   }
 
   ngOnInit(): void {}
