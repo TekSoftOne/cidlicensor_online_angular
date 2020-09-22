@@ -411,7 +411,10 @@
                       (click)="next()"
                       >Next</a
                     > -->
+
                   <button
+                    [disabled]="disableSubmit | async"
+                    [ngClass]="{ 'next-disabled': disableSubmit | async }"
                     type="submit"
                     id="next-btn"
                     *ngIf="isNextButtonShowed | async"

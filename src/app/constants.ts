@@ -34,7 +34,7 @@ if (environment.production === false) {
   showPreviousButtonScreens.push('sApplicationIdNotice');
 }
 
-export const showNextButtonScreens = [
+export const showNextButtonScreensAll = [
   'sPhoneNumber',
   'sVerifyPhone',
   'sTypeOfCustomer',

@@ -21,7 +21,7 @@ import {
   LicenseMembershipInfo,
 } from './../interfaces';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
@@ -29,7 +29,7 @@ import { createRandomPass } from '../authentication/password-generator';
 import {
   stepsAll,
   showPreviousButtonScreens,
-  showNextButtonScreens,
+  showNextButtonScreensAll,
   showStepsFlowScreens,
 } from '../constants';
 
@@ -60,6 +60,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public applicationNumber: Observable<number>;
   public error: string;
   public steps: string[] = [];
+
+  public disableSubmit: Observable<boolean>;
+  public reachSubmitStep$: BehaviorSubject<boolean>;
+  public isApprovedRequest$: BehaviorSubject<boolean>;
+
+  public nextButtonsOnScreens: string[] = [];
   constructor(
     private httpClient: HttpClient,
     private toastrservice: ToastrService,
@@ -86,10 +92,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
       return true;
     });
 
+    this.nextButtonsOnScreens = showNextButtonScreensAll;
+
     this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
     this.previousSteps$ = new BehaviorSubject<string[]>(
       this.loadPreviousSteps()
     );
+
+    this.reachSubmitStep$ = new BehaviorSubject<boolean>(false);
+    this.isApprovedRequest$ = new BehaviorSubject<boolean>(false);
+    this.disableSubmit = combineLatest([
+      this.reachSubmitStep$,
+      this.isApprovedRequest$,
+    ]).pipe(
+      map(([submit, approved]) => {
+        if (submit && approved) {
+          return true;
+        }
+
+        return false;
+      })
+    );
+
     this.applicationNumber$ = new BehaviorSubject<number>(
       this.stateService.data.request?.applicationNumber
     );
@@ -107,11 +131,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
           };
           this.openType = 'Update';
         }
-      })
+      }),
+      tap(() => this.isApprovedRequest$.next(this.isApproved()))
     );
 
     this.isNextButtonShowed = this.currentStep$.pipe(
-      map((s) => showNextButtonScreens.includes(s))
+      map((s) => this.nextButtonsOnScreens.includes(s))
     );
 
     this.isPreviousButtonShowed = this.currentStep$.pipe(
@@ -265,8 +290,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.previousSteps$.next(previousSteps);
     this.currentStep$.next(step);
+    this.checkSubmitAllowance(step);
     this.cacheCurrentStep(step, this.previousSteps$.value);
     this.requestValidation = [];
+  }
+
+  private checkSubmitAllowance(step: string): void {
+    if (step === 'sReview') {
+      this.reachSubmitStep$.next(true);
+    } else {
+      this.reachSubmitStep$.next(false);
+    }
   }
 
   private processApplication(): Observable<boolean | undefined> {
@@ -396,6 +430,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public previous(): void {
     const lastOne = this.previousSteps$.value.pop();
     this.currentStep$.next(lastOne);
+    this.checkSubmitAllowance(lastOne);
     this.requestValidation = [];
   }
 
