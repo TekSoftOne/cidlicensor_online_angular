@@ -35,6 +35,7 @@ export class PersonalInformationComponent
   @Input() email: string;
   @Input() address: string;
   @Input() fullAddress: string;
+  @Input() enabled: boolean;
   ngAfterViewInit(): void {
     try {
       scripts();

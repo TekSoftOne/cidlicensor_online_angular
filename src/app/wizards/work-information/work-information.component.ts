@@ -18,6 +18,7 @@ export class WorkInformationComponent implements OnInit, IFormWizard {
   @Input() monthlySalary: number;
   @Input() monthlyQuota: number;
   @Input() comment: string;
+  @Input() enabled: boolean;
 
   checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);

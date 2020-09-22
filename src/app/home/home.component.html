@@ -154,7 +154,7 @@
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [typeOfCustomer]="request.typeOfCustomer"
-              [enabled]="false"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-type-of-customer>
@@ -165,7 +165,7 @@
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [typeOfRequest]="request.requestCategory"
-              [enabled]="false"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-type-of-request>
@@ -187,6 +187,7 @@
               [fullAddress]="request.fullAddress"
               (data)="updateData($event)"
               (nextStep)="next($event)"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-personal-information>
@@ -208,6 +209,7 @@
               [fileAuthorizationLetter]="request.authorizationLetter"
               [fileProfilePic]="request.profilePhoto"
               [typeOfCustomer]="request.typeOfCustomer"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-personal-information-advanced>
@@ -217,6 +219,7 @@
             <ot-work-information
               (data)="updateData($event)"
               (nextStep)="next($event)"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-work-information>
@@ -229,6 +232,7 @@
               [areaId]="request.areaId"
               [locationId]="request.locationId"
               (dataValidation)="updateValidation($event)"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-location>

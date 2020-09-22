@@ -39,6 +39,8 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
   @Input() locationId: number;
   @Input() areaId: string;
   @Input() agentId: number;
+  @Input() enabled: boolean;
+
   public formSubmitted$: BehaviorSubject<boolean>;
   public locationSelected$: BehaviorSubject<number | undefined>;
   public locationSelected: Observable<number> | undefined;

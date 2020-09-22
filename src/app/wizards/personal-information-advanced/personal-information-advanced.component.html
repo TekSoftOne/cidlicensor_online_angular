@@ -3,159 +3,160 @@
   [formGroup]="formPersonal"
   (ngSubmit)="next(membershipForm)"
 >
-  <div class="row">
-    <div class="col-lg-12 old col-12 col-sm-12 flush" id="ft-div-4">
-      <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
-        <div class="row">
-          <div class="col-lg-12 text-center col-12 col-sm-12">
-            <h3>Please Enter your Personal Information:</h3>
+  <ot-layer-disable [activated]="!enabled">
+    <div class="row">
+      <div class="col-lg-12 old col-12 col-sm-12 flush" id="ft-div-4">
+        <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
+          <div class="row">
+            <div class="col-lg-12 text-center col-12 col-sm-12">
+              <h3>Please Enter your Personal Information:</h3>
+            </div>
           </div>
-        </div>
-        <div class="row tp">
-          <div class="col-lg-12 col-12 col-sm-12">
-            <div class="row">
-              <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">Nationality*</label>
-                <select
-                  class="sel"
-                  name="nation"
-                  [(ngModel)]="nationId"
-                  [ngClass]="{
-                    'form-control': true,
-                    'is-invalid': checkControlInvalid(
-                      membershipForm,
-                      formPersonal.controls.nation
-                    )
-                  }"
-                  formControlName="nation"
-                >
-                  <option [ngValue]="0" selected>Choose a nation</option>
-                  <option
-                    [value]="nation.id"
-                    *ngFor="let nation of nationalities$ | async"
-                  >
-                    {{ nation.name }}
-                  </option>
-                </select>
-              </div>
-              <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">Religion*</label>
-                <select
-                  class="sel"
-                  [(ngModel)]="religionId"
-                  name="religion"
-                  formControlName="religion"
-                  [ngClass]="{
-                    'form-control': true,
-                    'is-invalid': checkControlInvalid(
-                      membershipForm,
-                      formPersonal.controls.religion
-                    )
-                  }"
-                >
-                  <option value="0">Choose a Religion</option>
-                  <option
-                    *ngFor="let religion of religions$ | async"
-                    [value]="religion.id"
-                  >
-                    {{ religion.name }}
-                  </option>
-                </select>
-              </div>
-              <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">Emirates ID Number*</label>
-                <input
-                  name="emirateIDNumber"
-                  placeholder="Enter your Emirates ID Number"
-                  type="text"
-                  [(ngModel)]="emirateIDNumber"
-                  formControlName="emirateIDNumber"
-                  [ngClass]="{
-                    'form-control': true,
-                    'is-invalid': checkControlInvalid(
-                      membershipForm,
-                      formPersonal.controls.emirateIDNumber
-                    )
-                  }"
-                />
-              </div>
-              <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label"
-                  >Passport Number<span *ngIf="typeOfCustomer === 'tourist'"
-                    >*</span
-                  ></label
-                >
-                <input
-                  name=""
-                  placeholder="Enter your Passport Number"
-                  type="text"
-                  [(ngModel)]="passportNumber"
-                  formControlName="passportNumber"
-                  [ngClass]="{
-                    'form-control': true,
-                    'is-invalid': checkControlInvalid(
-                      membershipForm,
-                      formPersonal.controls.passportNumber
-                    )
-                  }"
-                />
-              </div>
-              <div class="col-lg-6 col-12 col-sm-6">
-                <ot-upload-image
-                  (data)="fileProfilePic = $event"
-                  (dataValidation)="dataValidation.emit($event)"
-                  isRequired="true"
-                  [formSubmitted]="membershipForm.submitted"
-                  [image]="fileProfilePic"
-                  controlName="Attach your Profice Picture"
-                ></ot-upload-image>
-              </div>
-              <div class="col-lg-6 flush col-12 col-sm-6">
-                <div class="col-lg-12 col-12 col-sm-12">
-                  <ot-upload-file
-                    [formSubmited]="membershipForm.submitted"
-                    (data)="fileEmirateBack = $event"
-                    (dataValidation)="dataValidation.emit($event)"
-                    [label]="'Attach Emirates ID Back'"
-                    constrolName="attach Emirates ID Back"
-                    [isRequired]="typeOfCustomer === 'tourist' ? true : false"
-                  >
-                  </ot-upload-file>
-                </div>
-                <div class="col-lg-12 col-12 col-sm-12">
-                  <ot-upload-file
-                    [formSubmited]="membershipForm.submitted"
-                    (data)="fileEmirateFront = $event"
-                    label="Attach Emirates ID Front"
-                  >
-                  </ot-upload-file>
-                </div>
-                <div class="col-lg-12 col-12 col-sm-12">
-                  <label class="form-label">Gender* </label>
+          <div class="row tp">
+            <div class="col-lg-12 col-12 col-sm-12">
+              <div class="row">
+                <div class="col-lg-6 col-12 col-sm-6">
+                  <label class="form-label">Nationality*</label>
                   <select
-                    name=""
-                    id=""
-                    [(ngModel)]="gender"
-                    formControlName="gender"
+                    class="sel"
+                    name="nation"
+                    [(ngModel)]="nationId"
                     [ngClass]="{
                       'form-control': true,
                       'is-invalid': checkControlInvalid(
                         membershipForm,
-                        formPersonal.controls.gender
+                        formPersonal.controls.nation
                       )
                     }"
+                    formControlName="nation"
                   >
-                    <option value="0">Choose a gender</option>
+                    <option [ngValue]="0" selected>Choose a nation</option>
                     <option
-                      [value]="gender.id"
-                      *ngFor="let gender of genders$ | async"
+                      [value]="nation.id"
+                      *ngFor="let nation of nationalities$ | async"
                     >
-                      {{ gender.name }}
+                      {{ nation.name }}
                     </option>
                   </select>
                 </div>
-              </div>
-              <!-- <div class="col-lg-6 hide col-12 col-sm-6">
+                <div class="col-lg-6 col-12 col-sm-6">
+                  <label class="form-label">Religion*</label>
+                  <select
+                    class="sel"
+                    [(ngModel)]="religionId"
+                    name="religion"
+                    formControlName="religion"
+                    [ngClass]="{
+                      'form-control': true,
+                      'is-invalid': checkControlInvalid(
+                        membershipForm,
+                        formPersonal.controls.religion
+                      )
+                    }"
+                  >
+                    <option value="0">Choose a Religion</option>
+                    <option
+                      *ngFor="let religion of religions$ | async"
+                      [value]="religion.id"
+                    >
+                      {{ religion.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-lg-6 col-12 col-sm-6">
+                  <label class="form-label">Emirates ID Number*</label>
+                  <input
+                    name="emirateIDNumber"
+                    placeholder="Enter your Emirates ID Number"
+                    type="text"
+                    [(ngModel)]="emirateIDNumber"
+                    formControlName="emirateIDNumber"
+                    [ngClass]="{
+                      'form-control': true,
+                      'is-invalid': checkControlInvalid(
+                        membershipForm,
+                        formPersonal.controls.emirateIDNumber
+                      )
+                    }"
+                  />
+                </div>
+                <div class="col-lg-6 col-12 col-sm-6">
+                  <label class="form-label"
+                    >Passport Number<span *ngIf="typeOfCustomer === 'tourist'"
+                      >*</span
+                    ></label
+                  >
+                  <input
+                    name=""
+                    placeholder="Enter your Passport Number"
+                    type="text"
+                    [(ngModel)]="passportNumber"
+                    formControlName="passportNumber"
+                    [ngClass]="{
+                      'form-control': true,
+                      'is-invalid': checkControlInvalid(
+                        membershipForm,
+                        formPersonal.controls.passportNumber
+                      )
+                    }"
+                  />
+                </div>
+                <div class="col-lg-6 col-12 col-sm-6">
+                  <ot-upload-image
+                    (data)="fileProfilePic = $event"
+                    (dataValidation)="dataValidation.emit($event)"
+                    isRequired="true"
+                    [formSubmitted]="membershipForm.submitted"
+                    [image]="fileProfilePic"
+                    controlName="Attach your Profice Picture"
+                  ></ot-upload-image>
+                </div>
+                <div class="col-lg-6 flush col-12 col-sm-6">
+                  <div class="col-lg-12 col-12 col-sm-12">
+                    <ot-upload-file
+                      [formSubmited]="membershipForm.submitted"
+                      (data)="fileEmirateBack = $event"
+                      (dataValidation)="dataValidation.emit($event)"
+                      [label]="'Attach Emirates ID Back'"
+                      constrolName="attach Emirates ID Back"
+                      [isRequired]="typeOfCustomer === 'tourist' ? true : false"
+                    >
+                    </ot-upload-file>
+                  </div>
+                  <div class="col-lg-12 col-12 col-sm-12">
+                    <ot-upload-file
+                      [formSubmited]="membershipForm.submitted"
+                      (data)="fileEmirateFront = $event"
+                      label="Attach Emirates ID Front"
+                    >
+                    </ot-upload-file>
+                  </div>
+                  <div class="col-lg-12 col-12 col-sm-12">
+                    <label class="form-label">Gender* </label>
+                    <select
+                      name=""
+                      id=""
+                      [(ngModel)]="gender"
+                      formControlName="gender"
+                      [ngClass]="{
+                        'form-control': true,
+                        'is-invalid': checkControlInvalid(
+                          membershipForm,
+                          formPersonal.controls.gender
+                        )
+                      }"
+                    >
+                      <option value="0">Choose a gender</option>
+                      <option
+                        [value]="gender.id"
+                        *ngFor="let gender of genders$ | async"
+                      >
+                        {{ gender.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <!-- <div class="col-lg-6 hide col-12 col-sm-6">
                 <label class="form-label">Attach Passport Copy</label>
                 <input
                   class="inputfile inputfile-1 hide"
@@ -169,47 +170,48 @@
                   <span>Upload File – png only Max Size 2 MB</span></label
                 >
               </div> -->
-              <!-- <ot-upload-file
+                <!-- <ot-upload-file
                 [formSubmited]="membershipForm.submitted"
                 (data)="fileAuthorizationLetter = $event"
                 label="Passport Attachment"
                 [isRequired]="typeOfCustomer === 'tourist'"
               >
               </ot-upload-file> -->
-              <div class="col-lg-6 col-12 col-sm-6">
-                <ot-upload-file
-                  [formSubmited]="membershipForm.submitted"
-                  (data)="fileAuthorizationLetter = $event"
-                  label="Attach Authorization Letter"
-                >
-                </ot-upload-file>
-              </div>
-              <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">Birthdate*</label>
-                <input
-                  class="date"
-                  id="datepickertwo"
-                  name="birthday"
-                  #birthdayDatePicker
-                  [(ngModel)]="birthday"
-                  placeholder="Enter your Birthdate  "
-                  type="text"
-                  formControlName="birthday"
-                  (change)="test($event)"
-                  [ngClass]="{
-                    'form-control': true,
-                    'is-invalid': checkControlInvalid(
-                      membershipForm,
-                      formPersonal.controls.birthday
-                    )
-                  }"
-                />
+                <div class="col-lg-6 col-12 col-sm-6">
+                  <ot-upload-file
+                    [formSubmited]="membershipForm.submitted"
+                    (data)="fileAuthorizationLetter = $event"
+                    label="Attach Authorization Letter"
+                  >
+                  </ot-upload-file>
+                </div>
+                <div class="col-lg-6 col-12 col-sm-6">
+                  <label class="form-label">Birthdate*</label>
+                  <input
+                    class="date"
+                    id="datepickertwo"
+                    name="birthday"
+                    #birthdayDatePicker
+                    [(ngModel)]="birthday"
+                    placeholder="Enter your Birthdate  "
+                    type="text"
+                    formControlName="birthday"
+                    (change)="test($event)"
+                    [ngClass]="{
+                      'form-control': true,
+                      'is-invalid': checkControlInvalid(
+                        membershipForm,
+                        formPersonal.controls.birthday
+                      )
+                    }"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </ot-layer-disable>
   <ng-content></ng-content>
 </form>

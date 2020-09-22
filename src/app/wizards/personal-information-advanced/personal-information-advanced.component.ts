@@ -62,6 +62,8 @@ export class PersonalInformationAdvancedComponent
     CustomValidation
   >();
 
+  @Input() enabled: boolean;
+
   public formPersonal: FormGroup;
   public nationalities$: Observable<Nationality[]>;
 

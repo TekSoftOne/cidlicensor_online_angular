@@ -1,46 +1,50 @@
 <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-  <div class="row">
-    <div class="col-lg-12 col-12 col-sm-12" id="sd-div">
-      <div class="row">
-        <div class="col-lg-12 text-center col-12 col-sm-12">
-          <h3>Please Enter your Work Information:</h3>
-        </div>
-      </div>
-      <div class="row tp">
-        <div class="col-lg-12 col-12 col-sm-12">
-          <div class="row">
-            <div class="col-lg-6 col-12 col-sm-6">
-              <label class="form-label">Your Monthly Salary:</label>
-              <input
-                name="monthlySalary"
-                placeholder="5000 DHS"
-                type="text"
-                [(ngModel)]="monthlySalary"
-              />
-            </div>
-            <div class="col-lg-6 col-12 col-sm-6">
-              <label class="form-label">How much Monthly Quota you need:</label>
-              <input
-                name="monthlyQuota"
-                placeholder="2000 DHS"
-                type="text"
-                [(ngModel)]="monthlyQuota"
-              />
-            </div>
+  <ot-layer-disable [activated]="!enabled">
+    <div class="row">
+      <div class="col-lg-12 col-12 col-sm-12" id="sd-div">
+        <div class="row">
+          <div class="col-lg-12 text-center col-12 col-sm-12">
+            <h3>Please Enter your Work Information:</h3>
           </div>
-          <div class="row">
-            <div class="col-lg-12 col-12 col-sm-12">
-              <label class="form-label">Any comments: </label>
-              <textarea
-                placeholder="Add your comment"
-                [(ngModel)]="comment"
-                name="comment"
-              ></textarea>
+        </div>
+        <div class="row tp">
+          <div class="col-lg-12 col-12 col-sm-12">
+            <div class="row">
+              <div class="col-lg-6 col-12 col-sm-6">
+                <label class="form-label">Your Monthly Salary:</label>
+                <input
+                  name="monthlySalary"
+                  placeholder="5000 DHS"
+                  type="text"
+                  [(ngModel)]="monthlySalary"
+                />
+              </div>
+              <div class="col-lg-6 col-12 col-sm-6">
+                <label class="form-label"
+                  >How much Monthly Quota you need:</label
+                >
+                <input
+                  name="monthlyQuota"
+                  placeholder="2000 DHS"
+                  type="text"
+                  [(ngModel)]="monthlyQuota"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 col-12 col-sm-12">
+                <label class="form-label">Any comments: </label>
+                <textarea
+                  placeholder="Add your comment"
+                  [(ngModel)]="comment"
+                  name="comment"
+                ></textarea>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </ot-layer-disable>
   <ng-content></ng-content>
 </form>
