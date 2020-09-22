@@ -75,6 +75,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return false;
       }
 
+      if (
+        this.authenticationService.getUser() &&
+        s === 'sSearch' &&
+        this.request.membershipNumber
+      ) {
+        return false;
+      }
+
       return true;
     });
 
