@@ -278,6 +278,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private generateMembershipNumber(): Observable<string> {
+    if (this.request.membershipNumber) {
+      return of(this.request.membershipNumber);
+    }
+
     return this.licenseAuthenticationService.get(
       `${environment.licenseUrl}/api/salesPoint/generateMemberShipNumber`
     );
