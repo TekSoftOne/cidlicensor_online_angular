@@ -43,7 +43,7 @@ export class AuthenticationService {
       return null;
     }
 
-    return JSON.parse(cachedUser);
+    return JSON.parse(cachedUser).token;
   }
 
   public loginSilently(): UserToken | null {

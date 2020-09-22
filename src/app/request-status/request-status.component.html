@@ -1,0 +1,11 @@
+<ng-container [ngSwitch]="resolvedStatus()">
+  <ng-template ngSwitchCase="Approved">
+    <h3>Your request has been approved</h3>
+  </ng-template>
+  <ng-template ngSwitchCase="Rejected">
+    <h3>Your request has been rejected</h3>
+  </ng-template>
+  <ng-template ngSwitchDefault>
+    <h3>{{ "LOGIN.ACCEPTING_MESSAGE" | translate }}</h3>
+  </ng-template>
+</ng-container>

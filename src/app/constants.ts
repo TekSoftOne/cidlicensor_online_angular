@@ -18,7 +18,7 @@ export const stepsAll = [
 export const showPreviousButtonScreens = [
   // 'sPhoneNumber',
   // 'sVerifyPhone',
-  'sTypeOfCustomer',
+  // 'sTypeOfCustomer',
   'sTypeOfRequest',
   // 'sSearch',
   'sPersonalBasic',
@@ -117,6 +117,10 @@ export const statuses = [
   { id: 3, name: 'Rejected' },
   { id: 4, name: 'Approved' },
 ];
+
+export function getStatusFromId(id: number): string {
+  return statuses.find((s) => s.id === id)?.name;
+}
 
 export const nationalities = [
   { name: 'Afghanistan', id: 1 },

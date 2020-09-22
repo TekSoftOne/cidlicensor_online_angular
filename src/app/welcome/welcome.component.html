@@ -1,20 +1,7 @@
 <div class="info-holder simple-info">
   <div><img alt="" src="/assets/images/graphic6.svg" /></div>
   <div>
-    <ng-template #welcomeLogin>
-      <ng-container [ngSwitch]="isApprovedRequest()">
-        <ng-template ngSwitchCase="approved">
-          <h3>Your request has been approved</h3>
-        </ng-template>
-        <ng-template ngSwitchCase="rejected">
-          <h3>Your request has been rejected</h3>
-        </ng-template>
-        <ng-template ngSwitchDefault>
-          <h3>{{ "LOGIN.ACCEPTING_MESSAGE" | translate }}</h3>
-        </ng-template>
-      </ng-container>
-    </ng-template>
-    <h3 *ngIf="!applicationNumber; else welcomeLogin">
+    <h3>
       {{ "HOME.TITLE" | translate }}
     </h3>
   </div>

@@ -8,96 +8,109 @@
           id="first-bg"
           *ngIf="isHomeShowed | async"
         >
-          <ot-welcome
-            [requestStatus]="request.status"
-            [applicationNumber]="request.applicationNumber"
-          ></ot-welcome>
+          <ot-welcome></ot-welcome>
         </div>
         <div class="vertical" *ngIf="isStepsFlowShowed | async">
-          <div class="steps">
-            <ul class=" " id="sds-ul" role="tablist">
-              <li
-                aria-disabled="false"
-                aria-selected="true"
-                class="first"
-                [ngClass]="{ current: isPersonalLeftStep(currentStep$.value) }"
-                id="ft-li"
-                role="tab"
-              >
-                <a id="steps-uid-0-t-0-0">
+          <ng-container
+            *ngIf="
+              request.applicationNumber &&
+                currentStep$.value === 'sTypeOfCustomer';
+              else steps
+            "
+          >
+            <ot-request-status [requestStatus]="request.status">
+            </ot-request-status>
+          </ng-container>
+          <ng-template #steps>
+            <div class="steps">
+              <ul class=" " id="sds-ul" role="tablist">
+                <li
+                  aria-disabled="false"
+                  aria-selected="true"
+                  class="first"
+                  [ngClass]="{
+                    current: isPersonalLeftStep(currentStep$.value)
+                  }"
+                  id="ft-li"
+                  role="tab"
+                >
+                  <a id="steps-uid-0-t-0-0">
+                    <span
+                      *ngIf="isPersonalLeftStep(currentStep$.value)"
+                      class="audible current-info"
+                    >
+                    </span>
+                    <div class="title">
+                      <span class="step-number">1</span
+                      ><span class="step-text">PERSONAL</span>
+                    </div>
+                  </a>
+                </li>
+
+                <li
+                  aria-disabled="true"
+                  class="disabled"
+                  [ngClass]="{ current: isLimitLeftStep(currentStep$.value) }"
+                  id="sd-li"
+                  role="tab"
+                >
                   <span
-                    *ngIf="isPersonalLeftStep(currentStep$.value)"
+                    *ngIf="isLimitLeftStep(currentStep$.value)"
                     class="audible current-info"
                   >
                   </span>
-                  <div class="title">
-                    <span class="step-number">1</span
-                    ><span class="step-text">PERSONAL</span>
-                  </div>
-                </a>
-              </li>
+                  <a id="steps-uid-0-t-1-1">
+                    <div class="title">
+                      <span class="step-number">2</span
+                      ><span class="step-text">LIMIT</span>
+                    </div>
+                  </a>
+                </li>
 
-              <li
-                aria-disabled="true"
-                class="disabled"
-                [ngClass]="{ current: isLimitLeftStep(currentStep$.value) }"
-                id="sd-li"
-                role="tab"
-              >
-                <span
-                  *ngIf="isLimitLeftStep(currentStep$.value)"
-                  class="audible current-info"
+                <li
+                  aria-disabled="true"
+                  class="disabled"
+                  [ngClass]="{
+                    current: isLocationLeftStep(currentStep$.value)
+                  }"
+                  id="sd-li"
+                  role="tab"
                 >
-                </span>
-                <a id="steps-uid-0-t-1-1">
-                  <div class="title">
-                    <span class="step-number">2</span
-                    ><span class="step-text">LIMIT</span>
-                  </div>
-                </a>
-              </li>
+                  <span
+                    *ngIf="isLocationLeftStep(currentStep$.value)"
+                    class="audible current-info"
+                  >
+                  </span>
+                  <a id="steps-uid-0-t-1-3">
+                    <div class="title">
+                      <span class="step-number">3</span
+                      ><span class="step-text">LOCATION</span>
+                    </div>
+                  </a>
+                </li>
 
-              <li
-                aria-disabled="true"
-                class="disabled"
-                [ngClass]="{ current: isLocationLeftStep(currentStep$.value) }"
-                id="sd-li"
-                role="tab"
-              >
-                <span
-                  *ngIf="isLocationLeftStep(currentStep$.value)"
-                  class="audible current-info"
+                <li
+                  aria-disabled="true"
+                  class="disabled"
+                  [ngClass]="{ current: isSubmitLeftStep(currentStep$.value) }"
+                  id="sd-li"
+                  role="tab"
                 >
-                </span>
-                <a id="steps-uid-0-t-1-3">
-                  <div class="title">
-                    <span class="step-number">3</span
-                    ><span class="step-text">LOCATION</span>
-                  </div>
-                </a>
-              </li>
-
-              <li
-                aria-disabled="true"
-                class="disabled"
-                [ngClass]="{ current: isSubmitLeftStep(currentStep$.value) }"
-                id="sd-li"
-                role="tab"
-              >
-                <span
-                  *ngIf="isSubmitLeftStep(currentStep$.value)"
-                  class="audible current-info"
-                >
-                </span>
-                <a id="steps-uid-0-t-1-4">
-                  <div class="title">
-                    <span class="step-number">4</span
-                    ><span class="step-text">SUBMIT</span>
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </div>
+                  <span
+                    *ngIf="isSubmitLeftStep(currentStep$.value)"
+                    class="audible current-info"
+                  >
+                  </span>
+                  <a id="steps-uid-0-t-1-4">
+                    <div class="title">
+                      <span class="step-number">4</span
+                      ><span class="step-text">SUBMIT</span>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>

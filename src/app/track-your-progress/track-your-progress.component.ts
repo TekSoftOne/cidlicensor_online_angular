@@ -81,7 +81,11 @@ export class TrackYourProgressComponent implements AfterViewInit {
           return app;
         }),
         catchError((err) => {
-          this.toastrservice.error(err, 'Error when searching application');
+          if (err.error && err.error.Message) {
+            this.toastrservice.error(err.error.Message, 'Search Result');
+          } else {
+            this.toastrservice.error(err, 'Error when searching application');
+          }
           return undefined;
         })
       );
