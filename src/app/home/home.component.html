@@ -154,7 +154,7 @@
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [typeOfCustomer]="request.typeOfCustomer"
-              [enabled]="!isApprovedRequest$.value"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-type-of-customer>
@@ -165,7 +165,7 @@
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [typeOfRequest]="request.requestCategory"
-              [enabled]="!isApprovedRequest$.value"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-type-of-request>
@@ -187,7 +187,7 @@
               [fullAddress]="request.fullAddress"
               (data)="updateData($event)"
               (nextStep)="next($event)"
-              [enabled]="!isApprovedRequest$.value"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-personal-information>
@@ -209,7 +209,7 @@
               [fileAuthorizationLetter]="request.authorizationLetter"
               [fileProfilePic]="request.profilePhoto"
               [typeOfCustomer]="request.typeOfCustomer"
-              [enabled]="!isApprovedRequest$.value"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-personal-information-advanced>
@@ -219,7 +219,7 @@
             <ot-work-information
               (data)="updateData($event)"
               (nextStep)="next($event)"
-              [enabled]="!isApprovedRequest$.value"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-work-information>
@@ -232,7 +232,7 @@
               [areaId]="request.areaId"
               [locationId]="request.locationId"
               (dataValidation)="updateValidation($event)"
-              [enabled]="!isApprovedRequest$.value"
+              [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-location>

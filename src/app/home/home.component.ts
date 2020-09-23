@@ -247,7 +247,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private isApproved(): boolean {
+  public isApproved(): boolean {
     return getStatusFromId(this.request.status) === 'Approved';
   }
 
@@ -298,7 +298,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private checkSubmitAllowance(step: string): void {
-    if (step === 'sReview') {
+    if (step === 'lastDiv') {
       this.reachSubmitStep$.next(true);
     } else {
       this.reachSubmitStep$.next(false);

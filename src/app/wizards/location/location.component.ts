@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { environment } from './../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, combineLatest, forkJoin } from 'rxjs';
@@ -19,7 +20,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
-import { map, tap, shareReplay } from 'rxjs/operators';
+import { map, tap, shareReplay, catchError } from 'rxjs/operators';
 import { InvokeFunctionExpr } from '@angular/compiler';
 
 @Component({
@@ -54,7 +55,10 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
 
   public formLocation: FormGroup;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private toastrService: ToastrService
+  ) {
     this.formSubmitted$ = new BehaviorSubject<boolean>(false);
     this.locationSelected$ = new BehaviorSubject<number | undefined>(
       this.locationId
@@ -93,7 +97,10 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
             name: d.areaName,
           }))
         ),
-        tap((d) => console.log(d))
+        catchError((err) => {
+          this.toastrService.error(err, 'Error when getting areas');
+          return undefined;
+        })
       );
 
     this.locations$ = combineLatest([locationAll$, this.areaSelected]).pipe(
