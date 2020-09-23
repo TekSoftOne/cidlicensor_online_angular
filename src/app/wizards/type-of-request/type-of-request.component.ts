@@ -1,10 +1,19 @@
+import { statuses } from './../../constants';
 import {
   isFormValid,
   isControlValid,
   requireCheckboxesToBeCheckedValidator,
 } from 'src/app/form';
 import { IFormWizard, MembershipRequest } from './../../interfaces';
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { NgForm, FormGroup, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,6 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class TypeOfRequestComponent implements OnInit, IFormWizard {
   constructor(private toastrservice: ToastrService) {}
+
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest

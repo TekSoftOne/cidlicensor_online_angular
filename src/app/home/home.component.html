@@ -175,6 +175,7 @@
             <ot-search-membership-number
               (data)="updateSearchMembershipData($event)"
               (nextStep)="next($event)"
+              [currentPhoneNumber]="request.phoneNumber"
             >
             </ot-search-membership-number>
           </ng-template>

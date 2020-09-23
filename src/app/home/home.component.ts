@@ -404,7 +404,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (res.succeeded) {
           // return this.sendRegistration();
         }
-        console.log('Email is already crewated');
+        console.log('Email is already created');
         return of(false);
       }),
       switchMap(() => this.createRequestMembership()),
@@ -416,8 +416,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const f = new FormData();
     for (const key in this.request) {
       if (key) {
-        if (key === 'emiratesIDNumber' && this.openType === 'Update') {
-          f.append(key, null); // this is because in License system has a check
+        // alway change status to pendind whenever updating
+        if (key === 'status') {
+          f.append(
+            key,
+            statuses.find((s) => s.name === 'Pending')?.id.toString()
+          );
         } else {
           f.append(key, this.request[key]);
         }

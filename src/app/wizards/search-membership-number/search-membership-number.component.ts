@@ -40,6 +40,8 @@ export class SearchMembershipNumberComponent
   >();
 
   @Input() membershipNumber: string;
+
+  @Input() currentPhoneNumber: string; // phone nnumber of the current customer
   public checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
   }
@@ -54,6 +56,13 @@ export class SearchMembershipNumberComponent
     this.searchMembership(this.membershipNumber)
       .pipe(
         map((data: any) => data.details),
+        tap((d) => {
+          if (d.phoneNumber !== this.currentPhoneNumber) {
+            throw new Error(
+              `Other user (another phone number) with this membership number already existed`
+            );
+          }
+        }),
         tap((membership: MembershipDetailInLicensor) =>
           this.data.emit({
             phoneNumber: membership.phoneNumber,
