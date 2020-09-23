@@ -112,10 +112,10 @@ export const customerTypes = [
 ];
 
 export const statuses = [
-  { id: 1, name: 'New' },
-  { id: 2, name: 'Pending' },
+  { id: 2, name: 'Approved' },
   { id: 3, name: 'Rejected' },
-  { id: 4, name: 'Approved' },
+  { id: 4, name: 'Pending' },
+  { id: 11, name: 'APPROVED_BY_AGENT_WAITING_FOR_ADMIN' },
 ];
 
 export function getStatusFromId(id: number): string {

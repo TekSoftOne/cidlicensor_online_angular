@@ -13,6 +13,7 @@ import {
   STEPS_SUBMIT,
   showHomeScreens,
   getStatusFromId,
+  statuses,
 } from './../constants';
 import {
   MembershipRequest,
@@ -167,6 +168,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     areaId: '0',
     membershipNumber: '0',
     membershipRequestType: 2,
+    status: statuses.find((s) => s.name === 'Pending')?.id,
   };
 
   public openType = 'New'; // Update
@@ -284,7 +286,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.request.typeOfCustomer === 'Tourist'
     ) {
       this.request.requestCategory = 'New';
-      step = this.steps[index + 3]; // tourist only have New, not Replacement or Renew
+      if (this.request.applicationNumber) {
+        // tourist only have New, not Replacement or Renew
+        step = this.steps[index + 2]; // jum over New/Search -> another jumps in another place handled Jump Search already
+      } else {
+        step = this.steps[index + 3]; // jump over New/Search
+      }
     }
 
     const previousSteps = this.previousSteps$.value;
@@ -327,7 +334,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private generateMembershipNumber(): Observable<string> {
-    if (this.request.membershipNumber) {
+    if (
+      this.request.membershipNumber &&
+      this.request.membershipNumber.length > 1
+    ) {
       return of(this.request.membershipNumber);
     }
 

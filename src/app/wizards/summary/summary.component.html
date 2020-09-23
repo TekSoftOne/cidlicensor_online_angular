@@ -39,7 +39,13 @@
                 </tr>
                 <tr>
                   <td>Enter Membership Number</td>
-                  <td>{{ request.membershipNumber }}</td>
+                  <td>
+                    {{
+                      request.membershipNumber?.length > 1
+                        ? request.membershipNumber
+                        : ""
+                    }}
+                  </td>
                 </tr>
                 <tr>
                   <td>Nationality</td>
