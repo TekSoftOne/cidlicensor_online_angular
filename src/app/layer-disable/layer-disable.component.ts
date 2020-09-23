@@ -22,6 +22,8 @@ export class LayerDisableComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    overlayHelper();
+    if (this.activated) {
+      overlayHelper();
+    }
   }
 }

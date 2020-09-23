@@ -7,8 +7,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable, combineLatest, merge } from 'rxjs';
+import { Observable, combineLatest, merge, BehaviorSubject } from 'rxjs';
 import { map, tap, skip, takeLast } from 'rxjs/operators';
 import { CustomValidation } from '../interfaces';
 

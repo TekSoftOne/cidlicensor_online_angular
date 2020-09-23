@@ -64,6 +64,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public disableSubmit: Observable<boolean>;
   public reachSubmitStep$: BehaviorSubject<boolean>;
   public isApprovedRequest$: BehaviorSubject<boolean>;
+  public isApprovedRequest: Observable<boolean>;
 
   public nextButtonsOnScreens: string[] = [];
   constructor(
@@ -101,6 +102,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.reachSubmitStep$ = new BehaviorSubject<boolean>(false);
     this.isApprovedRequest$ = new BehaviorSubject<boolean>(false);
+    this.isApprovedRequest = this.isApprovedRequest$.asObservable();
     this.disableSubmit = combineLatest([
       this.reachSubmitStep$,
       this.isApprovedRequest$,
@@ -245,7 +247,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
-  public isApproved(): boolean {
+  private isApproved(): boolean {
     return getStatusFromId(this.request.status) === 'Approved';
   }
 
@@ -441,8 +443,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private cacheCurrentStep(step: string, previousSteps: string[]): void {
     if (!environment.production) {
-      localStorage.setItem(CURRENT_STEP_TOKEN, step);
-      localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
+      // localStorage.setItem(CURRENT_STEP_TOKEN, step);
+      // localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
     }
   }
 
