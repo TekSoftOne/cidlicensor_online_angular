@@ -130,7 +130,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         ) {
           this.request = {
             ...this.stateService.data.request,
-            membershipRequestType: 2, // always = 2 whatever
+            membershipRequestType: 2, // always = 2 whatever,
           };
           this.openType = 'Update';
         }
@@ -254,13 +254,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public next(f: NgForm): void {
-    // if (
-    //   !f.form.valid ||
-    //   this.requestValidation.filter((x) => !x.isValid).length > 0
-    // ) {
-    //   console.log('invalid');
-    //   return;
-    // }
+    if (
+      !f.form.valid ||
+      this.requestValidation.filter((x) => !x.isValid).length > 0
+    ) {
+      console.log('invalid');
+      return;
+    }
     const index = this.getIndex(this.currentStep$.value);
 
     let step = this.steps[index + 1];

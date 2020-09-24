@@ -1,6 +1,7 @@
+import { MembershipRequestResult } from './../interfaces';
 import { MembershipRequest } from 'src/app/interfaces';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, combineLatest, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { AfterViewInit, Component } from '@angular/core';
@@ -8,8 +9,16 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { isFormValid } from '../form';
 import { StateService } from '../state-service';
-import { catchError, map, tap } from 'rxjs/operators';
+import {
+  catchError,
+  delay,
+  delayWhen,
+  map,
+  tap,
+  switchMap,
+} from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { BlobReader, Encoding } from '../utilities/blob-reader';
 
 @Component({
   selector: 'ot-track-your-progress',
@@ -21,8 +30,8 @@ import { AuthenticationService } from '../authentication/authentication.service'
   },
 })
 export class TrackYourProgressComponent implements AfterViewInit {
-  public appResult$: BehaviorSubject<MembershipRequest>;
-  public appResult: Observable<MembershipRequest>;
+  public appResult$: BehaviorSubject<MembershipRequestResult>;
+  public appResult: Observable<MembershipRequestResult>;
   constructor(
     private toastrservice: ToastrService,
     private httpClient: HttpClient,
@@ -47,14 +56,29 @@ export class TrackYourProgressComponent implements AfterViewInit {
     const appId = form.controls.applicationNumber.value;
 
     this.appResult = this.getApplication(appId).pipe(
-      tap((app) => (this.stateService.data.request = app)),
+      // tslint:disable-next-line: deprecation
+      switchMap((appData) =>
+        combineLatest([
+          of(appData),
+          this.processImageUrl(appData.profilePhotoUrl),
+        ])
+      ),
+      map(([appData, profileData]) => ({
+        ...appData,
+        profilePhoto: profileData,
+      })),
+      tap((app: any) => (this.stateService.data.request = app)),
       tap(() => this.router.navigateByUrl('home'))
     );
   }
 
+  private processImageUrl(imageUrl: string): Observable<any> {
+    return this.getBlobFromUrl(imageUrl);
+  }
+
   private getApplication(
     applicationNumber: string
-  ): Observable<MembershipRequest | undefined> {
+  ): Observable<MembershipRequestResult | undefined> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -89,5 +113,19 @@ export class TrackYourProgressComponent implements AfterViewInit {
           return undefined;
         })
       );
+  }
+
+  public getBlobFromUrl(imageUrl: string): Observable<Blob> {
+    return new Observable((observer) => {
+      fetch(imageUrl)
+        .then((res) => res.blob())
+        .then((res) => {
+          observer.next(res);
+          observer.complete();
+        })
+        .catch((err) => {
+          observer.error(err);
+        });
+    });
   }
 }

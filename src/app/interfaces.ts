@@ -57,13 +57,21 @@ export interface MembershipRequest {
   status?: number;
 }
 
+export interface MembershipRequestResult extends MembershipRequest {
+  profilePhotoUrl?: string;
+  emiratesIdBackUrl?: string;
+  emiratesIdFrontUrl?: string;
+  authorizationLetterUrl?: string;
+  passportAttachementUrl?: string;
+}
+
 export interface LicenseMembershipInfo {
   membershipId: number;
   membershipNumber: string;
 }
 
 export interface ApplicationState {
-  request?: MembershipRequest;
+  request?: MembershipRequestResult;
 }
 
 export interface Religion {
