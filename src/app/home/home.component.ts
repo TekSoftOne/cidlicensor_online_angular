@@ -266,12 +266,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     let step = this.steps[index + 1];
 
-    if (
-      this.currentStep$.value === 'sTypeOfRequest' &&
-      this.request.requestCategory === 'New'
-    ) {
-      step = this.steps[index + 2];
-    } else if (this.currentStep$.value === 'sReview') {
+    if (this.currentStep$.value === 'sReview') {
       if (
         !this.request.email ||
         !this.request.fullName ||
