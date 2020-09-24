@@ -24,7 +24,7 @@ import {
 } from './../interfaces';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { createRandomPass } from '../authentication/password-generator';
@@ -84,11 +84,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return false;
       }
 
-      if (
-        this.authenticationService.getUser() &&
-        s === 'sSearch' &&
-        this.request.membershipNumber
-      ) {
+      if (s === 'sSearch' && this.request.membershipNumber.length > 1) {
         return false;
       }
 
@@ -277,17 +273,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
       this.updateStatus = this.processApplication();
-    } else if (
-      this.currentStep$.value === 'sTypeOfCustomer' &&
-      this.request.typeOfCustomer === 'Tourist'
-    ) {
-      this.request.requestCategory = 'New';
-      if (this.request.applicationNumber) {
-        // tourist only have New, not Replacement or Renew
-        step = this.steps[index + 2]; // jum over New/Search -> another jumps in another place handled Jump Search already
-      } else {
-        step = this.steps[index + 3]; // jump over New/Search
-      }
+    }
+
+    if (step === 'sSearch' && this.request.requestCategory === 'New') {
+      // dont want to search if (New)
+      step = this.steps[this.getIndex(step) + 1];
     }
 
     const previousSteps = this.previousSteps$.value;
@@ -393,7 +383,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public previous(): void {
-    const lastOne = this.previousSteps$.value.pop();
+    let lastOne = this.previousSteps$.value.pop();
+    if (lastOne === 'sSearch') {
+      lastOne = this.previousSteps$.value.pop();
+    }
     this.currentStep$.next(lastOne);
     this.checkSubmitAllowance(lastOne);
     this.requestValidation = [];

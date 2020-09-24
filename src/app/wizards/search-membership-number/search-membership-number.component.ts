@@ -57,11 +57,13 @@ export class SearchMembershipNumberComponent
       .pipe(
         map((data: any) => data.details),
         tap((d) => {
-          if (d.phoneNumber !== this.currentPhoneNumber) {
-            throw new Error(
-              `Other user (another phone number) with this membership number already existed`
-            );
-          }
+          // remove this check for now as of Farhal confirmation about
+          // "There are some business gaps and we will keep allow them to use any number and go for renewal/replacement"
+          // if (d.phoneNumber !== this.currentPhoneNumber) {
+          //   throw new Error(
+          //     `Other user (another phone number) with this membership number already existed`
+          //   );
+          // }
         }),
         tap((membership: MembershipDetailInLicensor) =>
           this.data.emit({
