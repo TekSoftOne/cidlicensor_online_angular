@@ -607,9 +607,13 @@ list-type-ulli,
 /****** ******/
 .n-form .menu-bar .dropdown {
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
   width: auto;
   margin: 0;
+}
+
+.user-name span {
+  font-size: 0.7rem;
 }
 
 .n-form .menu-bar .user-image {
@@ -635,6 +639,7 @@ list-type-ulli,
 
 .n-form .menu-bar .dropdown .dropdown-toggle span {
   font-weight: 600;
+  font-size: 0.9rem;
   font-family: "Lato", sans-serif;
 }
 

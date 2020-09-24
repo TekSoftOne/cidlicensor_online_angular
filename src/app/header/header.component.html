@@ -9,29 +9,61 @@
     <p>
       <a *ngIf="!isIn()" href="/login">LOGIN</a>
     </p>
-    <div *ngIf="isIn()" class="dropdown user user-menu">
-      <a
-        aria-expanded="true"
-        class="dropdown-toggle"
-        data-toggle="dropdown"
-        href="#"
-      >
-        <span class="hide">User</span>
+    <ng-container *ngIf="userImage; else Guest">
+      <div *ngIf="isIn()" class="dropdown user user-menu">
+        <a
+          aria-expanded="true"
+          class="dropdown-toggle"
+          data-toggle="dropdown"
+          href="#"
+        >
+          <span class="hide">User</span>
 
-        <img alt="User Image" class="user-image" src="/assets/img/user.png" />
-      </a>
-      <ul class="dropdown-menu">
-        <li>
-          <a href="#" (click)="logout($event)">
-            <i class="fa fa-sign-out"></i> Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-    <p>
-      <a href="#" (click)="changeLanguage($event)">{{
-        "HOME.LANGUAGE" | translate
-      }}</a>
-    </p>
+          <img alt="User Image" class="user-image" [src]="userImage" />
+        </a>
+
+        <ul class="dropdown-menu">
+          <li>
+            <a href="#" (click)="logout($event)">
+              <i class="fa fa-sign-out"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+      <p>
+        <a href="#" (click)="changeLanguage($event)">{{
+          "HOME.LANGUAGE" | translate
+        }}</a>
+      </p>
+    </ng-container>
+    <ng-template #Guest>
+      <div
+        *ngIf="isIn()"
+        class="dropdown .dropdown-user-name user"
+        style="padding-top: 4px"
+      >
+        <a
+          aria-expanded="true"
+          class="dropdown-toggle"
+          data-toggle="dropdown"
+          href="#"
+        >
+          <span>Hi Guest!</span>
+        </a>
+
+        <ul class="dropdown-menu">
+          <li>
+            <a href="#" (click)="logout($event)">
+              <i class="fa fa-sign-out"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+      <p>
+        <a href="#" (click)="changeLanguage($event)">{{
+          "HOME.LANGUAGE" | translate
+        }}</a>
+      </p>
+    </ng-template>
   </div>
 </div>

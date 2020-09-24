@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { CURRENT_STEP_TOKEN } from '../constants';
@@ -10,6 +10,8 @@ import { CURRENT_STEP_TOKEN } from '../constants';
 })
 export class HeaderComponent implements OnInit {
   private language = 'en';
+
+  @Input() userImage: string = undefined;
   constructor(
     private authentication: AuthenticationService,
     private translate: TranslateService
