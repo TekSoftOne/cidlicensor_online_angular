@@ -103,6 +103,7 @@
                 </div>
                 <div class="col-lg-6 col-12 col-sm-6">
                   <ot-upload-image
+                    #uploadProfileControl
                     (data)="fileProfilePic = $event"
                     (dataValidation)="dataValidation.emit($event)"
                     isRequired="true"

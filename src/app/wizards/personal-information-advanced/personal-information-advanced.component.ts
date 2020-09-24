@@ -31,6 +31,7 @@ import { DatePipe } from '@angular/common';
 import { dateFormat } from 'src/app/constants';
 import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
 import { environment } from 'src/environments/environment';
+import { UploadImageComponent } from 'src/app/upload-image/upload-image.component';
 
 declare var $: any;
 
@@ -94,6 +95,9 @@ export class PersonalInformationAdvancedComponent
   @ViewChild('birthdayDatePicker', { static: true })
   birthdayDatePicker: ElementRef;
 
+  @ViewChild('uploadProfileControl', { static: true })
+  uploadProfileImage: UploadImageComponent;
+
   ngAfterViewInit(): void {
     this.initDatePicker();
   }
@@ -117,6 +121,10 @@ export class PersonalInformationAdvancedComponent
     console.log();
   }
   next(f: NgForm): void {
+    if (!f.valid || !this.uploadProfileImage.isControlValid()) {
+      return;
+    }
+
     this.data.emit({
       nationId: this.nationId,
       nationName: this.nationalities.find((x) => x.id === Number(this.nationId))

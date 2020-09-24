@@ -34,7 +34,7 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
   public imageUrl: Observable<string | undefined>;
   public image$: BehaviorSubject<File>;
   public imageFileSubscription: Subscription;
-  public isInvalid: Observable<boolean>;
+  public isInvalid: Observable<boolean>; // this is to know the validation inside this control
   @Input() formSubmitted = false;
   @Input() isRequired = false;
   @Input() image: File;
@@ -42,11 +42,13 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
   @Output() data: EventEmitter<File>;
   @Output() dataValidation: EventEmitter<CustomValidation>;
 
-  private formSubmittedEvent: BehaviorSubject<boolean>;
+  private formSubmittedEvent$: BehaviorSubject<boolean>;
+  private formSubmittedEvent: Observable<boolean>;
 
   constructor() {
     this.image$ = new BehaviorSubject<File>(undefined);
-    this.formSubmittedEvent = new BehaviorSubject<boolean>(false);
+    this.formSubmittedEvent$ = new BehaviorSubject<boolean>(false);
+    this.formSubmittedEvent = this.formSubmittedEvent$.asObservable();
     this.data = new EventEmitter<File>();
     this.dataValidation = new EventEmitter<CustomValidation>();
     this.imageUrl = this.image$.pipe(
@@ -84,7 +86,7 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.formSubmitted) {
-      this.formSubmittedEvent.next(changes.formSubmitted.currentValue);
+      this.formSubmittedEvent$.next(changes.formSubmitted.currentValue);
     }
 
     if (changes.image) {
@@ -98,6 +100,15 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {}
+
+  // not depending on submit or not //this is so that the parent can know about this control
+  public isControlValid(): boolean {
+    if (!this.isRequired) {
+      return true;
+    }
+
+    return this.image !== undefined;
+  }
 
   public triggerImageUpload(): void {
     this.inputImage.nativeElement.click();
