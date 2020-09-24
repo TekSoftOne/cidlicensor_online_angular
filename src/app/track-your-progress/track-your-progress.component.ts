@@ -18,7 +18,6 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { BlobReader, Encoding } from '../utilities/blob-reader';
 
 @Component({
   selector: 'ot-track-your-progress',
