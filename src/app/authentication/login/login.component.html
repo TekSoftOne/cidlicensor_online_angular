@@ -30,7 +30,7 @@
       <div class="form-items">
         <div class="row">
           <div class="col-lg-12 login text-center col-12 col-sm-12">
-            <h2>LOGIN</h2>
+            <h2>LOGIN <ot-loader [loading]="loading"></ot-loader></h2>
 
             <ng-container *ngIf="codeSent$ | async as sent; else loginButton">
               <form

@@ -46,13 +46,9 @@ export class LoginComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     nationPickerHelper();
   }
-  public login(phoneNumber: string): Observable<UserToken> {
-    this.loading = true;
+  private login(phoneNumber: string): Observable<UserToken> {
     return this.authenticationService.login(phoneNumber, undefined).pipe(
-      tap(() => (this.loading = true)),
-
       catchError((err: HttpErrorResponse) => {
-        this.loading = false;
         this.error = err.error ?? err.message;
         return throwError(this.error);
       })
@@ -68,31 +64,36 @@ export class LoginComponent implements AfterViewInit {
       return;
     }
 
+    this.loading = true;
     const verifyPhoneResult = this.VerifyPhone(
       form.controls.phoneNumber.value
     ).pipe(
       tap(() => {
         console.log('');
         this.codeSent$.next(true);
+        this.loading = false;
+      }),
+      catchError((err) => {
+        this.toastrservice.error(err);
+        this.loading = false;
+        return of(false);
       })
     );
     verifyPhoneResult.subscribe();
     return verifyPhoneResult;
   }
 
-  public VerifyPhone(phone: string): Observable<boolean> {
+  private VerifyPhone(phone: string): Observable<boolean> {
     if (!environment.production) {
       this.phoneNumber = phone;
       return of(true);
     }
 
-    this.loading = true;
     return this.httpClient
       .post(`${environment.apiUrl}/api/phoneVerification/check`, {
         phoneNumber: phone,
       } as VerificationModel)
       .pipe(
-        tap(() => (this.loading = false)),
         tap(() => (this.phoneNumber = phone)),
         map(() => true)
       );
@@ -103,7 +104,7 @@ export class LoginComponent implements AfterViewInit {
       return;
     }
     const verifyCode = form.controls.verifyCode.value;
-
+    this.loading = true;
     this.verifyCode(this.phoneNumber, verifyCode)
       .pipe(
         map((res) => {
@@ -114,16 +115,18 @@ export class LoginComponent implements AfterViewInit {
           return true;
         }),
         switchMap(() => this.login(this.phoneNumber)),
+        tap(() => (this.loading = false)),
         tap(() => this.router.navigateByUrl('track-your-request')),
         catchError((err) => {
           this.toastrservice.error(err);
+          this.loading = false;
           return of(undefined);
         })
       )
       .subscribe();
   }
 
-  public verifyCode(phoneNumber: string, code: string): Observable<boolean> {
+  private verifyCode(phoneNumber: string, code: string): Observable<boolean> {
     if (!environment.production) {
       return of(true);
     }
