@@ -426,13 +426,13 @@ body {
 .form-content input,
 .form-content .dropdown-toggle.btn-default {
   width: 100%;
-  padding: 9px 20px;
+  padding: 5px 20px;
   text-align: left;
   border: 0;
   outline: 0;
   border-radius: 6px;
   background-color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 300;
   color: #8d8d8d;
   -webkit-transition: all 0.3s ease;
@@ -1919,4 +1919,9 @@ input.sm-content {
     text-align: left !important;
     margin-top: 30px;
   }
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
+  background-image: none !important;
 }
