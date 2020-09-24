@@ -28,9 +28,8 @@ export class AuthenticationInterceptor implements HttpInterceptor {
           this.authenticationService.logout();
         }
 
-        const error = err.error.message || err.statusText;
-        this.toastrservice.error(err.error, 'Error');
-        return throwError(error);
+        console.log(err);
+        return throwError(err);
       })
     );
   }
