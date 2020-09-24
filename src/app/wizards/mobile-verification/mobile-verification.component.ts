@@ -31,6 +31,7 @@ import { AuthenticationService } from 'src/app/authentication/authentication.ser
 })
 export class MobileVerificationComponent
   implements OnInit, IFormWizard, OnChanges {
+  public loading = false;
   constructor(
     private toastrservice: ToastrService,
     private httpClient: HttpClient,
@@ -52,16 +53,19 @@ export class MobileVerificationComponent
       return;
     }
 
+    this.loading = true;
     this.checkAndVerify()
       .pipe(
         switchMap(() => this.createUser()),
         switchMap(() => this.login(this.phoneNumber)),
         tap((res) => {
           this.data.emit({ verifyNumber: this.verifyNumber });
+          this.loading = false;
         }),
         tap(() => this.nextStep.emit(f)),
         catchError((err) => {
           this.toastrservice.error(err);
+          this.loading = false;
           return of(false);
         })
       )

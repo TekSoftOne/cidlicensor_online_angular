@@ -356,7 +356,10 @@
                         </h3>
                         <ng-template #creatingAppNumber>
                           <div *ngIf="!error; else errorCreatingApp">
-                            <h3>Creating...</h3>
+                            <h3>
+                              Creating application
+                              <ot-loader [loading]="true"></ot-loader>
+                            </h3>
                           </div>
                           <ng-template #errorCreatingApp
                             ><h3>{{ error }}</h3></ng-template
@@ -376,7 +379,10 @@
                         </h3>
                         <ng-template #updatingAppNumber>
                           <div *ngIf="!error; else errorUpdatingApp">
-                            <h3>Updating...</h3>
+                            <h3>
+                              Updating application
+                              <ot-loader [loading]="true"></ot-loader>
+                            </h3>
                           </div>
                           <ng-template #errorUpdatingApp
                             ><h3>{{ error }}</h3></ng-template

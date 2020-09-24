@@ -31,6 +31,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
 export class TrackYourProgressComponent implements AfterViewInit {
   public appResult$: BehaviorSubject<MembershipRequestResult>;
   public appResult: Observable<MembershipRequestResult>;
+  public loading = false;
   constructor(
     private toastrservice: ToastrService,
     private httpClient: HttpClient,
@@ -78,6 +79,8 @@ export class TrackYourProgressComponent implements AfterViewInit {
   private getApplication(
     applicationNumber: string
   ): Observable<MembershipRequestResult | undefined> {
+    this.loading = true;
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -101,9 +104,12 @@ export class TrackYourProgressComponent implements AfterViewInit {
               'Search Result'
             );
           }
+
           return app;
         }),
+        tap(() => (this.loading = false)),
         catchError((err) => {
+          this.loading = false;
           if (err.error && err.error.Message) {
             this.toastrservice.error(err.error.Message, 'Search Result');
           } else {

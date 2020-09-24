@@ -28,6 +28,7 @@ import { DatePipe } from '@angular/common';
 })
 export class SearchMembershipNumberComponent
   implements OnInit, IFormWizard, OnChanges {
+  public loading = false;
   constructor(
     private licenseAuthenticationService: LicenseAuthenticationService,
     private toastrservice: ToastrService,
@@ -53,6 +54,7 @@ export class SearchMembershipNumberComponent
       return;
     }
 
+    this.loading = true;
     this.searchMembership(this.membershipNumber)
       .pipe(
         map((data: any) => data.details),
@@ -110,8 +112,10 @@ export class SearchMembershipNumberComponent
           })
         ),
         tap(() => this.nextStep.emit(f)),
+        tap(() => (this.loading = false)),
         catchError((err) => {
           this.toastrservice.error(err);
+          this.loading = false;
           return undefined;
         })
       )

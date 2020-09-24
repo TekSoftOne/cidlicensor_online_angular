@@ -29,7 +29,10 @@
                 (ngSubmit)="OnSearchApplication(SearchApplcationForm)"
               >
                 <div class="col-lg-12 login text-center col-12 col-sm-12">
-                  <h2>Track Your Request</h2>
+                  <h2>
+                    Track Your Request
+                    <ot-loader [loading]="loading"></ot-loader>
+                  </h2>
                   <input
                     name="applicationNumber"
                     placeholder="Enter application number"
