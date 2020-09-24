@@ -1,5 +1,6 @@
 import { NgForm } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 export interface IFormWizard {
   nextStep: EventEmitter<NgForm>;
   data: EventEmitter<MembershipRequest>;
@@ -55,6 +56,10 @@ export interface MembershipRequest {
   membershipRequestType?: number;
   membershipId?: number;
   status?: number;
+}
+
+export interface HttpRequestOptions {
+  headers?: HttpHeaders;
 }
 
 export interface MembershipRequestResult extends MembershipRequest {

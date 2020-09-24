@@ -256,3 +256,5 @@ export const CURRENT_DATA_TOKEN = 'OT_D';
 export const LICENSE_ROLE_NAME = 'Customer';
 export const LICENSE_USER = 'ct@cidlicensor.com';
 export const LICENSE_PASSWORD = '8tDvLmUW6vd4ckMMPnBY9';
+
+export const USERTOKEN = 'OR_USER';

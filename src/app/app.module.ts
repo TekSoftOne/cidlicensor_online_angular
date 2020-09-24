@@ -14,6 +14,7 @@ import {
   HttpClientModule,
   HttpClient,
   HttpClientJsonpModule,
+  HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { GoogleMapsModule } from '@angular/google-maps';
@@ -38,7 +39,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RequestStatusComponent } from './request-status/request-status.component';
 import { LayerDisableComponent } from './layer-disable/layer-disable.component';
+import { AuthenticationInterceptor } from './authentication/authentication-interceptor';
 import { LoaderComponent } from './loader/loader.component';
+import { OnlineRequestService } from './authentication/online-request.service';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -92,6 +95,13 @@ export function createTranslateLoader(http: HttpClient) {
     AuthenticationService,
     LicenseAuthenticationService,
     StateService,
+    OnlineRequestService,
+    AuthenticationInterceptor,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

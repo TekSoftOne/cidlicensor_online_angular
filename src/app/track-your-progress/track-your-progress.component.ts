@@ -1,3 +1,4 @@
+import { OnlineRequestService } from './../authentication/online-request.service';
 import { MembershipRequestResult } from './../interfaces';
 import { MembershipRequest } from 'src/app/interfaces';
 import { Router } from '@angular/router';
@@ -37,7 +38,8 @@ export class TrackYourProgressComponent implements AfterViewInit {
     private httpClient: HttpClient,
     private stateService: StateService,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private onlineRequestService: OnlineRequestService
   ) {
     this.appResult$ = new BehaviorSubject<any>(undefined);
     this.appResult = this.appResult$.asObservable();
@@ -87,8 +89,8 @@ export class TrackYourProgressComponent implements AfterViewInit {
         Accept: 'application/json',
       }),
     };
-    return this.httpClient
-      .post(
+    return this.onlineRequestService
+      .request(
         `${environment.apiUrl}/api/MembershipRequests/search`,
         {
           applicationNumber: Number(applicationNumber),
@@ -99,9 +101,8 @@ export class TrackYourProgressComponent implements AfterViewInit {
       .pipe(
         map((app) => {
           if (!app) {
-            this.toastrservice.error(
-              'Cannot find this application number, please try another one',
-              'Search Result'
+            throw new Error(
+              'Cannot find this application number, please try another one'
             );
           }
 

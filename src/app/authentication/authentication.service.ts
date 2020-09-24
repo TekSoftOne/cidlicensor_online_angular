@@ -5,14 +5,14 @@ import { Observable } from 'rxjs';
 import { UserToken, WINDOW } from './interface';
 import { tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { USERTOKEN } from '../constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-  private readonly USERTOKEN = 'OR_USER';
   private readonly httpOptions = {};
-  private readonly REDIRECT_LOGOUT = '/';
+  private readonly REDIRECT_LOGOUT = '/login';
   constructor(
     private httpClient: HttpClient,
     private router: Router,
@@ -27,18 +27,18 @@ export class AuthenticationService {
       })
       .pipe(
         tap((token) => {
-          localStorage.setItem(this.USERTOKEN, JSON.stringify({ token }));
+          localStorage.setItem(USERTOKEN, JSON.stringify({ token }));
         })
       );
   }
 
   public logout(): void {
-    localStorage.removeItem(this.USERTOKEN);
+    localStorage.removeItem(USERTOKEN);
     this.window.open(this.REDIRECT_LOGOUT, '_self');
   }
 
   public getUser(): UserToken | null {
-    const cachedUser = localStorage.getItem(this.USERTOKEN);
+    const cachedUser = localStorage.getItem(USERTOKEN);
     if (!cachedUser) {
       return null;
     }
@@ -51,6 +51,6 @@ export class AuthenticationService {
   }
 
   public isTokenValid(): boolean {
-    return !!localStorage.getItem(this.USERTOKEN);
+    return !!localStorage.getItem(USERTOKEN);
   }
 }

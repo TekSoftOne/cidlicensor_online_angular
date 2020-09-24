@@ -1,3 +1,5 @@
+import { OnlineRequestService } from './../../authentication/online-request.service';
+import { HttpClient } from '@angular/common/http';
 import {
   isFormValid,
   isControlValid,
@@ -18,6 +20,7 @@ import { MembershipRequest } from 'src/app/interfaces';
 import { ToastrService } from 'ngx-toastr';
 import { customerTypes } from 'src/app/constants';
 import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'ot-type-of-customer',
@@ -28,8 +31,12 @@ export class TypeOfCustomerComponent implements OnInit, IFormWizard {
   public formCustomerType: FormGroup;
   constructor(
     private toastrservice: ToastrService,
-    private licenseAuthenticationService: LicenseAuthenticationService
+    private licenseAuthenticationService: LicenseAuthenticationService,
+    private onlineRequestService: OnlineRequestService
   ) {
+    this.onlineRequestService
+      .get(`${environment.apiUrl}/api/common/countries`)
+      .subscribe();
     this.licenseAuthenticationService.getAccess().subscribe();
   }
 
@@ -49,7 +56,7 @@ export class TypeOfCustomerComponent implements OnInit, IFormWizard {
   }
   next(f: NgForm): void {
     if (!f.valid) {
-      this.toastrservice.error('Please choose at least 1 Type Of Customer!');
+      this.toastrservice.error('Please choose at least a type of customer!');
     }
     this.data.emit({
       typeOfCustomer: this.typeOfCustomer,
