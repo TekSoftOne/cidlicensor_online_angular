@@ -20,6 +20,7 @@ import {
   CustomValidation,
   CreateUserResult,
   LicenseMembershipInfo,
+  MembershipRequestResult,
 } from './../interfaces';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
@@ -161,7 +162,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     zoom: 4,
   };
 
-  public request: MembershipRequest = {
+  public request: MembershipRequestResult = {
     nationId: 0,
     religionId: 0,
     gender: 0,
@@ -177,11 +178,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public requestValidation: CustomValidation[] = [];
 
-  public updateData(request: MembershipRequest): void {
+  public updateData(request: MembershipRequestResult): void {
     this.request = { ...this.request, ...request };
   }
 
-  public updateSearchMembershipData(request: MembershipRequest): void {
+  public updateSearchMembershipData(request: MembershipRequestResult): void {
     this.updateData({
       ...request,
       requestCategory: this.request.requestCategory,

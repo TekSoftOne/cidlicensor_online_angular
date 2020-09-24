@@ -19,7 +19,7 @@
         >
           <span class="hide">User</span>
 
-          <img alt="User Image" class="user-image" [src]="userImage" />
+          <img alt="User Image" style="height: 30px" [src]="userImage" />
         </a>
 
         <ul class="dropdown-menu">
@@ -30,11 +30,6 @@
           </li>
         </ul>
       </div>
-      <p>
-        <a href="#" (click)="changeLanguage($event)">{{
-          "HOME.LANGUAGE" | translate
-        }}</a>
-      </p>
     </ng-container>
     <ng-template #Guest>
       <div
@@ -59,11 +54,11 @@
           </li>
         </ul>
       </div>
-      <p>
-        <a href="#" (click)="changeLanguage($event)">{{
-          "HOME.LANGUAGE" | translate
-        }}</a>
-      </p>
     </ng-template>
+    <p>
+      <a href="#" (click)="changeLanguage($event)">{{
+        "HOME.LANGUAGE" | translate
+      }}</a>
+    </p>
   </div>
 </div>
