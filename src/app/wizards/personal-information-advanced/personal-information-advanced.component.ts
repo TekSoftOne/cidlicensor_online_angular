@@ -1,4 +1,5 @@
-import { nationalities, religions } from './../../constants';
+import { UploadFileComponent } from './../../upload-file/upload-file.component';
+import { nationalities, religions, statuses } from './../../constants';
 import {
   isFormValid,
   isControlValid,
@@ -98,6 +99,9 @@ export class PersonalInformationAdvancedComponent
   @ViewChild('uploadProfileControl', { static: true })
   uploadProfileImage: UploadImageComponent;
 
+  @ViewChild('uploadPassportControl', { static: true })
+  uploadPassportFile: UploadFileComponent;
+
   ngAfterViewInit(): void {
     this.initDatePicker();
   }
@@ -121,7 +125,11 @@ export class PersonalInformationAdvancedComponent
     console.log();
   }
   next(f: NgForm): void {
-    if (!f.valid || !this.uploadProfileImage.isControlValid()) {
+    if (
+      !f.valid ||
+      !this.uploadProfileImage.isControlValid() ||
+      !this.uploadPassportFile.isControlValid()
+    ) {
       return;
     }
 

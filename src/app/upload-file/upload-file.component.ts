@@ -1,3 +1,4 @@
+import { isControlValid } from 'src/app/form';
 import {
   Component,
   OnInit,
@@ -46,7 +47,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
           return false;
         }
 
-        return f.size / 1024 / 1024 > 2;
+        return f.size / 1024 / 1024 >= 2;
       })
     );
 
@@ -89,6 +90,19 @@ export class UploadFileComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {}
+
+  // This is for parent to access and check whenever submitted
+  public isControlValid(): boolean {
+    if (!this.isRequired) {
+      return true;
+    }
+
+    return (
+      this.file.value &&
+      this.file.value.size > 0 &&
+      this.file.value.size / 1024 / 1024 < 2
+    );
+  }
 
   public onFileChange(files: FileList): void {
     // this.labelImport.nativeElement.innerText = Array.from(files)

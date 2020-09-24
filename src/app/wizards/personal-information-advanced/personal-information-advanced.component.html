@@ -120,7 +120,6 @@
                       (dataValidation)="dataValidation.emit($event)"
                       [label]="'Attach Emirates ID Back'"
                       constrolName="attach Emirates ID Back"
-                      [isRequired]="typeOfCustomer === 'tourist' ? true : false"
                     >
                     </ot-upload-file>
                   </div>
@@ -171,18 +170,25 @@
                   <span>Upload File – png only Max Size 2 MB</span></label
                 >
               </div> -->
-                <!-- <ot-upload-file
-                [formSubmited]="membershipForm.submitted"
-                (data)="fileAuthorizationLetter = $event"
-                label="Passport Attachment"
-                [isRequired]="typeOfCustomer === 'tourist'"
-              >
-              </ot-upload-file> -->
-                <div class="col-lg-6 col-12 col-sm-6">
+
+                <div
+                  class="col-lg-6 col-12 col-sm-6"
+                  *ngIf="typeOfCustomer !== 'Tourist'"
+                >
                   <ot-upload-file
                     [formSubmited]="membershipForm.submitted"
                     (data)="fileAuthorizationLetter = $event"
                     label="Attach Authorization Letter"
+                  >
+                  </ot-upload-file>
+                </div>
+                <div class="col-lg-6 col-12 col-sm-6">
+                  <ot-upload-file
+                    #uploadPassportControl
+                    [formSubmited]="membershipForm.submitted"
+                    (data)="fileAuthorizationLetter = $event"
+                    label="Passport Attachment"
+                    [isRequired]="typeOfCustomer === 'Tourist'"
                   >
                   </ot-upload-file>
                 </div>
