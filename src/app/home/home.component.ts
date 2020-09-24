@@ -347,34 +347,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private createUser(): Observable<CreateUserResult> {
-    const password = environment.production ? createRandomPass(5, 3) : '123456';
-
-    console.log(password);
-    this.request.randomPass = password;
-    return this.httpClient
-      .post(`${environment.apiUrl}/api/users/register`, {
-        phoneNumber: this.request.phoneNumber,
-        email: this.request.email,
-        fullName: this.request.fullName,
-        password,
-      })
-      .pipe(
-        map((res) => ({ ...res, password } as CreateUserResult)),
-        tap((registerResult) => {
-          if (
-            !registerResult.succeeded &&
-            registerResult.errors &&
-            registerResult.errors.length > 0
-          ) {
-            if (registerResult.errors[0].code !== 'DuplicateUserName') {
-              throw new Error(registerResult.errors[0].code);
-            }
-          }
-        })
-      );
-  }
-
   private createRequestMembership(): Observable<number> {
     return this.httpClient
       .post(
@@ -384,31 +356,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
       .pipe(map((appId) => appId as number));
   }
 
-  private sendRegistration(): Observable<any> {
-    return this.httpClient
-      .post(`${environment.apiUrl}/api/Users/SendRegisterInformation`, {
-        userName: this.request.email,
-        email: this.request.email,
-        fullName: this.request.fullName,
-        password: undefined,
-      })
-      .pipe(tap((k) => console.log(k)));
-  }
-
   private createApplication(
     membershipInfo: LicenseMembershipInfo
   ): Observable<number> {
     this.request.membershipNumber = membershipInfo.membershipNumber;
     this.request.membershipId = membershipInfo.membershipId;
-    return this.createUser().pipe(
-      switchMap((res) => {
-        if (res.succeeded) {
-          // return this.sendRegistration();
-        }
-        console.log('Email is already created');
-        return of(false);
-      }),
-      switchMap(() => this.createRequestMembership()),
+    return this.createRequestMembership().pipe(
       tap((appId) => (this.request.applicationNumber = appId))
     );
   }

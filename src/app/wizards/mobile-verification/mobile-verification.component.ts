@@ -1,7 +1,8 @@
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { environment } from './../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {
+  CreateUserResult,
   IFormWizard,
   VerificationModel,
   VerificationSendResult,
@@ -19,7 +20,9 @@ import { NgForm } from '@angular/forms';
 import { isFormValid } from 'src/app/form';
 import { MembershipRequest } from 'src/app/interfaces';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, switchMap } from 'rxjs/operators';
+import { UserToken } from 'src/app/authentication/interface';
+import { AuthenticationService } from 'src/app/authentication/authentication.service';
 
 @Component({
   selector: 'ot-mobile-verification',
@@ -30,7 +33,8 @@ export class MobileVerificationComponent
   implements OnInit, IFormWizard, OnChanges {
   constructor(
     private toastrservice: ToastrService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private authenticationService: AuthenticationService
   ) {}
 
   @Input() verifyNumber: string;
@@ -48,27 +52,20 @@ export class MobileVerificationComponent
       return;
     }
 
-    if (environment.production) {
-      this.checkAndVerify()
-        .pipe(
-          tap((res) => {
-            if (res) {
-              this.data.emit({ verifyNumber: this.verifyNumber });
-              return true;
-            }
-
-            throw Error('Verify Code is not valid!');
-          }),
-          tap(() => this.nextStep.emit(f)),
-          catchError((err) => {
-            this.toastrservice.error(err);
-            return of(false);
-          })
-        )
-        .subscribe();
-    } else {
-      this.nextStep.emit(f);
-    }
+    this.checkAndVerify()
+      .pipe(
+        switchMap(() => this.createUser()),
+        switchMap(() => this.login(this.phoneNumber)),
+        tap((res) => {
+          this.data.emit({ verifyNumber: this.verifyNumber });
+        }),
+        tap(() => this.nextStep.emit(f)),
+        catchError((err) => {
+          this.toastrservice.error(err);
+          return of(false);
+        })
+      )
+      .subscribe();
   }
   public checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
@@ -83,6 +80,10 @@ export class MobileVerificationComponent
   }
 
   private checkAndVerify(): Observable<boolean> {
+    if (!environment.production) {
+      return of(true);
+    }
+
     if (!this.phoneNumber) {
       return of(false);
     }
@@ -98,7 +99,13 @@ export class MobileVerificationComponent
       } as VerificationModel)
       .pipe(
         map((data) => data as VerificationSendResult),
-        map((res) => res.isValid)
+        map((res) => {
+          if (!res.isValid) {
+            throw new Error('Verify Code is invalid!');
+          }
+
+          return true;
+        })
       );
   }
 
@@ -108,6 +115,38 @@ export class MobileVerificationComponent
         this.SendCode().subscribe();
       }
     }
+  }
+
+  private createUser(): Observable<CreateUserResult> {
+    return this.httpClient
+      .post(`${environment.apiUrl}/api/users/register`, {
+        phoneNumber: this.phoneNumber,
+        email: this.phoneNumber,
+        fullName: undefined,
+        undefined,
+      })
+      .pipe(
+        map((res) => res as CreateUserResult),
+        tap((registerResult) => {
+          if (
+            !registerResult.succeeded &&
+            registerResult.errors &&
+            registerResult.errors.length > 0
+          ) {
+            if (registerResult.errors[0].code !== 'DuplicateUserName') {
+              throw new Error(registerResult.errors[0].code);
+            }
+          }
+        })
+      );
+  }
+
+  public login(phoneNumber: string): Observable<UserToken> {
+    return this.authenticationService.login(phoneNumber, undefined).pipe(
+      catchError((err: HttpErrorResponse) => {
+        return throwError(err);
+      })
+    );
   }
 
   ngOnInit(): void {}
