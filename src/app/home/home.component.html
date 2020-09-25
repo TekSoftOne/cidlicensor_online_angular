@@ -246,64 +246,9 @@
           </ng-template>
 
           <ng-template #sPaymentChoices ngSwitchCase="sPaymentChoices">
-            <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-              <div class="row">
-                <div class="col-lg-12 col-12 col-sm-12" id="last-div-2">
-                  <div class="row">
-                    <div class="col-lg-12 col-12 col-sm-12 text-center">
-                      <h3>Review & Submit</h3>
-                    </div>
-                    <div class="col-lg-12 tp col-12 col-sm-12 text-center">
-                      <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries
-                      </p>
-                    </div>
-                  </div>
-                  <div class="row tp">
-                    <div class="col-lg-12 col-12 col-sm-12">
-                      <div class="row">
-                        <div
-                          class="col-lg-4 m-left la text-center col-12 col-sm-6"
-                        >
-                          <label name="">
-                            <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                              <img alt="" src="/assets/images/img-new-1.png" />
-                              <h6>Pay Online</h6>
-                            </div>
-                            <input
-                              class="check"
-                              name="payment"
-                              type="radio"
-                              value="payonline"
-                            />
-                          </label>
-                        </div>
-                        <div class="col-lg-4 la text-center col-12 col-sm-6">
-                          <label name="">
-                            <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                              <img alt="" src="/assets/images/img-new-2.png" />
-                              <h6>Cash</h6>
-                            </div>
-                            <input
-                              class="check"
-                              name="payment"
-                              type="radio"
-                              value="cash"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <ot-checkout>
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
-            </form>
+            </ot-checkout>
           </ng-template>
 
           <ng-template #sReview ngSwitchCase="sReview">

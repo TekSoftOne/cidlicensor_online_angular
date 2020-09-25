@@ -43,6 +43,7 @@ import { AuthenticationInterceptor } from './authentication/authentication-inter
 import { LoaderComponent } from './loader/loader.component';
 import { OnlineRequestService } from './authentication/online-request.service';
 import { NgeniusPaymentService } from './payment-gateway/payment-service';
+import { CheckoutComponent } from './wizards/checkout/checkout.component';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -71,6 +72,7 @@ export function createTranslateLoader(http: HttpClient) {
     RequestStatusComponent,
     LayerDisableComponent,
     LoaderComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,

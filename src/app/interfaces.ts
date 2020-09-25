@@ -1,6 +1,8 @@
 import { NgForm } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
+
+import { InjectionToken } from '@angular/core';
 export interface IFormWizard {
   nextStep: EventEmitter<NgForm>;
   data: EventEmitter<MembershipRequest>;
@@ -13,6 +15,11 @@ export interface Nationality {
   name: string;
   id: number;
 }
+
+export const WINDOW = new InjectionToken<Window>('window', {
+  factory: () => window,
+  providedIn: 'root',
+});
 
 export interface MembershipRequest {
   loggedIn?: boolean;
