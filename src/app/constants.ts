@@ -10,7 +10,7 @@ export const stepsAll = [
   'sWorkInformation',
   'sLocationAreas',
   'lastDiv',
-  // 'sPaymentChoices',
+  'sPaymentChoices',
   'sReview',
   'sApplicationIdNotice',
 ];
@@ -26,7 +26,7 @@ export const showPreviousButtonScreens = [
   'sWorkInformation',
   'sLocationAreas',
   'lastDiv',
-  // 'sPaymentChoices',
+  'sPaymentChoices',
   'sReview',
 ];
 
@@ -45,7 +45,7 @@ export const showNextButtonScreensAll = [
   'sWorkInformation',
   'sLocationAreas',
   'lastDiv',
-  // 'sPaymentChoices',
+  'sPaymentChoices',
   'sReview',
   // 'sApplicationIdNotice',
 ];
@@ -77,7 +77,7 @@ export const showStepsFlowScreens = [
   'sWorkInformation',
   'sLocationAreas',
   'lastDiv',
-  // 'sPaymentChoices',
+  'sPaymentChoices',
   'sReview',
   'sApplicationIdNotice',
 ];
