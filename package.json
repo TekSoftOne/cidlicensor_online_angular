@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot --port 4900",
-    "build": "ng build --prod",
-    "buildtest": "ng build --configuration test",
+    "build": "ng build --sourceMap=true",
+    "buildtest": "ng build --configuration test --sourceMap=true",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,6 +23,8 @@
     "@angular/router": "~10.0.6",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
+    "angularfire2": "^5.4.2",
+    "firebase": "^7.21.1",
     "ngx-toastr": "^13.0.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
