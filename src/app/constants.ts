@@ -258,3 +258,4 @@ export const LICENSE_USER = 'ct@cidlicensor.com';
 export const LICENSE_PASSWORD = '8tDvLmUW6vd4ckMMPnBY9';
 
 export const USERTOKEN = 'OR_USER';
+export const NGENIOUS_TOKEN = 'NGENIOUS_USER';
