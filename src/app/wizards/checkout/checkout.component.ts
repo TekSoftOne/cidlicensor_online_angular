@@ -129,9 +129,9 @@ export class CheckoutComponent implements OnInit, IFormWizard {
           console.log(data);
         }),
         map((s: any) => ({
-          order: s.order,
-          lastAccess: s.lastAccess,
-          status: s.status,
+          order: s?.order,
+          lastAccess: s?.lastAccess,
+          status: s?.status,
         }))
       );
   }

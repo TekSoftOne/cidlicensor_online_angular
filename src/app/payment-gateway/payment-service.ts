@@ -27,10 +27,12 @@ export class NgeniusPaymentService {
     return this.httpClient
       .post(
         `${environment.ngeniousGateway}/identity/auth/access-token`,
-        {},
+        undefined,
         {
           headers: new HttpHeaders({
             Authorization: 'Basic ' + environment.ngeniousApiKey,
+            'Content-Type': 'application/vnd.ni-identity.v1+json',
+            'Access-Control-Allow-Origin': '*',
           }),
         }
       )

@@ -251,13 +251,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public next(f: NgForm): void {
-    if (
-      !f.form.valid ||
-      this.requestValidation.filter((x) => !x.isValid).length > 0
-    ) {
-      console.log('invalid');
-      return;
-    }
+    // if (
+    //   !f.form.valid ||
+    //   this.requestValidation.filter((x) => !x.isValid).length > 0
+    // ) {
+    //   console.log('invalid');
+    //   return;
+    // }
     const index = this.getIndex(this.currentStep$.value);
 
     let step = this.steps[index + 1];
@@ -404,8 +404,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private cacheCurrentStep(step: string, previousSteps: string[]): void {
     if (!environment.production) {
-      // localStorage.setItem(CURRENT_STEP_TOKEN, step);
-      // localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
+      localStorage.setItem(CURRENT_STEP_TOKEN, step);
+      localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
     }
   }
 

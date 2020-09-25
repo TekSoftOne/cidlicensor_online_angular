@@ -31,7 +31,7 @@ export const showPreviousButtonScreens = [
 ];
 
 if (environment.production === false) {
-  // showPreviousButtonScreens.push('sApplicationIdNotice');
+  showPreviousButtonScreens.push('sApplicationIdNotice');
 }
 
 export const showNextButtonScreensAll = [
