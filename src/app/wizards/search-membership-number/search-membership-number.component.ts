@@ -73,7 +73,7 @@ export class SearchMembershipNumberComponent
             fullName: membership.fullName,
             email: membership.email,
             address: membership.address,
-            fullAddress: membership.secondaryAddress,
+            fullAddress: membership.occupation,
             nationId: nationalities.find(
               (n) => n.name === membership.nationName
             )?.id,

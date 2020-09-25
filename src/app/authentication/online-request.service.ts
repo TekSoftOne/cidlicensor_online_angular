@@ -10,7 +10,7 @@ import { HttpRequestOptions } from '../interfaces';
 export class OnlineRequestService {
   constructor(private httpClient: HttpClient) {}
 
-  public request(url: string, body: any, option: any): Observable<any> {
+  public request(url: string, body: any, option?: any): Observable<any> {
     const options = this.getOptions(option);
 
     return this.httpClient.post(url, body, options);

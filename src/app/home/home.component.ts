@@ -364,6 +364,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         } else {
           f.append(key, this.request[key]);
         }
+
+        // Occupation = FullAddress
+        if (key === 'fullAddress') {
+          f.append('occupation', this.request[key]);
+        }
       }
     }
     return f;
