@@ -22,7 +22,12 @@
               <label name="">
                 <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
                   <img alt="" src="/assets/images/img-new-1.png" />
-                  <h6>Pay Online</h6>
+                  <h6
+                    *ngIf="orderStatus$ | async as orderState"
+                    [ngClass]="{ paid: orderState.status === 'SUCCESS' }"
+                  >
+                    Pay Online
+                  </h6>
                 </div>
                 <input
                   class="check"

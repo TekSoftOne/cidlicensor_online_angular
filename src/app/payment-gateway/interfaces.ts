@@ -1,5 +1,6 @@
 export interface CreateOrderResult {
   _id: string;
+  reference: string;
   createDateTime: Date;
   action: string;
   amount: NGAmount;
@@ -34,4 +35,10 @@ export interface NGTokenErrorDetail {
   localizedMessage: string;
   errorCode: string;
   domain: string;
+}
+
+export interface OrderTrackerResult {
+  order: string;
+  lastAccess: Date;
+  status: string;
 }
