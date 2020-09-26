@@ -2,11 +2,7 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:5900',
   licenseUrl: 'http://localhost:5000',
-  ngeniousGateway: 'https://api-gateway.sandbox.ngenius-payments.com',
-  ngeniousApiKey:
-    'OTNmNGZlZDEtMTc0Mi00ZDhmLWEzZjMtYTE0ZWQ1NDZmYTY1OmJmNDRmNjcxLTczOWMtNDIxMC1hOTgwLWQ4NDU3YzgzYTk0Mg==',
-  ngeniousOutlet: '47294c75-de03-41eb-8a80-0462e0c7c99a',
-  ngeniousRedirectUrl: 'https://local.officeatwork365.com:4900/',
+  ngeniousRedirectUrl: 'http://vnexpress.net',
   firebase: {
     apiKey: 'AIzaSyDSm0uOqyUUbbtVdEunRE6TXF2JKnIudxY',
     authDomain: 'online-request-payment.firebaseapp.com',
