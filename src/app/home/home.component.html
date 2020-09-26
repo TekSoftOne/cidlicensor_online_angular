@@ -250,6 +250,7 @@
               (nextStep)="next($event)"
               (data)="updateData($event)"
               [orderRef]="request.orderRef"
+              [paymentType]="request.paymentType"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-checkout>

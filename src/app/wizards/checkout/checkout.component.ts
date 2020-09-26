@@ -70,7 +70,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
   @Output() data = new EventEmitter<MembershipRequest>();
 
   public orderStatus$: Observable<OrderTrackerResult>;
-  public paymentType: string;
+  @Input() paymentType: string;
 
   @Input() orderRef: string;
   checkFormInvalid(form: NgForm): boolean {
@@ -90,6 +90,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
       this.data.emit({
         paymentType: this.paymentType,
       });
+      return;
     }
 
     const allowNext$ = this.orderStatus$.pipe(
