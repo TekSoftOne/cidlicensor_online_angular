@@ -106,7 +106,11 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "online-request:build"
+            "browserTarget": "online-request:build",
+            "host": "local.teksoft1.com",
+            "ssl": true,
+            "sslKey": "certs/localdev.key",
+            "sslCert": "certs/localdev.crt"
           },
           "configurations": {
             "production": {

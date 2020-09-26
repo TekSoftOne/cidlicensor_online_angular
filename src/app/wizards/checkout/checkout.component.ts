@@ -4,7 +4,14 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { IFormWizard, MembershipRequest, WINDOW } from './../../interfaces';
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Inject,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { isFormValid, isControlValid } from 'src/app/form';
 import { NgeniusPaymentService } from 'src/app/payment-gateway/payment-service';
@@ -13,7 +20,7 @@ import {
   OrderTrackerResult,
 } from 'src/app/payment-gateway/interfaces';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { observable, Observable } from 'rxjs';
+import { BehaviorSubject, observable, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -23,6 +30,7 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class CheckoutComponent implements OnInit, IFormWizard {
   private guid: string;
+  public width$: BehaviorSubject<number>;
   constructor(
     private ngeniusPaymentService: NgeniusPaymentService,
     private toastrService: ToastrService,
@@ -33,6 +41,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
   ) {
     this.guid = uuidv4();
     this.orderStatus$ = this.getOrderStatus(this.guid);
+    this.width$ = new BehaviorSubject<number>(this.getWidth());
   }
   @Output() nextStep = new EventEmitter<NgForm>();
   @Output() data = new EventEmitter<MembershipRequest>();
@@ -77,9 +86,15 @@ export class CheckoutComponent implements OnInit, IFormWizard {
                 this.insertOrderTrackingRecord(orderResult.reference)
               ),
               tap(() => {
-                return this.window.open(
+                const h = screen.height / 2;
+                const w = screen.width / 2;
+                return window.open(
                   orderResult._links.payment.href,
-                  '_blank'
+                  'Resource',
+                  'toolbar=no ,location=0, status=no,titlebar=no,menubar=no,width=' +
+                    w +
+                    ',height=' +
+                    h
                 );
               })
             );
@@ -92,6 +107,15 @@ export class CheckoutComponent implements OnInit, IFormWizard {
         })
       )
       .subscribe();
+  }
+
+  private getWidth(): number {
+    return screen.width;
+  }
+
+  @HostListener('window:resize')
+  public onResize(): void {
+    this.width$.next(this.getWidth());
   }
 
   ngOnInit(): void {}

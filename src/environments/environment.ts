@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:5900',
   licenseUrl: 'http://localhost:5000',
-  ngeniousRedirectUrl: 'http://vnexpress.net',
+  ngeniousRedirectUrl: 'https://local.teksoft1.com:4900',
   firebase: {
     apiKey: 'AIzaSyDSm0uOqyUUbbtVdEunRE6TXF2JKnIudxY',
     authDomain: 'online-request-payment.firebaseapp.com',
