@@ -9,6 +9,7 @@ import {
   EventEmitter,
   HostListener,
   Inject,
+  Input,
   OnInit,
   Output,
 } from '@angular/core';
@@ -20,8 +21,15 @@ import {
   OrderTrackerResult,
 } from 'src/app/payment-gateway/interfaces';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { BehaviorSubject, observable, Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  observable,
+  Observable,
+  combineLatest,
+  of,
+} from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'ot-checkout',
@@ -40,7 +48,22 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     @Inject(WINDOW) private window: Window
   ) {
     this.guid = uuidv4();
-    this.orderStatus$ = this.getOrderStatus(this.guid);
+    this.orderStatus$ = combineLatest([
+      of(this.orderRef),
+      this.getOrderStatus(this.guid),
+    ]).pipe(
+      switchMap(([currentOrderRef, orderRef]) => {
+        if (currentOrderRef) {
+          return of({
+            order: currentOrderRef,
+            lastAccess: new Date(),
+            status: 'SUCCESS',
+          } as OrderTrackerResult);
+        }
+
+        return of(orderRef);
+      })
+    );
     this.width$ = new BehaviorSubject<number>(this.getWidth());
   }
   @Output() nextStep = new EventEmitter<NgForm>();
@@ -48,6 +71,8 @@ export class CheckoutComponent implements OnInit, IFormWizard {
 
   public orderStatus$: Observable<OrderTrackerResult>;
   public paymentType: string;
+
+  @Input() orderRef: string;
   checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
   }
@@ -55,9 +80,39 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     return isControlValid(form, control);
   }
   next(f: NgForm): void {
-    if (this.paymentType === 'cash') {
-      console.log('cash');
+    if (!this.paymentType && !this.orderRef) {
+      this.toastrService.error('Please choose at least a payment type!');
+      return;
     }
+
+    if (this.paymentType === 'cash') {
+      this.nextStep.emit(f);
+      this.data.emit({
+        paymentType: this.paymentType,
+      });
+    }
+
+    const allowNext$ = this.orderStatus$.pipe(
+      map((s) => {
+        switch (s.status) {
+          case 'SUCCESS':
+            this.nextStep.emit(f);
+            this.data.emit({
+              orderRef: s.order,
+              paymentType: this.paymentType,
+            });
+            break;
+          case 'FAILED':
+            this.toastrService.error(
+              'Payment proccessing failure',
+              'Payment Gateway'
+            );
+            break;
+        }
+      })
+    );
+
+    allowNext$.subscribe();
 
     this.ngeniusPaymentService
       .signIn()

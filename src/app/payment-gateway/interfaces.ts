@@ -42,7 +42,7 @@ export interface NGTokenErrorDetail {
 }
 
 export interface OrderTrackerResult {
-  order: string;
-  lastAccess: Date;
-  status: string;
+  order?: string;
+  lastAccess?: Date;
+  status?: string;
 }

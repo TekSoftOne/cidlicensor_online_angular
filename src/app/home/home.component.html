@@ -246,7 +246,11 @@
           </ng-template>
 
           <ng-template #sPaymentChoices ngSwitchCase="sPaymentChoices">
-            <ot-checkout>
+            <ot-checkout
+              (nextStep)="next($event)"
+              (data)="updateData($event)"
+              [orderRef]="request.orderRef"
+            >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-checkout>
           </ng-template>
@@ -318,7 +322,6 @@
                             else updatingAppNumber
                           "
                         >
-                          Your application
                           {{ request.applicationNumber }} has been updated
                           success!
                         </h3>

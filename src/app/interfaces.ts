@@ -63,6 +63,8 @@ export interface MembershipRequest {
   membershipRequestType?: number;
   membershipId?: number;
   status?: number;
+  orderRef?: string;
+  paymentType?: string;
 }
 
 export interface HttpRequestOptions {
