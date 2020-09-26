@@ -69,10 +69,11 @@ export class CheckoutComponent implements OnInit, IFormWizard {
               token: res.access_token,
               orderRequestBody: {
                 action: 'SALE',
-                amount: { currencyCode: 'AED', value: 100 },
+                amount: { currencyCode: 'AED', value: 270 },
                 merchantAttributes: {
                   maskPaymentInfo: true,
                   redirectUrl: `${environment.ngeniousRedirectUrl}`,
+                  skipConfirmationPage: true,
                 },
               },
             }
@@ -86,15 +87,23 @@ export class CheckoutComponent implements OnInit, IFormWizard {
                 this.insertOrderTrackingRecord(orderResult.reference)
               ),
               tap(() => {
-                const h = screen.height / 2;
-                const w = screen.width / 2;
+                const h = (screen.height / 6) * 5;
+                const w = (screen.width / 4) * 3;
+
+                const x = screen.width / 2 - w / 2;
+                const y = screen.height / 2 - h / 2;
+
                 return window.open(
                   orderResult._links.payment.href,
                   'Resource',
-                  'toolbar=no ,location=0, status=no,titlebar=no,menubar=no,width=' +
+                  'toolbar=no ,status=no,titlebar=no,menubar=no,width=' +
                     w +
                     ',height=' +
-                    h
+                    h +
+                    ',left=' +
+                    x +
+                    ',top=' +
+                    y
                 );
               })
             );
