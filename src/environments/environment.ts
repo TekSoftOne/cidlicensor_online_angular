@@ -6,7 +6,7 @@ export const environment = {
   ngeniousApiKey:
     'OTNmNGZlZDEtMTc0Mi00ZDhmLWEzZjMtYTE0ZWQ1NDZmYTY1OmJmNDRmNjcxLTczOWMtNDIxMC1hOTgwLWQ4NDU3YzgzYTk0Mg==',
   ngeniousOutlet: '47294c75-de03-41eb-8a80-0462e0c7c99a',
-  ngeniousRedirectUrl: 'http://localhost:4900',
+  ngeniousRedirectUrl: 'https://local.officeatwork365.com:4900/',
   firebase: {
     apiKey: 'AIzaSyDSm0uOqyUUbbtVdEunRE6TXF2JKnIudxY',
     authDomain: 'online-request-payment.firebaseapp.com',

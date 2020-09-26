@@ -13,7 +13,11 @@ export interface NGAmount {
 }
 
 export interface NGLink {
-  payment: string;
+  payment: NGPayment;
+}
+
+export interface NGPayment {
+  href: string;
 }
 
 export interface NGTokenResult {

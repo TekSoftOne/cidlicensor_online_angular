@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
@@ -52,23 +53,29 @@ export class CheckoutComponent implements OnInit, IFormWizard {
       .pipe(
         switchMap((res) =>
           this.ngeniusPaymentService.post(
-            `${environment.ngeniousGateway}/transactions/outlets/${environment.ngeniousOutlet}/orders`,
+            `${environment.apiUrl}/api/paymentGateway/CreateOrder`,
             {
-              action: 'SALE',
-              amount: { currencyCode: 'AED', value: 100 },
-              merchantAttributes: {
-                maskPaymentInfo: true,
-                redirectUrl: `${
-                  environment.ngeniousRedirectUrl
-                }/checkout-success?id=${99999}`,
+              token: res.access_token,
+              orderRequestBody: {
+                action: 'SALE',
+                amount: { currencyCode: 'AED', value: 100 },
+                merchantAttributes: {
+                  maskPaymentInfo: true,
+                  redirectUrl: `${environment.ngeniousRedirectUrl}`,
+                },
               },
             }
           )
         ),
         switchMap((orderResult: CreateOrderResult) => {
-          if (orderResult._links.payment) {
+          if (orderResult._links?.payment) {
             return this.insertOrderTrackingRecord(orderResult.reference).pipe(
-              tap(() => this.window.open(orderResult._links.payment, '_blank'))
+              tap(() => {
+                return this.window.open(
+                  orderResult._links.payment.href,
+                  '_blank'
+                );
+              })
             );
           }
         }),
@@ -88,7 +95,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
       this.db
         .collection('orders')
         .doc(this.guid)
-        .update({
+        .set({
           order: orderRef,
           lastAccess: new Date(),
           status: 'STARTED',

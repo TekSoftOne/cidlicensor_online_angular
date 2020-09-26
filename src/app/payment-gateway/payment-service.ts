@@ -1,3 +1,4 @@
+import { OnlineRequestService } from './../authentication/online-request.service';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -11,7 +12,10 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class NgeniusPaymentService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private onlineRequestService: OnlineRequestService
+  ) {}
 
   public post(url: string, body: any, option?: any): Observable<any> {
     const options = this.getOptions(option);
@@ -23,25 +27,15 @@ export class NgeniusPaymentService {
     return this.httpClient.get(url, this.getOptions());
   }
 
-  public signIn(): Observable<boolean> {
-    return this.httpClient
-      .post(
-        `${environment.ngeniousGateway}/identity/auth/access-token`,
-        undefined,
-        {
-          headers: new HttpHeaders({
-            Authorization: 'Basic ' + environment.ngeniousApiKey,
-            'Content-Type': 'application/vnd.ni-identity.v1+json',
-            'Access-Control-Allow-Origin': '*',
-          }),
-        }
-      )
+  public signIn(): Observable<NGTokenResult> {
+    return this.onlineRequestService
+      .get(`${environment.apiUrl}/api/paymentGateway/getToken`)
       .pipe(
         map((token) => token as NGTokenResult),
         map((token) => {
           if (token.access_token) {
             localStorage.setItem(NGENIOUS_TOKEN, JSON.stringify(token));
-            return true;
+            return token;
           }
 
           throw new Error('Can not access the payment gateway');
@@ -65,7 +59,11 @@ export class NgeniusPaymentService {
       options.headers = new HttpHeaders();
     }
 
-    options.headers = options.headers.set('Authorization', `Bearer ${token}`);
+    options.headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.ni-identity.v1+json',
+      'Content-Type': 'application/vnd.ni-identity.v1+json',
+    });
     return options;
   }
 }
