@@ -84,6 +84,8 @@ export interface LicenseMembershipInfo {
 
 export interface ApplicationState {
   request?: MembershipRequestResult;
+  currentOrderRef?: string;
+  currentOrderGUID?: string;
 }
 
 export interface Religion {

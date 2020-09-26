@@ -1,3 +1,4 @@
+import { StateService } from './../../state-service';
 import { HttpHeaders } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
@@ -25,6 +26,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
   constructor(
     private ngeniusPaymentService: NgeniusPaymentService,
     private toastrService: ToastrService,
+    private stateService: StateService,
     private db: AngularFirestore,
 
     @Inject(WINDOW) private window: Window
@@ -69,7 +71,11 @@ export class CheckoutComponent implements OnInit, IFormWizard {
         ),
         switchMap((orderResult: CreateOrderResult) => {
           if (orderResult._links?.payment) {
-            return this.insertOrderTrackingRecord(orderResult.reference).pipe(
+            this.stateService.data.currentOrderGUID = this.guid;
+            return this.insertGuidLink(orderResult.reference).pipe(
+              switchMap(() =>
+                this.insertOrderTrackingRecord(orderResult.reference)
+              ),
               tap(() => {
                 return this.window.open(
                   orderResult._links.payment.href,
@@ -90,15 +96,13 @@ export class CheckoutComponent implements OnInit, IFormWizard {
 
   ngOnInit(): void {}
 
-  private insertOrderTrackingRecord(orderRef: string): Observable<void> {
+  private insertGuidLink(orderRef: string): Observable<void> {
     return new Observable((observer) => {
       this.db
-        .collection('orders')
-        .doc(this.guid)
+        .collection('guids')
+        .doc(orderRef)
         .set({
-          order: orderRef,
-          lastAccess: new Date(),
-          status: 'STARTED',
+          guid: this.guid,
         })
         .then((res) => {
           observer.next();
@@ -108,15 +112,15 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     });
   }
 
-  private updateSuccessOrderTrackingRecord(orderRef: string): Observable<void> {
+  private insertOrderTrackingRecord(orderRef: string): Observable<void> {
     return new Observable((observer) => {
       this.db
         .collection('orders')
         .doc(this.guid)
-        .update({
+        .set({
           order: orderRef,
           lastAccess: new Date(),
-          status: 'SUCCESS',
+          status: 'STARTED',
         })
         .then((res) => {
           observer.next();

@@ -36,6 +36,7 @@ import {
 } from '../constants';
 
 import { ToastrService } from 'ngx-toastr';
+import { Router, RouterStateSnapshot } from '@angular/router';
 
 @Component({
   selector: 'ot-home',
@@ -74,8 +75,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private toastrservice: ToastrService,
     private licenseAuthenticationService: LicenseAuthenticationService,
     private stateService: StateService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private router: Router
   ) {
+    const state: RouterStateSnapshot = router.routerState.snapshot;
+    if (state.url.indexOf('?ref=') > 0) {
+      const orderRef = state.url.replace('/?ref=', '');
+      const url = `/checkout/success?orderRef=${orderRef}`;
+      this.router.navigateByUrl(url);
+    }
+
     this.steps = stepsAll.filter((s) => {
       if (
         this.authenticationService.getUser() &&
