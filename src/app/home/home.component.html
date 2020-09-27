@@ -357,7 +357,7 @@
                     id="prev-btn"
                     *ngIf="isPreviousButtonShowed | async"
                     (click)="previous()"
-                    >Previous</a
+                    >{{ "WIZARD.PREVIOUS" | translate }}</a
                   >
                 </li>
                 <li>
@@ -375,7 +375,7 @@
                     id="next-btn"
                     *ngIf="isNextButtonShowed | async"
                   >
-                    Next
+                    {{ "WIZARD.NEXT" | translate }}
                   </button>
                 </li>
               </ul>

@@ -30,12 +30,15 @@
               >
                 <div class="col-lg-12 login text-center col-12 col-sm-12">
                   <h2>
-                    Track Your Request
+                    {{ "TRACKYOURPROGRESS.HEADER" | translate }}
                     <ot-loader [loading]="loading"></ot-loader>
                   </h2>
                   <input
                     name="applicationNumber"
-                    placeholder="Enter application number"
+                    [placeholder]="
+                      'TRACKYOURPROGRESS.APPLICATIONNUMBER.PLACEHOLDER'
+                        | translate
+                    "
                     type="text"
                     ngModel
                     required
@@ -45,7 +48,12 @@
                       'is-invalid': checkFormInvalid(SearchApplcationForm)
                     }"
                   />
-                  <input class="submit" name="" type="submit" value="Search" />
+                  <input
+                    class="submit"
+                    name=""
+                    type="submit"
+                    [value]="'TRACKYOURPROGRESS.SEARCH.BUTTON' | translate"
+                  />
                 </div>
               </form>
             </ng-template>

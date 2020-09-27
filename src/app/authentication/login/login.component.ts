@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as nationPickerHelper from '../../nation-picker-helper.js';
 import { VerificationModel, VerificationSendResult } from 'src/app/interfaces';
 import { environment } from 'src/environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'ot-login',
@@ -32,7 +33,8 @@ export class LoginComponent implements AfterViewInit {
     private authenticationService: AuthenticationService,
     private toastrservice: ToastrService,
     private router: Router,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private translateService: TranslateService
   ) {
     this.codeSent$ = new BehaviorSubject<boolean>(false);
   }
@@ -50,6 +52,11 @@ export class LoginComponent implements AfterViewInit {
     return this.authenticationService.login(phoneNumber, undefined).pipe(
       catchError((err: HttpErrorResponse) => {
         this.error = err.error ?? err.message;
+        if (this.error === 'Invalid phone number') {
+          return throwError(
+            this.translateService.instant('LOGIN.ERROR.INVALIDPHONENUMBER')
+          );
+        }
         return throwError(this.error);
       })
     );

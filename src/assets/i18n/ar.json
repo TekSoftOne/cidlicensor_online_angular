@@ -4,11 +4,39 @@
     "LANGUAGE": "EN"
   },
   "LOGIN": {
-    "ACCEPTING_MESSAGE": "نحن نقبل الطلبات!"
+    "ACCEPTING_MESSAGE": "نحن نقبل الطلبات!",
+    "HEADER": "تسجيل الدخول",
+    "EG": "مثال",
+    "ERROR": {
+      "INVALIDPHONENUMBER": "رقم الهاتف غير صحيح"
+    }
   },
   "WIZARD": {
     "PHONE": {
       "HEADER": "أدخل رقم هاتفك المحمول للبدء"
+    },
+    "NEXT": "التالى",
+    "PREVIOUS": "السابق",
+    "SEARCH": {
+      "MEMBERSHIPNUMBER": {
+        "BUTTON": "بحث"
+      }
+    }
+  },
+  "HEADER": {
+    "HOME": "الصفحة الرئيسية",
+    "LOGIN": "تسجيل الدخول"
+  },
+  "TRACKYOURREQUEST": {
+    "HEADER": "تتبع طلبك"
+  },
+  "TRACKYOURPROGRESS": {
+    "HEADER": "تتبع طلبك",
+    "APPLICATIONNUMBER": {
+      "PLACEHOLDER": "رقم التطبيق الخاص بك"
+    },
+    "SEARCH": {
+      "BUTTON": "بحث"
     }
   }
 }

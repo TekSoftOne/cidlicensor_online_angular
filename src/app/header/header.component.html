@@ -1,13 +1,17 @@
 <div class="row menu-bar">
   <div class="col-8 col-sm-6">
     <p>
-      <a href="/">HOME</a>
-      <a href="/track-your-request">TRACK YOUR REQUEST</a>
+      <a href="/">{{ "HEADER.HOME" | translate | uppercase }}</a>
+      <a href="/track-your-request">{{
+        "TRACKYOURREQUEST.HEADER" | translate | uppercase
+      }}</a>
     </p>
   </div>
   <div class="col-4 rt-menubar col-sm-6 text-right">
     <p>
-      <a *ngIf="!isIn()" href="/login">LOGIN</a>
+      <a *ngIf="!isIn()" href="/login">{{
+        "HEADER.LOGIN" | translate | uppercase
+      }}</a>
     </p>
     <ng-container *ngIf="userImage; else Guest">
       <div *ngIf="isIn()" class="dropdown user user-menu">

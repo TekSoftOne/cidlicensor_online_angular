@@ -4,11 +4,39 @@
     "LANGUAGE": "AR"
   },
   "LOGIN": {
-    "ACCEPTING_MESSAGE": "We’re Accepting your applications!"
+    "ACCEPTING_MESSAGE": "We’re Accepting your applications!",
+    "HEADER": "Login",
+    "EG": "e.g",
+    "ERROR": {
+      "INVALIDPHONENUMBER": "Invalid phone number"
+    }
   },
   "WIZARD": {
     "PHONE": {
       "HEADER": "Enter your Mobile Number to get started"
+    },
+    "NEXT": "Next",
+    "PREVIOUS": "Previous",
+    "SEARCH": {
+      "MEMBERSHIPNUMBER": {
+        "BUTTON": "Search"
+      }
+    }
+  },
+  "HEADER": {
+    "HOME": "Home",
+    "LOGIN": "Login"
+  },
+  "TRACKYOURREQUEST": {
+    "HEADER": "Track your request"
+  },
+  "TRACKYOURPROGRESS": {
+    "HEADER": "Track your request",
+    "APPLICATIONNUMBER": {
+      "PLACEHOLDER": "Your application number"
+    },
+    "SEARCH": {
+      "BUTTON": "Search"
     }
   }
 }
