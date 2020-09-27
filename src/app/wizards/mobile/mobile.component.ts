@@ -8,29 +8,35 @@ import {
   Output,
   EventEmitter,
   AfterViewInit,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { isFormValid } from '../../form';
-import * as nationPickerHelper from '../../nation-picker-helper.js';
+// import * as nationPickerHelper from '../../nation-picker-helper.js';
 import { ToastrService } from 'ngx-toastr';
+declare var $: any;
 
 @Component({
   selector: 'ot-mobile',
   templateUrl: './mobile.component.html',
   styleUrls: ['./mobile.component.scss'],
 })
-export class MobileComponent implements OnInit, AfterViewInit, IFormWizard {
+export class MobileComponent implements OnInit, IFormWizard {
   @Input() phoneNumber: string;
   @Output() nextStep = new EventEmitter<NgForm>();
   @Output() data = new EventEmitter<MembershipRequest>();
+
+  @ViewChild('wizardMobileControl', { static: true })
+  wizardMobileControl: ElementRef;
   constructor(private toastrservice: ToastrService) {}
-  ngAfterViewInit(): void {
-    nationPickerHelper();
-  }
+
   checkControlInvalid(form: NgForm, control: any): boolean {
     throw new Error('Method not implemented.');
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    $(this.wizardMobileControl.nativeElement).intlTelInput();
+  }
 
   public checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
