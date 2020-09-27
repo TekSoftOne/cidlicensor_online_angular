@@ -11,10 +11,14 @@
         <div class="col-lg-12 flush col-12 col-sm-12">
           <div class="col-12 flush" id="mobi">
             <div class="form-group full flush">
-              <label class="form-label">Mobile Number*</label>
+              <label class="form-label"
+                >{{ "WIZARD.PHONE.TITLE" | translate }}*</label
+              >
               <input
                 #wizardMobileControl
-                placeholder="e.g. +17021234567"
+                [placeholder]="
+                  ('WIZARD.PHONE.PLACEHOLDER.EG' | translate) + ' +17021234567'
+                "
                 type="tel"
                 [(ngModel)]="phoneNumber"
                 name="mobileNumber"

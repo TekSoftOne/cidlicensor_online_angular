@@ -17,7 +17,12 @@
   },
   "WIZARD": {
     "PHONE": {
-      "HEADER": "Enter your Mobile Number to get started"
+      "HEADER": "Enter your Mobile Number to get started",
+      "PLACEHOLDER.EG": "e.g.",
+      "TITLE": "Mobile number",
+      "ERROR": {
+        "ATLEAST": "Please enter at least 8 numbers"
+      }
     },
     "NEXT": "Next",
     "PREVIOUS": "Previous",

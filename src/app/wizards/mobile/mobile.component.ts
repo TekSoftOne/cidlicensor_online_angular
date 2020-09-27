@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { IFormWizard } from './../../interfaces';
 import { MembershipRequest } from './../../interfaces';
 import { NgForm } from '@angular/forms';
@@ -27,7 +28,10 @@ export class MobileComponent implements OnInit, IFormWizard {
 
   @ViewChild('wizardMobileControl', { static: true })
   wizardMobileControl: ElementRef;
-  constructor(private toastrservice: ToastrService) {}
+  constructor(
+    private toastrservice: ToastrService,
+    private translateService: TranslateService
+  ) {}
 
   checkControlInvalid(form: NgForm, control: any): boolean {
     throw new Error('Method not implemented.');
@@ -43,7 +47,9 @@ export class MobileComponent implements OnInit, IFormWizard {
 
   public next(f: NgForm): void {
     if (!f.valid) {
-      this.toastrservice.error('Please enter at least 8 numbers');
+      this.toastrservice.error(
+        this.translateService.instant('WIZARD.PHONE.ERROR.ATLEAST')
+      );
     }
     this.data.emit({ phoneNumber: this.phoneNumber } as MembershipRequest);
     this.nextStep.emit(f);
