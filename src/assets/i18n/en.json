@@ -9,6 +9,10 @@
     "EG": "e.g",
     "ERROR": {
       "INVALIDPHONENUMBER": "Invalid phone number"
+    },
+    "NEXT": "Next",
+    "SIDE": {
+      "HEADER": "Online Request"
     }
   },
   "WIZARD": {
@@ -38,5 +42,11 @@
     "SEARCH": {
       "BUTTON": "Search"
     }
+  },
+  "STEPSIDE": {
+    "PERSONAL": "Personal",
+    "LIMIT": "Limit",
+    "LOCATION": "Location",
+    "SUBMIT": "Submit"
   }
 }

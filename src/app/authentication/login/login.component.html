@@ -7,7 +7,7 @@
           <div class="info-holder simple-info">
             <div><img alt="" src="/assets/images/graphic6.svg" /></div>
             <div>
-              <h3>Online Request</h3>
+              <h3>{{ "LOGIN.SIDE.HEADER" | translate }}</h3>
             </div>
             <div>
               <p>
@@ -83,7 +83,12 @@
                 <div class="spinner-border" *ngIf="loading">
                   Sending Code ...
                 </div>
-                <input class="submit" name="" type="submit" value="Next" />
+                <input
+                  class="submit"
+                  name=""
+                  type="submit"
+                  [value]="'LOGIN.NEXT' | translate"
+                />
               </form>
             </ng-template>
           </div>

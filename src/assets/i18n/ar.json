@@ -9,6 +9,10 @@
     "EG": "مثال",
     "ERROR": {
       "INVALIDPHONENUMBER": "رقم الهاتف غير صحيح"
+    },
+    "NEXT": "التالى",
+    "SIDE": {
+      "HEADER": "طلب عبر الإنترنت"
     }
   },
   "WIZARD": {
@@ -38,5 +42,11 @@
     "SEARCH": {
       "BUTTON": "بحث"
     }
+  },
+  "STEPSIDE": {
+    "PERSONAL": "شخصي",
+    "LIMIT": "حد",
+    "LOCATION": "موقعك",
+    "SUBMIT": "إرسال"
   }
 }

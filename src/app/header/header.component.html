@@ -1,15 +1,15 @@
 <div class="row menu-bar">
   <div class="col-8 col-sm-6">
     <p>
-      <a href="/">{{ "HEADER.HOME" | translate | uppercase }}</a>
-      <a href="/track-your-request">{{
+      <a [routerLink]="['/']">{{ "HEADER.HOME" | translate | uppercase }}</a>
+      <a [routerLink]="['/track-your-request']">{{
         "TRACKYOURREQUEST.HEADER" | translate | uppercase
       }}</a>
     </p>
   </div>
   <div class="col-4 rt-menubar col-sm-6 text-right">
     <p>
-      <a *ngIf="!isIn()" href="/login">{{
+      <a *ngIf="!isIn()" [routerLink]="['/login']">{{
         "HEADER.LOGIN" | translate | uppercase
       }}</a>
     </p>
