@@ -2,7 +2,7 @@ import { StateService } from './../../state-service';
 import { HttpHeaders } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap, timestamp } from 'rxjs/operators';
 import { IFormWizard, MembershipRequest, WINDOW } from './../../interfaces';
 import {
   Component,
@@ -39,6 +39,8 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class CheckoutComponent implements OnInit, IFormWizard {
   private guid: string;
   public width$: BehaviorSubject<number>;
+  public loading = false;
+  public loadingGateway = false;
   constructor(
     private ngeniusPaymentService: NgeniusPaymentService,
     private toastrService: ToastrService,
@@ -48,6 +50,8 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     @Inject(WINDOW) private window: Window
   ) {
     this.guid = uuidv4();
+
+    this.loading = true;
     this.orderStatus$ = combineLatest([
       of(this.orderRef),
       this.getOrderStatus(this.guid),
@@ -62,8 +66,37 @@ export class CheckoutComponent implements OnInit, IFormWizard {
         }
 
         return of(orderRef);
+      }),
+      tap(() => (this.loading = false)),
+      catchError((err) => {
+        this.toastrService.error(err);
+        this.loading = false;
+        return of(undefined);
       })
     );
+
+    const allowNext$ = this.orderStatus$.pipe(
+      map((s) => {
+        switch (s.status) {
+          case 'CAPTURED':
+            this.nextStep.emit();
+            this.data.emit({
+              orderRef: s.order,
+              paymentType: this.paymentType,
+            });
+            break;
+          case 'FAILED':
+            this.toastrService.error(
+              'Payment proccessing failure',
+              'Payment Gateway'
+            );
+            break;
+        }
+      })
+    );
+
+    allowNext$.subscribe();
+
     this.width$ = new BehaviorSubject<number>(this.getWidth());
   }
   @Output() nextStep = new EventEmitter<NgForm>();
@@ -93,28 +126,15 @@ export class CheckoutComponent implements OnInit, IFormWizard {
       return;
     }
 
-    const allowNext$ = this.orderStatus$.pipe(
-      map((s) => {
-        switch (s.status) {
-          case 'SUCCESS':
-            this.nextStep.emit(f);
-            this.data.emit({
-              orderRef: s.order,
-              paymentType: this.paymentType,
-            });
-            break;
-          case 'FAILED':
-            this.toastrService.error(
-              'Payment proccessing failure',
-              'Payment Gateway'
-            );
-            break;
-        }
-      })
-    );
+    if (this.orderRef && this.orderRef.length > 0) {
+      this.nextStep.emit(f);
+      this.data.emit({
+        paymentType: this.paymentType,
+      });
+      return;
+    }
 
-    allowNext$.subscribe();
-
+    this.loadingGateway = true;
     this.ngeniusPaymentService
       .signIn()
       .pipe(
@@ -165,9 +185,10 @@ export class CheckoutComponent implements OnInit, IFormWizard {
             );
           }
         }),
-
+        tap(() => (this.loadingGateway = false)),
         catchError((err) => {
           this.toastrService.error(err);
+          this.loadingGateway = false;
           return undefined;
         })
       )

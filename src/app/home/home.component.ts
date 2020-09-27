@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const state: RouterStateSnapshot = router.routerState.snapshot;
     if (state.url.indexOf('?ref=') > 0) {
       const orderRef = state.url.replace('/?ref=', '');
-      const url = `/checkout/success?orderRef=${orderRef}`;
+      const url = `/checkout?orderRef=${orderRef}`;
       this.router.navigateByUrl(url);
     }
 

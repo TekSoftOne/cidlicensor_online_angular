@@ -47,7 +47,7 @@ import { CheckoutComponent } from './wizards/checkout/checkout.component';
 import { AngularFireModule } from 'angularfire2';
 import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { CheckoutSuccessComponent } from './checkout-success/checkout-success.component';
+import { CheckoutSuccessComponent } from './checkout-success/checkout-completed.component';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

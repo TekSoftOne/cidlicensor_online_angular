@@ -1,7 +1,7 @@
-import { OrderDetail } from './../payment-gateway/interfaces';
-import { NgeniusPaymentService } from './../payment-gateway/payment-service';
-import { environment } from './../../environments/environment';
-import { OnlineRequestService } from './../authentication/online-request.service';
+import { OrderDetail } from '../payment-gateway/interfaces';
+import { NgeniusPaymentService } from '../payment-gateway/payment-service';
+import { environment } from '../../environments/environment';
+import { OnlineRequestService } from '../authentication/online-request.service';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -16,9 +16,9 @@ import { tap, switchMap, map, catchError, skip } from 'rxjs/operators';
 import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
 
 @Component({
-  selector: 'ot-checkout-success',
-  templateUrl: './checkout-success.component.html',
-  styleUrls: ['./checkout-success.component.scss'],
+  selector: 'ot-checkout-completed',
+  templateUrl: './checkout-completed.component.html',
+  styleUrls: ['./checkout-completed.component.scss'],
 })
 export class CheckoutSuccessComponent implements OnInit {
   public UnauthorizError: BehaviorSubject<boolean>;
@@ -68,9 +68,7 @@ export class CheckoutSuccessComponent implements OnInit {
         )
       ),
       tap(() => {
-        setTimeout(() => {
-          window.close();
-        }, 1000);
+        this.closeWindow();
       }),
       catchError((err) => {
         if (err.message === 'Unauthorized') {
@@ -79,10 +77,16 @@ export class CheckoutSuccessComponent implements OnInit {
         }
 
         this.toastrService.error(err);
-
+        this.closeWindow();
         return;
       })
     );
+  }
+
+  private closeWindow(): void {
+    setTimeout(() => {
+      window.close();
+    }, 1000);
   }
 
   private getOrderDetail(orderRef: string): Observable<OrderDetail> {
