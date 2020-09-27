@@ -1,8 +1,18 @@
+import { OrderDetail } from './../payment-gateway/interfaces';
+import { NgeniusPaymentService } from './../payment-gateway/payment-service';
+import { environment } from './../../environments/environment';
+import { OnlineRequestService } from './../authentication/online-request.service';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable, of, combineLatest } from 'rxjs';
-import { tap, switchMap, map, catchError } from 'rxjs/operators';
+import {
+  Observable,
+  of,
+  combineLatest,
+  throwError,
+  BehaviorSubject,
+} from 'rxjs';
+import { tap, switchMap, map, catchError, skip } from 'rxjs/operators';
 import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
 
 @Component({
@@ -11,12 +21,16 @@ import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
   styleUrls: ['./checkout-success.component.scss'],
 })
 export class CheckoutSuccessComponent implements OnInit {
+  public UnauthorizError: BehaviorSubject<boolean>;
   constructor(
     private orderSignalDb: AngularFirestore,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private onlineRequestService: OnlineRequestService,
+    private ngeniusPaymentService: NgeniusPaymentService
   ) {
+    this.UnauthorizError = new BehaviorSubject<boolean>(false);
     const state: RouterStateSnapshot = router.routerState.snapshot;
     const template = '?orderRef=';
     const index = state.url.indexOf(template);
@@ -26,30 +40,74 @@ export class CheckoutSuccessComponent implements OnInit {
         state.url.length
       );
       const orderRef = urlLong.replace(template, '');
-      this.getGuidLink(orderRef)
-        .pipe(
-          switchMap((res: any) =>
-            this.updateSuccessOrderTrackingRecord(orderRef, res.guid)
-          ),
-          tap(() => {
-            setTimeout(() => {
-              window.close();
-            }, 1000);
-          }),
-          catchError((err) => {
-            this.toastrService.error(err);
-            return undefined;
-          })
-        )
-        .subscribe();
+      this.initalize(orderRef).subscribe();
+
+      const retry$ = this.UnauthorizError.asObservable().pipe(
+        skip(1),
+        switchMap(() => {
+          return this.ngeniusPaymentService
+            .signIn()
+            .pipe(tap(() => this.initalize(orderRef).subscribe()));
+        })
+      );
+
+      retry$.subscribe();
     }
+  }
+
+  private initalize(orderRef: string): Observable<void> {
+    return combineLatest([
+      this.getGuidLink(orderRef),
+      this.getOrderDetail(orderRef),
+    ]).pipe(
+      switchMap(([guid, detail]) =>
+        this.updateSuccessOrderTrackingRecord(
+          orderRef,
+          guid,
+          detail._embedded.payment[0]?.state
+        )
+      ),
+      tap(() => {
+        setTimeout(() => {
+          window.close();
+        }, 1000);
+      }),
+      catchError((err) => {
+        if (err.message === 'Unauthorized') {
+          this.UnauthorizError.next(true);
+          return of(undefined);
+        }
+
+        this.toastrService.error(err);
+
+        return;
+      })
+    );
+  }
+
+  private getOrderDetail(orderRef: string): Observable<OrderDetail> {
+    return this.onlineRequestService
+      .request(`${environment.apiUrl}/api/paymentGateway/orderDetail`, {
+        orderRef,
+        token: this.ngeniusPaymentService.getToken(),
+      })
+      .pipe(
+        map((order) => {
+          if (order.error) {
+            throw new Error(order.error);
+          }
+
+          return order;
+        })
+      );
   }
 
   ngOnInit(): void {}
 
   private updateSuccessOrderTrackingRecord(
     orderRef: string,
-    orderGuid: string
+    orderGuid: string,
+    status: string
   ): Observable<void> {
     return new Observable((observer) => {
       this.orderSignalDb
@@ -58,7 +116,7 @@ export class CheckoutSuccessComponent implements OnInit {
         .update({
           order: orderRef,
           lastAccess: new Date(),
-          status: 'SUCCESS',
+          status,
         })
         .then(() => {
           observer.next();
@@ -73,6 +131,6 @@ export class CheckoutSuccessComponent implements OnInit {
       .collection('guids')
       .doc(orderRef)
       .valueChanges()
-      .pipe(map((s) => s as string));
+      .pipe(map((s: any) => s.guid as string));
   }
 }

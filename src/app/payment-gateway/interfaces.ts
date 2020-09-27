@@ -46,3 +46,15 @@ export interface OrderTrackerResult {
   lastAccess?: Date;
   status?: string;
 }
+
+export interface OrderDetail {
+  _embedded: OrderDetailEmbedded;
+}
+
+export interface OrderDetailEmbedded {
+  payment: OrderDetailPayment[];
+}
+
+export interface OrderDetailPayment {
+  state: string;
+}

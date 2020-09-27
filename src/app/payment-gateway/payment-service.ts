@@ -43,6 +43,15 @@ export class NgeniusPaymentService {
       );
   }
 
+  public getToken(): string {
+    const cachedToken = localStorage.getItem(NGENIOUS_TOKEN);
+    if (!cachedToken) {
+      return null;
+    }
+
+    return (JSON.parse(cachedToken) as NGTokenResult).access_token;
+  }
+
   private getOptions(options?: HttpRequestOptions): any {
     let token = '';
     const cacheData = localStorage.getItem(NGENIOUS_TOKEN);
