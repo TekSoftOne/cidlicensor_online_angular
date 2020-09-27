@@ -27,8 +27,8 @@
                   "
                 >
                   <div class="col-lg-12 col-12 col-sm-12 text-center">
-                    <h3>Checkout successfully</h3>
-                    <h5>order ref: {{ orderRef }}</h5>
+                    <h3>Checked out successfully</h3>
+                    <h5>Order ref: {{ orderRef }}</h5>
                   </div>
                 </ng-container>
               </ng-container>
@@ -39,7 +39,7 @@
                       <img alt="" src="/assets/images/img-new-1.png" />
                       <h6>Pay Online</h6>
                       <h5 *ngIf="loading">
-                        Directing to payment gateway
+                        Redirecting to payment gateway
                         <ot-loader [loading]="true"></ot-loader>
                       </h5>
                     </div>

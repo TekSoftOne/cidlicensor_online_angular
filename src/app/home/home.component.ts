@@ -271,6 +271,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     let step = this.steps[index + 1];
 
+    if (!this.request.phoneNumber) {
+      // user get to home page from last session
+      this.request.phoneNumber = this.authenticationService.getUser().email;
+    }
+
     if (this.currentStep$.value === 'sReview') {
       if (
         !this.request.email ||
