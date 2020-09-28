@@ -125,13 +125,13 @@ export class PersonalInformationAdvancedComponent
     console.log();
   }
   next(f: NgForm): void {
-    // if (
-    //   !f.valid ||
-    //   !this.uploadProfileImage.isControlValid() ||
-    //   !this.uploadPassportFile.isControlValid()
-    // ) {
-    //   return;
-    // }
+    if (
+      !f.valid ||
+      !this.uploadProfileImage.isControlValid() ||
+      !this.uploadPassportFile.isControlValid()
+    ) {
+      return;
+    }
 
     this.data.emit({
       nationId: this.nationId,

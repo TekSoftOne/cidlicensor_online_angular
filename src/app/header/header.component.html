@@ -29,7 +29,7 @@
         <ul class="dropdown-menu">
           <li>
             <a href="#" (click)="logout($event)">
-              <i class="fa fa-sign-out"></i> Logout
+              <i class="fa fa-sign-out"></i> {{ "LOGOUT" | translate }}
             </a>
           </li>
         </ul>
@@ -47,7 +47,7 @@
           data-toggle="dropdown"
           href="#"
         >
-          <span>Hi Guest!</span>
+          <span>{{ "HIGUEST" | translate }}</span>
         </a>
 
         <ul class="dropdown-menu">

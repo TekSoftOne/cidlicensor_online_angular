@@ -260,13 +260,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public next(f: NgForm): void {
-    // if (
-    //   !f.form.valid ||
-    //   this.requestValidation.filter((x) => !x.isValid).length > 0
-    // ) {
-    //   console.log('invalid');
-    //   return;
-    // }
+    if (
+      !f.form.valid ||
+      this.requestValidation.filter((x) => !x.isValid).length > 0
+    ) {
+      console.log('invalid');
+      return;
+    }
     const index = this.getIndex(this.currentStep$.value);
 
     let step = this.steps[index + 1];

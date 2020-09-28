@@ -23,9 +23,9 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((err) => {
-        if (err.status === 401 || err.status === 403) {
+        if (err.status === 401) {
           // auto logout if 401 response returned from api
-          // this.authenticationService.logout();
+          this.authenticationService.logout();
         }
 
         console.log(err);

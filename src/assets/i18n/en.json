@@ -53,5 +53,7 @@
     "LIMIT": "Limit",
     "LOCATION": "Location",
     "SUBMIT": "Submit"
-  }
+  },
+  "LOGOUT": "Logout",
+  "HIGUEST": "Hi Guest!"
 }
