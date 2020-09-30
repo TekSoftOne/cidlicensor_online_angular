@@ -9,6 +9,7 @@ import { TrackYourProgressComponent } from './track-your-progress/track-your-pro
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { LicenseAuthenticationService } from './authentication/licensor/license-authentication.service';
 import { StateService } from './state-service';
+import { ImageService } from './image-service';
 
 import {
   HttpClientModule,
@@ -113,6 +114,7 @@ export function createTranslateLoader(http: HttpClient) {
       multi: true,
     },
     NgeniusPaymentService,
+    ImageService,
   ],
   bootstrap: [AppComponent],
 })

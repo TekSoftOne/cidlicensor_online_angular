@@ -418,8 +418,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private cacheCurrentStep(step: string, previousSteps: string[]): void {
     if (!environment.production) {
-      localStorage.setItem(CURRENT_STEP_TOKEN, step);
-      localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
+      // localStorage.setItem(CURRENT_STEP_TOKEN, step);
+      // localStorage.setItem(PREVIOUS_STEP_TOKEN, JSON.stringify(previousSteps));
     }
   }
 

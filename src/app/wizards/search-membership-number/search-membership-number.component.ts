@@ -1,6 +1,7 @@
+import { MembershipRequest } from 'src/app/interfaces';
 import { dateFormat, religions, nationalities } from './../../constants';
 import { environment } from './../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { isFormValid, isControlValid } from 'src/app/form';
 import { IFormWizard, MembershipRequest } from './../../interfaces';
@@ -17,9 +18,10 @@ import {
 import { NgForm } from '@angular/forms';
 import { ThrowStmt } from '@angular/compiler';
 import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
+import { ImageService } from 'src/app/image-service';
 
 @Component({
   selector: 'ot-search-membership-number',
@@ -32,7 +34,8 @@ export class SearchMembershipNumberComponent
   constructor(
     private licenseAuthenticationService: LicenseAuthenticationService,
     private toastrservice: ToastrService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private imageService: ImageService
   ) {}
 
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
@@ -58,59 +61,60 @@ export class SearchMembershipNumberComponent
     this.searchMembership(this.membershipNumber)
       .pipe(
         map((data: any) => data.details),
-        tap((d) => {
-          // remove this check for now as of Farhal confirmation about
-          // "There are some business gaps and we will keep allow them to use any number and go for renewal/replacement"
-          // if (d.phoneNumber !== this.currentPhoneNumber) {
-          //   throw new Error(
-          //     `Other user (another phone number) with this membership number already existed`
-          //   );
-          // }
+        switchMap((membershipDetail: MembershipDetailInLicensor) => {
+          return combineLatest([
+            of(membershipDetail),
+            this.imageService.processImageUrl(membershipDetail.profilePic),
+          ]).pipe(
+            map(([membership, profilePic]) => {
+              return {
+                phoneNumber: membership.phoneNumber,
+                fullName: membership.fullName,
+                email: membership.email,
+                address: membership.address,
+                fullAddress: membership.occupation,
+                nationId: nationalities.find(
+                  (n) => n.name === membership.nationName
+                )?.id,
+                nationName: membership.nationName,
+                // emiratesIdBack: membership.attachment1,
+                // emiratesIdFront: membership.attachment2,
+                // passportAttachement: membership.attachment3,
+                profilePhoto: profilePic,
+                // authorizationLetter: membership.visaAttachment,
+                // typeOfCustomer: membership.membershipTypeId,
+                membershipTypeId: membership.membershipTypeId,
+                requestCategory: membership.requestCategoryString,
+                membershipNumber: membership.membershipNumber,
+                emiratesIDNumber: membership.emiratesIDNumber,
+                passportNumber: membership.passportNumber,
+                gender: Number(membership.gender),
+                // genderName:
+                birthDate: this.datePipe.transform(
+                  membership.birthDate,
+                  dateFormat
+                ),
+                religionId: religions.find(
+                  (r) => r.name === membership.religionName
+                )?.id,
+                religionName: membership.religionName,
+                // step
+                monthlySalary: membership.salary,
+                monthlyQuota: membership.limit,
+                // comment: membership
+                // areaId?
+                // locationId: number;
+                // visaResidency: membership.visaResidency,
+                // locationAddress?;
+                // agentId?;
+                membershipId: membership.membershipId,
+              };
+            })
+          );
         }),
-        tap((membership: MembershipDetailInLicensor) =>
-          this.data.emit({
-            phoneNumber: membership.phoneNumber,
-            fullName: membership.fullName,
-            email: membership.email,
-            address: membership.address,
-            fullAddress: membership.occupation,
-            nationId: nationalities.find(
-              (n) => n.name === membership.nationName
-            )?.id,
-            nationName: membership.nationName,
-            // emiratesIdBack: membership.attachment1,
-            // emiratesIdFront: membership.attachment2,
-            // passportAttachement: membership.attachment3,
-            // profilePhoto: membership.profilePic,
-            // authorizationLetter: membership.visaAttachment,
-            // typeOfCustomer: membership.membershipTypeId,
-            membershipTypeId: membership.membershipTypeId,
-            requestCategory: membership.requestCategoryString,
-            membershipNumber: membership.membershipNumber,
-            emiratesIDNumber: membership.emiratesIDNumber,
-            passportNumber: membership.passportNumber,
-            gender: Number(membership.gender),
-            // genderName:
-            birthDate: this.datePipe.transform(
-              membership.birthDate,
-              dateFormat
-            ),
-            religionId: religions.find(
-              (r) => r.name === membership.religionName
-            )?.id,
-            religionName: membership.religionName,
-            // step
-            monthlySalary: membership.salary,
-            monthlyQuota: membership.limit,
-            // comment: membership
-            // areaId?
-            // locationId: number;
-            // visaResidency: membership.visaResidency,
-            // locationAddress?;
-            // agentId?;
-            membershipId: membership.membershipId,
-          })
-        ),
+        tap((membershipRequest) => {
+          this.data.emit(membershipRequest);
+        }),
         tap(() => this.nextStep.emit(f)),
         tap(() => (this.loading = false)),
         catchError((err) => {
