@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="currentStep | async as currentStep">
   <div class="img-holder n-form-bg">
     <div class="bg"></div>
     <div class="tablerow">
@@ -29,16 +29,14 @@
                   aria-selected="true"
                   class="first"
                   [ngClass]="{
-                    current: isPersonalLeftStep(stateService.currentStep$.value)
+                    current: isPersonalLeftStep(currentStep)
                   }"
                   id="ft-li"
                   role="tab"
                 >
                   <a id="steps-uid-0-t-0-0">
                     <span
-                      *ngIf="
-                        isPersonalLeftStep(stateService.currentStep$.value)
-                      "
+                      *ngIf="isPersonalLeftStep(currentStep)"
                       class="audible current-info"
                     >
                     </span>
@@ -55,13 +53,13 @@
                   aria-disabled="true"
                   class="disabled"
                   [ngClass]="{
-                    current: isLimitLeftStep(stateService.currentStep$.value)
+                    current: isLimitLeftStep(currentStep)
                   }"
                   id="sd-li"
                   role="tab"
                 >
                   <span
-                    *ngIf="isLimitLeftStep(stateService.currentStep$.value)"
+                    *ngIf="isLimitLeftStep(currentStep)"
                     class="audible current-info"
                   >
                   </span>
@@ -79,13 +77,13 @@
                   aria-disabled="true"
                   class="disabled"
                   [ngClass]="{
-                    current: isLocationLeftStep(stateService.currentStep$.value)
+                    current: isLocationLeftStep(currentStep)
                   }"
                   id="sd-li"
                   role="tab"
                 >
                   <span
-                    *ngIf="isLocationLeftStep(stateService.currentStep$.value)"
+                    *ngIf="isLocationLeftStep(currentStep)"
                     class="audible current-info"
                   >
                   </span>
@@ -103,13 +101,13 @@
                   aria-disabled="true"
                   class="disabled"
                   [ngClass]="{
-                    current: isSubmitLeftStep(stateService.currentStep$.value)
+                    current: isSubmitLeftStep(currentStep)
                   }"
                   id="sd-li"
                   role="tab"
                 >
                   <span
-                    *ngIf="isSubmitLeftStep(stateService.currentStep$.value)"
+                    *ngIf="isSubmitLeftStep(currentStep)"
                     class="audible current-info"
                   >
                   </span>
@@ -140,7 +138,7 @@
       [ngClass]="{ 'application-active': (applicationNumber | async) }"
     >
       <div class="form-items">
-        <ng-container [ngSwitch]="stateService.currentStep$ | async">
+        <ng-container [ngSwitch]="currentStep">
           <!-- phone number -->
           <ng-template #sPhoneNumber ngSwitchCase="sPhoneNumber">
             <ot-mobile

@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isSearchStep: Observable<boolean>;
 
   private readonly defaultStep = 'sPhoneNumber';
-  // public currentStep$: Observable<string>;
+  public currentStep: Observable<string>;
   public previousSteps$: BehaviorSubject<string[]>;
   public isMobileSend = false;
   public googleApiLoad: any;
@@ -85,30 +85,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.router.navigateByUrl(url);
     }
 
-    this.steps = stepsAll.filter((s) => {
-      if (
-        this.authenticationService.getUser() &&
-        (s === 'sPhoneNumber' || s === 'sVerifyPhone')
-      ) {
-        return false;
-      }
+    this.steps = this.stateService.getSteps(this.request);
 
-      if (s === 'sSearch' && this.request.membershipNumber.length > 1) {
-        return false;
-      }
-
-      return true;
-    });
-
-    // this.currentStep$ = this.stateService.currentStep$.asObservable();
-
-    this.stateService.steps = this.steps;
+    this.currentStep = this.stateService.currentStep$.asObservable();
 
     this.nextButtonsOnScreens = showNextButtonScreensAll;
 
-    this.stateService.currentStep$ = new BehaviorSubject<string>(
-      this.loadCurrentStep()
-    );
     this.previousSteps$ = new BehaviorSubject<string[]>(
       this.loadPreviousSteps()
     );
@@ -150,25 +132,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
       tap(() => this.isApprovedRequest$.next(this.isApproved()))
     );
 
-    this.isNextButtonShowed = this.stateService.currentStep$.pipe(
+    this.isNextButtonShowed = this.currentStep.pipe(
       map((s) => this.nextButtonsOnScreens.includes(s))
     );
 
-    this.isPreviousButtonShowed = this.stateService.currentStep$.pipe(
+    this.isPreviousButtonShowed = this.currentStep.pipe(
       map((s) => showPreviousButtonScreens.includes(s))
     );
 
-    this.isStepsFlowShowed = this.stateService.currentStep$.pipe(
+    this.isStepsFlowShowed = this.currentStep.pipe(
       map((s) => showStepsFlowScreens.includes(s))
     );
 
-    this.isHomeShowed = this.stateService.currentStep$.pipe(
+    this.isHomeShowed = this.currentStep.pipe(
       map((s) => showHomeScreens.includes(s))
     );
 
-    this.isSearchStep = this.stateService.currentStep$.pipe(
-      map((s) => s === 'sSearch')
-    );
+    this.isSearchStep = this.currentStep.pipe(map((s) => s === 'sSearch'));
   }
   options = {
     center: { lat: 40, lng: -20 },
@@ -223,15 +203,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public sendMobile(): void {
     this.isMobileSend = true;
-  }
-
-  public loadCurrentStep(): string {
-    const cacheStep = localStorage.getItem(CURRENT_STEP_TOKEN);
-    if (cacheStep) {
-      return cacheStep;
-    }
-
-    return this.steps[0];
   }
 
   public loadPreviousSteps(): string[] {
