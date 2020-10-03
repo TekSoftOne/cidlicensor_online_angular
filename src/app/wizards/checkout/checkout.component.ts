@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { StateService } from './../../state-service';
 import { HttpHeaders } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -46,6 +47,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     private toastrService: ToastrService,
     private stateService: StateService,
     private db: AngularFirestore,
+    private translateService: TranslateService,
 
     @Inject(WINDOW) private window: Window
   ) {
@@ -114,7 +116,9 @@ export class CheckoutComponent implements OnInit, IFormWizard {
   }
   next(f: NgForm): void {
     if (!this.paymentType && !this.orderRef) {
-      this.toastrService.error('Please choose at least a payment type!');
+      this.toastrService.error(
+        this.translateService.instant('WIZARD.CHECKOUT.ERROR.ATLEAST.PAYMENT')
+      );
       return;
     }
 

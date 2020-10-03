@@ -29,7 +29,9 @@
     "SEARCH": {
       "MEMBERSHIPNUMBER": {
         "BUTTON": "بحث"
-      }
+      },
+      "HEADER": "أدخل رقم العضوية",
+      "PLACEHOLDER": "أدخل الطلب"
     },
     "VERIFY": {
       "HEADER": "أدخل رقم هاتفك المحمول للبدء",
@@ -41,6 +43,11 @@
         "TOURIST": "سائح",
         "DIPLOMAT": "دبلوماسي",
         "RESIDENT": "مقيم"
+      },
+      "ERROR": {
+        "ATLEAST": {
+          "TYPEOFCUSTOMER": "الرجاء اختيار نوع العميل على الأقل!"
+        }
       }
     },
     "TYPEOFREQUEST": {
@@ -49,6 +56,11 @@
         "NEW": "جديد",
         "RENEWAL": "التجديد",
         "REPLACEMENT": "إستبدال"
+      },
+      "ERROR": {
+        "ATLEAST": {
+          "TYPEOFREQUEST": "الرجاء اختيار نوع واحد على الأقل من الطلبات!"
+        }
       }
     },
     "PERSONALBASIC": {
@@ -65,6 +77,13 @@
           "EMAILADDRESS": "أدخل عنوانك",
           "YOURLOCATION": "أدخل موقعك",
           "COMPLETEADDRESS": "أدخل عنوانك الكامل"
+        }
+      }
+    },
+    "CHECKOUT": {
+      "ERROR": {
+        "ATLEAST": {
+          "PAYMENT": "الرجاء اختيار نوع الدفع على الأقل!"
         }
       }
     }

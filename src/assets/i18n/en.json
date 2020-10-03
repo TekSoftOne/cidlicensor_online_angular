@@ -29,7 +29,9 @@
     "SEARCH": {
       "MEMBERSHIPNUMBER": {
         "BUTTON": "Search"
-      }
+      },
+      "HEADER": "Enter Membership Number",
+      "PLACEHOLDER": "Enter request"
     },
     "VERIFY": {
       "HEADER": "Enter your Mobile Number to get started",
@@ -41,6 +43,11 @@
         "TOURIST": "Tourist",
         "DIPLOMAT": "Diplomat",
         "RESIDENT": "Resident"
+      },
+      "ERROR": {
+        "ATLEAST": {
+          "TYPEOFCUSTOMER": "Please choose at least a type of customer!"
+        }
       }
     },
     "TYPEOFREQUEST": {
@@ -49,6 +56,11 @@
         "NEW": "New",
         "RENEWAL": "Renewal",
         "REPLACEMENT": "Replacement"
+      },
+      "ERROR": {
+        "ATLEAST": {
+          "TYPEOFREQUEST": "Please choose at least one type of request!"
+        }
       }
     },
     "PERSONALBASIC": {
@@ -65,6 +77,13 @@
           "EMAILADDRESS": "Enter your address",
           "YOURLOCATION": "Enter your location",
           "COMPLETEADDRESS": "Enter your complete address"
+        }
+      }
+    },
+    "CHECKOUT": {
+      "ERROR": {
+        "ATLEAST": {
+          "PAYMENT": "Please choose at least a payment type!"
         }
       }
     }

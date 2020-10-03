@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { OnlineRequestService } from './../../authentication/online-request.service';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -32,7 +33,8 @@ export class TypeOfCustomerComponent implements OnInit, IFormWizard {
   constructor(
     private toastrservice: ToastrService,
     private licenseAuthenticationService: LicenseAuthenticationService,
-    private onlineRequestService: OnlineRequestService
+    private onlineRequestService: OnlineRequestService,
+    private translateService: TranslateService
   ) {
     this.onlineRequestService
       .get(`${environment.apiUrl}/api/common/countries`)
@@ -56,7 +58,11 @@ export class TypeOfCustomerComponent implements OnInit, IFormWizard {
   }
   next(f: NgForm): void {
     if (!f.valid) {
-      this.toastrservice.error('Please choose at least a type of customer!');
+      this.toastrservice.error(
+        this.translateService.instant(
+          'WIZARD.TYPEOFCUSTOMER.ERROR.ATLEAST.TYPEOFCUSTOMER'
+        )
+      );
     }
     this.data.emit({
       typeOfCustomer: this.typeOfCustomer,

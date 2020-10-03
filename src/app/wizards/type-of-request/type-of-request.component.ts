@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { statuses } from './../../constants';
 import {
   isFormValid,
@@ -23,7 +24,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./type-of-request.component.scss'],
 })
 export class TypeOfRequestComponent implements OnInit, IFormWizard {
-  constructor(private toastrservice: ToastrService) {}
+  constructor(
+    private toastrservice: ToastrService,
+    private translateService: TranslateService
+  ) {}
 
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
@@ -41,7 +45,11 @@ export class TypeOfRequestComponent implements OnInit, IFormWizard {
   }
   next(f: NgForm): void {
     if (!f.valid) {
-      this.toastrservice.error('Please choose at least 1 Type Of Request!');
+      this.toastrservice.error(
+        this.translateService.instant(
+          'WIZARD.TYPEOFREQUEST.ERROR.ATLEAST.TYPEOFREQUEST'
+        )
+      );
     }
     this.data.emit({ requestCategory: this.typeOfRequest });
     this.nextStep.emit(f);
