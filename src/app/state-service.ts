@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ApplicationState } from './interfaces';
 
@@ -6,5 +7,9 @@ import { ApplicationState } from './interfaces';
 })
 export class StateService {
   public data: ApplicationState = {};
-  constructor() {}
+  public currentStep$: BehaviorSubject<string>;
+  public steps: string[];
+  constructor() {
+    this.currentStep$ = new BehaviorSubject<string>(undefined);
+  }
 }

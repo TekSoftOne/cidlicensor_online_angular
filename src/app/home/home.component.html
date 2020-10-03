@@ -14,7 +14,7 @@
           <ng-container
             *ngIf="
               request.applicationNumber &&
-                currentStep$.value === 'sTypeOfCustomer';
+                stateService.currentStep$.value === 'sTypeOfCustomer';
               else steps
             "
           >
@@ -29,14 +29,16 @@
                   aria-selected="true"
                   class="first"
                   [ngClass]="{
-                    current: isPersonalLeftStep(currentStep$.value)
+                    current: isPersonalLeftStep(stateService.currentStep$.value)
                   }"
                   id="ft-li"
                   role="tab"
                 >
                   <a id="steps-uid-0-t-0-0">
                     <span
-                      *ngIf="isPersonalLeftStep(currentStep$.value)"
+                      *ngIf="
+                        isPersonalLeftStep(stateService.currentStep$.value)
+                      "
                       class="audible current-info"
                     >
                     </span>
@@ -52,12 +54,14 @@
                 <li
                   aria-disabled="true"
                   class="disabled"
-                  [ngClass]="{ current: isLimitLeftStep(currentStep$.value) }"
+                  [ngClass]="{
+                    current: isLimitLeftStep(stateService.currentStep$.value)
+                  }"
                   id="sd-li"
                   role="tab"
                 >
                   <span
-                    *ngIf="isLimitLeftStep(currentStep$.value)"
+                    *ngIf="isLimitLeftStep(stateService.currentStep$.value)"
                     class="audible current-info"
                   >
                   </span>
@@ -75,13 +79,13 @@
                   aria-disabled="true"
                   class="disabled"
                   [ngClass]="{
-                    current: isLocationLeftStep(currentStep$.value)
+                    current: isLocationLeftStep(stateService.currentStep$.value)
                   }"
                   id="sd-li"
                   role="tab"
                 >
                   <span
-                    *ngIf="isLocationLeftStep(currentStep$.value)"
+                    *ngIf="isLocationLeftStep(stateService.currentStep$.value)"
                     class="audible current-info"
                   >
                   </span>
@@ -98,12 +102,14 @@
                 <li
                   aria-disabled="true"
                   class="disabled"
-                  [ngClass]="{ current: isSubmitLeftStep(currentStep$.value) }"
+                  [ngClass]="{
+                    current: isSubmitLeftStep(stateService.currentStep$.value)
+                  }"
                   id="sd-li"
                   role="tab"
                 >
                   <span
-                    *ngIf="isSubmitLeftStep(currentStep$.value)"
+                    *ngIf="isSubmitLeftStep(stateService.currentStep$.value)"
                     class="audible current-info"
                   >
                   </span>
@@ -134,7 +140,7 @@
       [ngClass]="{ 'application-active': (applicationNumber | async) }"
     >
       <div class="form-items">
-        <ng-container [ngSwitch]="currentStep$ | async">
+        <ng-container [ngSwitch]="stateService.currentStep$ | async">
           <!-- phone number -->
           <ng-template #sPhoneNumber ngSwitchCase="sPhoneNumber">
             <ot-mobile

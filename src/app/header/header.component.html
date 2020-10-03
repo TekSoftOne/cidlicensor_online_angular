@@ -1,7 +1,9 @@
 <div class="row menu-bar">
   <div class="col-8 col-sm-6">
     <p>
-      <a [routerLink]="['/']">{{ "HEADER.HOME" | translate | uppercase }}</a>
+      <a href="#" (click)="loadHome($event)">{{
+        "HEADER.HOME" | translate | uppercase
+      }}</a>
       <a [routerLink]="['/track-your-request']">{{
         "TRACKYOURREQUEST.HEADER" | translate | uppercase
       }}</a>

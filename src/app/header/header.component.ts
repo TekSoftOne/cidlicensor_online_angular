@@ -1,7 +1,9 @@
+import { StateService } from './../state-service';
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { CURRENT_STEP_TOKEN } from '../constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ot-header',
@@ -14,7 +16,9 @@ export class HeaderComponent implements OnInit {
   @Input() userImage: string = undefined;
   constructor(
     private authentication: AuthenticationService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private stateService: StateService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -41,5 +45,11 @@ export class HeaderComponent implements OnInit {
     } else {
       this.language = 'en';
     }
+  }
+
+  public loadHome(e: Event): void {
+    e.preventDefault();
+    this.stateService.currentStep$.next(this.stateService.steps[0]);
+    this.router.navigateByUrl('/');
   }
 }

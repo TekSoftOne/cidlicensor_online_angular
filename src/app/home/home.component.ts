@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isSearchStep: Observable<boolean>;
 
   private readonly defaultStep = 'sPhoneNumber';
-  public currentStep$: BehaviorSubject<string>;
+  // public currentStep$: Observable<string>;
   public previousSteps$: BehaviorSubject<string[]>;
   public isMobileSend = false;
   public googleApiLoad: any;
@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private httpClient: HttpClient,
     private toastrservice: ToastrService,
     private licenseAuthenticationService: LicenseAuthenticationService,
-    private stateService: StateService,
+    public stateService: StateService,
     private authenticationService: AuthenticationService,
     private router: Router
   ) {
@@ -100,9 +100,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
       return true;
     });
 
+    // this.currentStep$ = this.stateService.currentStep$.asObservable();
+
+    this.stateService.steps = this.steps;
+
     this.nextButtonsOnScreens = showNextButtonScreensAll;
 
-    this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
+    this.stateService.currentStep$ = new BehaviorSubject<string>(
+      this.loadCurrentStep()
+    );
     this.previousSteps$ = new BehaviorSubject<string[]>(
       this.loadPreviousSteps()
     );
@@ -144,23 +150,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
       tap(() => this.isApprovedRequest$.next(this.isApproved()))
     );
 
-    this.isNextButtonShowed = this.currentStep$.pipe(
+    this.isNextButtonShowed = this.stateService.currentStep$.pipe(
       map((s) => this.nextButtonsOnScreens.includes(s))
     );
 
-    this.isPreviousButtonShowed = this.currentStep$.pipe(
+    this.isPreviousButtonShowed = this.stateService.currentStep$.pipe(
       map((s) => showPreviousButtonScreens.includes(s))
     );
 
-    this.isStepsFlowShowed = this.currentStep$.pipe(
+    this.isStepsFlowShowed = this.stateService.currentStep$.pipe(
       map((s) => showStepsFlowScreens.includes(s))
     );
 
-    this.isHomeShowed = this.currentStep$.pipe(
+    this.isHomeShowed = this.stateService.currentStep$.pipe(
       map((s) => showHomeScreens.includes(s))
     );
 
-    this.isSearchStep = this.currentStep$.pipe(map((s) => s === 'sSearch'));
+    this.isSearchStep = this.stateService.currentStep$.pipe(
+      map((s) => s === 'sSearch')
+    );
   }
   options = {
     center: { lat: 40, lng: -20 },
@@ -270,7 +278,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     }
 
-    const index = this.getIndex(this.currentStep$.value);
+    const index = this.getIndex(this.stateService.currentStep$.value);
 
     let step = this.steps[index + 1];
 
@@ -279,7 +287,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.request.phoneNumber = this.authenticationService.getUser().email;
     }
 
-    if (this.currentStep$.value === 'sReview') {
+    if (this.stateService.currentStep$.value === 'sReview') {
       if (
         !this.request.email ||
         !this.request.fullName ||
@@ -298,10 +306,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     const previousSteps = this.previousSteps$.value;
-    previousSteps.push(this.currentStep$.value);
+    previousSteps.push(this.stateService.currentStep$.value);
 
     this.previousSteps$.next(previousSteps);
-    this.currentStep$.next(step);
+    this.stateService.currentStep$.next(step);
     this.checkSubmitAllowance(step);
     this.cacheCurrentStep(step, this.previousSteps$.value);
     this.requestValidation = [];
@@ -409,13 +417,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (lastOne === 'sSearch') {
       lastOne = this.previousSteps$.value.pop();
     }
-    this.currentStep$.next(lastOne);
+    this.stateService.currentStep$.next(lastOne);
     this.checkSubmitAllowance(lastOne);
     this.requestValidation = [];
   }
 
   private setCurrentStep(step: string): void {
-    this.currentStep$.next(step);
+    this.stateService.currentStep$.next(step);
     this.cacheCurrentStep(step, this.previousSteps$.value);
   }
 
