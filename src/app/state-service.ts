@@ -1,8 +1,9 @@
 import { AuthenticationService } from './authentication/authentication.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ApplicationState, MembershipRequest } from './interfaces';
 import { CURRENT_STEP_TOKEN, stepsAll } from './constants';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -12,11 +13,28 @@ export class StateService {
   public currentStep$: BehaviorSubject<string>;
   public steps: string[];
   constructor(private authenticationService: AuthenticationService) {
-    this.currentStep$ = new BehaviorSubject<string>(this.loadCurrentStep());
+    this.currentStep$ = new BehaviorSubject<string>(
+      this.initializeCurrentStep()
+    );
     this.steps = stepsAll;
+
+    combineLatest([of(stepsAll), this.authenticationService.user])
+      .pipe(
+        map(([steps, user]) => {
+          return steps.filter((s) => {
+            if (user && (s === 'sPhoneNumber' || s === 'sVerifyPhone')) {
+              return false;
+            }
+
+            return true;
+          });
+        }),
+        tap((s) => (this.steps = s))
+      )
+      .subscribe();
   }
 
-  public loadCurrentStep(): string {
+  public initializeCurrentStep(): string {
     const cacheStep = localStorage.getItem(CURRENT_STEP_TOKEN);
     if (cacheStep) {
       return cacheStep;
@@ -30,7 +48,7 @@ export class StateService {
   }
 
   public getSteps(request: MembershipRequest): string[] {
-    return stepsAll.filter((s) => {
+    return this.steps.filter((s) => {
       if (
         this.authenticationService.getUser() &&
         (s === 'sPhoneNumber' || s === 'sVerifyPhone')
