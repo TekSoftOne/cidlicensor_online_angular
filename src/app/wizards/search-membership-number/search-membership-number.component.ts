@@ -1,10 +1,9 @@
-import { MembershipRequest } from 'src/app/interfaces';
+import { IFormWizard, MembershipRequest } from 'src/app/interfaces';
 import { dateFormat, religions, nationalities } from './../../constants';
 import { environment } from './../../../environments/environment';
 import { Observable, combineLatest, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { isFormValid, isControlValid } from 'src/app/form';
-import { IFormWizard, MembershipRequest } from './../../interfaces';
 import { MembershipDetailInLicensor } from '../../licensor-interface';
 import {
   Component,
