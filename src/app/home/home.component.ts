@@ -14,6 +14,7 @@ import {
   showHomeScreens,
   getStatusFromId,
   statuses,
+  toBase64FromFile,
 } from './../constants';
 import {
   MembershipRequest,
@@ -329,12 +330,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private createRequestMembership(): Observable<number> {
-    return this.httpClient
-      .post(
-        `${environment.apiUrl}/api/membershipRequests/update`,
-        this.makeFormData()
-      )
-      .pipe(map((appId) => appId as number));
+    return this.makeFormData().pipe(
+      switchMap((d) => {
+        return this.httpClient
+          .post(`${environment.apiUrl}/api/membershipRequests/update`, d)
+          .pipe(map((appId) => appId as number));
+      })
+    );
   }
 
   private createApplication(
@@ -347,36 +349,47 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private makeFormData(): FormData {
-    const f = new FormData();
-    for (const key in this.request) {
-      if (key) {
-        // alway change status to pendind whenever updating
-        if (key === 'status') {
-          f.append(
-            key,
-            statuses.find((s) => s.name === 'Pending')?.id.toString()
-          );
-        } else {
-          f.append(key, this.request[key]);
-        }
+  private makeFormData(): Observable<FormData> {
+    return toBase64FromFile(this.request.profilePhoto).pipe(
+      map((photo) => {
+        const f = new FormData();
+        for (const key in this.request) {
+          if (key) {
+            // alway change status to pendind whenever updating
+            if (key === 'status') {
+              f.append(
+                key,
+                statuses.find((s) => s.name === 'Pending')?.id.toString()
+              );
+            } else {
+              f.append(key, this.request[key]);
+            }
 
-        // Occupation = FullAddress
-        if (key === 'fullAddress') {
-          f.append('occupation', this.request[key]);
+            // Occupation = FullAddress
+            if (key === 'fullAddress') {
+              f.append('occupation', this.request[key]);
+            }
+
+            if (key === 'profilePhoto') {
+              // file to string
+              f.append('profilePic', photo); // string
+            }
+          }
         }
-      }
-    }
-    return f;
+        return f;
+      })
+    );
   }
 
   private createLicensorRequest(): Observable<LicenseMembershipInfo> {
-    return this.licenseAuthenticationService
-      .request(
-        `${environment.licenseUrl}/api/SalesPoint/AddNewMembership`,
-        this.makeFormData()
+    return this.makeFormData().pipe(
+      switchMap((d) =>
+        this.licenseAuthenticationService.request(
+          `${environment.licenseUrl}/api/SalesPoint/AddNewMembership`,
+          d
+        )
       )
-      .pipe();
+    );
   }
 
   private getIndex(value: string): number {

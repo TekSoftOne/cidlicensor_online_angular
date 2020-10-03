@@ -1,5 +1,10 @@
 import { IFormWizard, MembershipRequest } from 'src/app/interfaces';
-import { dateFormat, religions, nationalities } from './../../constants';
+import {
+  dateFormat,
+  religions,
+  nationalities,
+  blobToUrl,
+} from './../../constants';
 import { environment } from './../../../environments/environment';
 import { Observable, combineLatest, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -63,7 +68,9 @@ export class SearchMembershipNumberComponent
         switchMap((membershipDetail: MembershipDetailInLicensor) => {
           return combineLatest([
             of(membershipDetail),
-            this.imageService.processImageUrl(membershipDetail.profilePic),
+            this.imageService.processImageUrl(
+              blobToUrl(membershipDetail.profilePic)
+            ),
           ]).pipe(
             map(([membership, profilePic]) => {
               return {

@@ -49,7 +49,12 @@ export class AuthenticationService {
       return null;
     }
 
-    return JSON.parse(cachedUser).token;
+    const user = JSON.parse(cachedUser).token;
+
+    if (this.user$.value === undefined) {
+      this.user$.next(user);
+    }
+    return user;
   }
 
   public loginSilently(): UserToken | null {

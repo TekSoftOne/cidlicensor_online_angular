@@ -37,6 +37,7 @@ export interface MembershipRequest {
   emiratesIdFront?: File;
   passportAttachement?: File;
   profilePhoto?: File;
+  profilePic?: string; // needed this for Licensor system
   authorizationLetter?: File;
   typeOfCustomer?: string; // membership type
   membershipTypeId?: number;
@@ -72,7 +73,7 @@ export interface HttpRequestOptions {
 }
 
 export interface MembershipRequestResult extends MembershipRequest {
-  profilePhotoUrl?: string;
+  profilePic?: string;
   emiratesIdBackUrl?: string;
   emiratesIdFrontUrl?: string;
   authorizationLetterUrl?: string;

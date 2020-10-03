@@ -1,3 +1,4 @@
+import { observable, Observable, Subscriber } from 'rxjs';
 import { environment } from './../environments/environment';
 export const stepsAll = [
   'sPhoneNumber',
@@ -251,6 +252,30 @@ export const religions = [
   { name: 'Others', id: 9 },
 ];
 
+export function toBase64FromFile(file): Observable<any> {
+  return new Observable((observer) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const binaryString = reader.result as string;
+      observer.next(btoa(binaryString));
+      observer.complete();
+    };
+
+    reader.readAsBinaryString(file);
+
+    reader.onerror = (error) => observer.error(error);
+  });
+}
+
+export function isBase64FromFile(str): boolean {
+  try {
+    return btoa(atob(str)) === str;
+  } catch (err) {
+    return false;
+  }
+}
+
 export const CURRENT_STEP_TOKEN = 'OT_STEP';
 export const PREVIOUS_STEP_TOKEN = 'OT_PREVIOUS_STEPS';
 export const CURRENT_DATA_TOKEN = 'OT_D';
@@ -261,3 +286,31 @@ export const LICENSE_PASSWORD = '8tDvLmUW6vd4ckMMPnBY9';
 
 export const USERTOKEN = 'OR_USER';
 export const NGENIOUS_TOKEN = 'NGENIOUS_USER';
+
+export function b64toBlob(b64Data, contentType = '', sliceSize = 512): Blob {
+  const byteCharacters = atob(b64Data);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, { type: contentType });
+  return blob;
+}
+
+export function blobToUrl(b64Data): string {
+  const contentType = 'image/png';
+
+  const blob = b64toBlob(b64Data, contentType);
+  const blobUrl = URL.createObjectURL(blob);
+  return blobUrl;
+}

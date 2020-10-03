@@ -1,3 +1,4 @@
+import { ImageService } from 'src/app/image-service';
 import { OnlineRequestService } from './../authentication/online-request.service';
 import { MembershipRequestResult } from './../interfaces';
 import { MembershipRequest } from 'src/app/interfaces';
@@ -19,6 +20,7 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { blobToUrl } from '../constants';
 
 @Component({
   selector: 'ot-track-your-progress',
@@ -39,7 +41,8 @@ export class TrackYourProgressComponent implements AfterViewInit {
     private stateService: StateService,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private onlineRequestService: OnlineRequestService
+    private onlineRequestService: OnlineRequestService,
+    private imageService: ImageService
   ) {
     this.appResult$ = new BehaviorSubject<any>(undefined);
     this.appResult = this.appResult$.asObservable();
@@ -62,7 +65,7 @@ export class TrackYourProgressComponent implements AfterViewInit {
       switchMap((appData) =>
         combineLatest([
           of(appData),
-          this.processImageUrl(appData.profilePhotoUrl),
+          this.imageService.processImageUrl(blobToUrl(appData.profilePic)),
         ])
       ),
       map(([appData, profileData]) => ({
@@ -73,11 +76,6 @@ export class TrackYourProgressComponent implements AfterViewInit {
       tap(() => this.router.navigateByUrl('home'))
     );
   }
-
-  private processImageUrl(imageUrl: string): Observable<any> {
-    return this.getBlobFromUrl(imageUrl);
-  }
-
   private getApplication(
     applicationNumber: string
   ): Observable<MembershipRequestResult | undefined> {
