@@ -3,6 +3,8 @@ export const environment = {
   apiUrl: 'http://localhost:5900',
   licenseUrl: 'http://localhost:5000',
   ngeniousRedirectUrl: 'https://local.teksoft1.com:4900',
+  enableTestData: true,
+  enableValidation: false,
   firebase: {
     apiKey: 'AIzaSyDSm0uOqyUUbbtVdEunRE6TXF2JKnIudxY',
     authDomain: 'online-request-payment.firebaseapp.com',
