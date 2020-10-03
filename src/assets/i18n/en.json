@@ -30,6 +30,43 @@
       "MEMBERSHIPNUMBER": {
         "BUTTON": "Search"
       }
+    },
+    "VERIFY": {
+      "HEADER": "Enter your Mobile Number to get started",
+      "NOTICE": "Verification"
+    },
+    "TYPEOFCUSTOMER": {
+      "HEADER": "Type of Request",
+      "CONTENT": {
+        "TOURIST": "Tourist",
+        "DIPLOMAT": "Diplomat",
+        "RESIDENT": "Resident"
+      }
+    },
+    "TYPEOFREQUEST": {
+      "HEADER": "Type of Request",
+      "CONTENT": {
+        "NEW": "New",
+        "RENEWAL": "Renewal",
+        "REPLACEMENT": "Replacement"
+      }
+    },
+    "PERSONALBASIC": {
+      "HEADER": "Please Enter your Personal Information",
+      "CONTENT": {
+        "LABEL": {
+          "FULLNAME": "Full Name",
+          "EMAILADDRESS": "Email Address",
+          "YOURLOCATION": "Your Location",
+          "COMPLETEADDRESS": "Complete Address"
+        },
+        "PLACEHOLDER": {
+          "FULLNAME": "Enter your name",
+          "EMAILADDRESS": "Enter your address",
+          "YOURLOCATION": "Enter your location",
+          "COMPLETEADDRESS": "Enter your complete address"
+        }
+      }
     }
   },
   "HEADER": {

@@ -30,6 +30,43 @@
       "MEMBERSHIPNUMBER": {
         "BUTTON": "بحث"
       }
+    },
+    "VERIFY": {
+      "HEADER": "أدخل رقم هاتفك المحمول للبدء",
+      "NOTICE": "التحقق"
+    },
+    "TYPEOFCUSTOMER": {
+      "HEADER": "نوع الطلب",
+      "CONTENT": {
+        "TOURIST": "سائح",
+        "DIPLOMAT": "دبلوماسي",
+        "RESIDENT": "مقيم"
+      }
+    },
+    "TYPEOFREQUEST": {
+      "HEADER": "نوع الطلب",
+      "CONTENT": {
+        "NEW": "جديد",
+        "RENEWAL": "التجديد",
+        "REPLACEMENT": "إستبدال"
+      }
+    },
+    "PERSONALBASIC": {
+      "HEADER": "الرجاء إدخال معلوماتك الشخصية",
+      "CONTENT": {
+        "LABEL": {
+          "FULLNAME": "الاسم الكامل",
+          "EMAILADDRESS": "عنوان البريد الإلكتروني",
+          "YOURLOCATION": "موقعك",
+          "COMPLETEADDRESS": "العنوان الكامل"
+        },
+        "PLACEHOLDER": {
+          "FULLNAME": "أدخل أسمك",
+          "EMAILADDRESS": "أدخل عنوانك",
+          "YOURLOCATION": "أدخل موقعك",
+          "COMPLETEADDRESS": "أدخل عنوانك الكامل"
+        }
+      }
     }
   },
   "HEADER": {

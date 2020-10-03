@@ -49,7 +49,9 @@ export class HeaderComponent implements OnInit {
 
   public loadHome(e: Event): void {
     e.preventDefault();
-    this.stateService.currentStep$.next(this.stateService.steps[0]);
+    if (this.stateService.steps) {
+      this.stateService.currentStep$.next(this.stateService.steps[0]);
+    }
     this.router.navigateByUrl('/');
   }
 }

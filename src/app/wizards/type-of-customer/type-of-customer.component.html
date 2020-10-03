@@ -9,7 +9,7 @@
         <div class="col-lg-12 col-12 col-sm-12" id="scroll-div">
           <div class="row">
             <div class="col-lg-12 text-center col-12 col-sm-12">
-              <h3>Type of Request</h3>
+              <h3>{{ "WIZARD.TYPEOFCUSTOMER.HEADER" | translate }}</h3>
             </div>
           </div>
           <div class="row tp">
@@ -19,7 +19,11 @@
                   <label name="typeOfCustomer">
                     <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
                       <img alt="" src="/assets/images/img-new-1.png" />
-                      <h6>Tourist</h6>
+                      <h6>
+                        {{
+                          "WIZARD.TYPEOFCUSTOMER.CONTENT.TOURIST" | translate
+                        }}
+                      </h6>
                     </div>
                     <input
                       formControlName="typeOfCustomer"
@@ -35,7 +39,11 @@
                   <label name="typeOfCustomer">
                     <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
                       <img alt="" src="/assets/images/img-new-2.png" />
-                      <h6>Diplomat</h6>
+                      <h6>
+                        {{
+                          "WIZARD.TYPEOFCUSTOMER.CONTENT.DIPLOMAT" | translate
+                        }}
+                      </h6>
                     </div>
                     <input
                       class="check"
@@ -51,7 +59,11 @@
                   <label name="typeOfCustomer">
                     <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
                       <img alt="" src="/assets/images/img-new-3.png" />
-                      <h6>Resident</h6>
+                      <h6>
+                        {{
+                          "WIZARD.TYPEOFCUSTOMER.CONTENT.RESIDENT" | translate
+                        }}
+                      </h6>
                     </div>
                     <input
                       class="check"
