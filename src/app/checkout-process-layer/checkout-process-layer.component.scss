@@ -1,0 +1,23 @@
+.contain-wrapper {
+  display: flex;
+  height: 90vh;
+}
+
+.checkout-notice {
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+  place-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+
+  .notice {
+    color: white;
+  }
+
+  a {
+    color: white;
+  }
+}

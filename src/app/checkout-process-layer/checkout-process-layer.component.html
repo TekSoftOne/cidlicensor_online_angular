@@ -2,7 +2,14 @@
   <ng-content></ng-content>
 </ng-container>
 <div #checkoutOverlay class="checkout-overlay">
-  <div>
-    <a href="#" (click)="relaunch()">Focus</a>
+  <div class="contain-wrapper">
+    <div class="checkout-notice">
+      <h3 class="notice">Ngenius Payments</h3>
+      <p class="notice">
+        Don't see the secure paypal browser. We'll help you relaunch the window
+        to complete your purchase
+      </p>
+      <a class="notice" href="#" (click)="relaunch()">Continue</a>
+    </div>
   </div>
 </div>
