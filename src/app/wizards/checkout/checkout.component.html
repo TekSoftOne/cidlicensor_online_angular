@@ -1,86 +1,91 @@
-<form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-  <div class="row">
-    <div class="col-lg-12 col-12 col-sm-12" id="last-div-2">
-      <div class="row">
-        <div class="col-lg-12 col-12 col-sm-12 text-center">
-          <h3>Checkout <ot-loader [loading]="loading"></ot-loader></h3>
+<ot-checkout-process-layer
+  [popup]="currentWindow"
+  [activated]="showPaymentDialog$.asObservable() | async"
+>
+  <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
+    <div class="row">
+      <div class="col-lg-12 col-12 col-sm-12" id="last-div-2">
+        <div class="row">
+          <div class="col-lg-12 col-12 col-sm-12 text-center">
+            <h3>Checkout <ot-loader [loading]="loading"></ot-loader></h3>
+          </div>
+          <div class="col-lg-12 tp col-12 col-sm-12 text-center">
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries
+            </p>
+          </div>
         </div>
-        <div class="col-lg-12 tp col-12 col-sm-12 text-center">
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries
-          </p>
-        </div>
-      </div>
-      <div class="row tp">
-        <div class="col-lg-12 col-12 col-sm-12">
-          <div class="row">
-            <ng-container *ngIf="!loadingGateway; else loadingGatewayMessage">
-              <ng-container *ngIf="orderStatus$ | async as orderState">
-                <ng-container
-                  *ngIf="
-                    orderState.status === 'SUCCESS' || orderRef?.length > 0;
-                    else paymentChoices
-                  "
-                >
-                  <div class="col-lg-12 col-12 col-sm-12 text-center">
-                    <h3>Checked out successfully</h3>
-                    <h5>Order ref: {{ orderRef }}</h5>
-                  </div>
+        <div class="row tp">
+          <div class="col-lg-12 col-12 col-sm-12">
+            <div class="row">
+              <ng-container *ngIf="!loadingGateway; else loadingGatewayMessage">
+                <ng-container *ngIf="orderStatus$ | async as orderState">
+                  <ng-container
+                    *ngIf="
+                      orderState.status === 'SUCCESS' || orderRef?.length > 0;
+                      else paymentChoices
+                    "
+                  >
+                    <div class="col-lg-12 col-12 col-sm-12 text-center">
+                      <h3>Checked out successfully</h3>
+                      <h5>Order ref: {{ orderRef }}</h5>
+                    </div>
+                  </ng-container>
                 </ng-container>
+                <ng-template #paymentChoices>
+                  <div class="col-lg-4 m-left la text-center col-12 col-sm-6">
+                    <label name="">
+                      <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
+                        <img alt="" src="/assets/images/img-new-1.png" />
+                        <h6>Pay Online</h6>
+                        <h5 *ngIf="loading">
+                          Redirecting to payment gateway
+                          <ot-loader [loading]="true"></ot-loader>
+                        </h5>
+                      </div>
+                      <input
+                        class="check"
+                        name="payment"
+                        type="radio"
+                        value="payonline"
+                        [(ngModel)]="paymentType"
+                      />
+                    </label>
+                  </div>
+                  <div class="col-lg-4 la text-center col-12 col-sm-6">
+                    <label name="">
+                      <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
+                        <img alt="" src="/assets/images/img-new-2.png" />
+                        <h6>Cash</h6>
+                      </div>
+                      <input
+                        class="check"
+                        name="payment"
+                        type="radio"
+                        value="cash"
+                        [(ngModel)]="paymentType"
+                      />
+                    </label>
+                  </div>
+                </ng-template>
               </ng-container>
-              <ng-template #paymentChoices>
-                <div class="col-lg-4 m-left la text-center col-12 col-sm-6">
-                  <label name="">
-                    <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                      <img alt="" src="/assets/images/img-new-1.png" />
-                      <h6>Pay Online</h6>
-                      <h5 *ngIf="loading">
-                        Redirecting to payment gateway
-                        <ot-loader [loading]="true"></ot-loader>
-                      </h5>
-                    </div>
-                    <input
-                      class="check"
-                      name="payment"
-                      type="radio"
-                      value="payonline"
-                      [(ngModel)]="paymentType"
-                    />
-                  </label>
-                </div>
-                <div class="col-lg-4 la text-center col-12 col-sm-6">
-                  <label name="">
-                    <div class="col-lg-12 bg-label col-sm-12 col-xs-12">
-                      <img alt="" src="/assets/images/img-new-2.png" />
-                      <h6>Cash</h6>
-                    </div>
-                    <input
-                      class="check"
-                      name="payment"
-                      type="radio"
-                      value="cash"
-                      [(ngModel)]="paymentType"
-                    />
-                  </label>
+              <ng-template #loadingGatewayMessage>
+                <div class="col-lg-12 col-12 col-sm-12 text-center">
+                  <h5>
+                    Redirecting to payment gateway
+                    <ot-loader [loading]="true"></ot-loader>
+                  </h5>
                 </div>
               </ng-template>
-            </ng-container>
-            <ng-template #loadingGatewayMessage>
-              <div class="col-lg-12 col-12 col-sm-12 text-center">
-                <h5>
-                  Redirecting to payment gateway
-                  <ot-loader [loading]="true"></ot-loader>
-                </h5>
-              </div>
-            </ng-template>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <ng-content></ng-content>
-</form>
+    <ng-content></ng-content>
+  </form>
+</ot-checkout-process-layer>

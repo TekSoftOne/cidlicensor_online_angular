@@ -42,6 +42,9 @@ export class CheckoutComponent implements OnInit, IFormWizard {
   public width$: BehaviorSubject<number>;
   public loading = false;
   public loadingGateway = false;
+  public currentWindow: any;
+  public showPaymentDialog$: BehaviorSubject<boolean>;
+
   constructor(
     private ngeniusPaymentService: NgeniusPaymentService,
     private toastrService: ToastrService,
@@ -51,6 +54,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
 
     @Inject(WINDOW) private window: Window
   ) {
+    this.showPaymentDialog$ = new BehaviorSubject<boolean>(false);
     this.guid = uuidv4();
 
     this.loading = true;
@@ -172,8 +176,8 @@ export class CheckoutComponent implements OnInit, IFormWizard {
 
                 const x = screen.width / 2 - w / 2;
                 const y = screen.height / 2 - h / 2;
-
-                return window.open(
+                this.showPaymentDialog$.next(true);
+                this.currentWindow = window.open(
                   orderResult._links.payment.href,
                   'Resource',
                   'toolbar=no ,status=no,titlebar=no,menubar=no,width=' +
@@ -185,6 +189,18 @@ export class CheckoutComponent implements OnInit, IFormWizard {
                     ',top=' +
                     y
                 );
+
+                const closeCheck = (popup: any) => {
+                  const check = setInterval(() => {
+                    try {
+                      // tslint:disable-next-line: no-unused-expression
+                      (popup == null || popup.closed) &&
+                        (clearInterval(check), this.onWindowClosed());
+                    } catch (ex) {}
+                  }, 500);
+                };
+
+                closeCheck(this.currentWindow);
               })
             );
           }
@@ -206,6 +222,10 @@ export class CheckoutComponent implements OnInit, IFormWizard {
   @HostListener('window:resize')
   public onResize(): void {
     this.width$.next(this.getWidth());
+  }
+
+  public onWindowClosed(): void {
+    this.showPaymentDialog$.next(false);
   }
 
   ngOnInit(): void {}
