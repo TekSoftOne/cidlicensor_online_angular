@@ -25,7 +25,7 @@
         >
           <span class="hide">User</span>
 
-          <img alt="User Image" style="height: 30px" [src]="userImage" />
+          <img alt="User Image" style="height: 30px" [src]="imageUrl | async" />
         </a>
 
         <ul class="dropdown-menu">

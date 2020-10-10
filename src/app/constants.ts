@@ -327,3 +327,15 @@ export function baseName(str): string {
 export function truncate(str, n): string {
   return str.length > n ? str.substr(0, n - 1) + '&hellip;' : str;
 }
+
+// tslint:disable-next-line: typedef
+export function readUrl(file: any): Observable<string> {
+  return new Observable((observer) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      observer.next(reader.result as string);
+      observer.complete();
+    };
+    reader.readAsDataURL(file);
+  });
+}

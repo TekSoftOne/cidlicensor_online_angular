@@ -22,6 +22,7 @@ import {
   combineLatest,
 } from 'rxjs';
 import { map, switchMap, skip, tap } from 'rxjs/operators';
+import { readUrl } from '../constants';
 
 @Component({
   selector: 'ot-upload-image',
@@ -56,7 +57,7 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
         if (!file) {
           return of(undefined);
         }
-        return this.readUrl(file);
+        return readUrl(file);
       })
     );
 
@@ -117,17 +118,5 @@ export class UploadImageComponent implements OnInit, OnDestroy, OnChanges {
   public onImageChange(files: FileList): void {
     const f = files[0];
     this.image$.next(f);
-  }
-
-  // tslint:disable-next-line: typedef
-  public readUrl(file: any): Observable<string> {
-    return new Observable((observer) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        observer.next(reader.result as string);
-        observer.complete();
-      };
-      reader.readAsDataURL(file);
-    });
   }
 }
