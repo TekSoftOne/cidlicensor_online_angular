@@ -107,6 +107,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
   }
   @Output() nextStep = new EventEmitter<NgForm>();
   @Output() data = new EventEmitter<MembershipRequest>();
+  @Output() checkingOut = new EventEmitter<boolean>();
 
   public orderStatus$: Observable<OrderTrackerResult>;
   @Input() paymentType: string;
@@ -119,6 +120,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     return isControlValid(form, control);
   }
   next(f: NgForm): void {
+    this.checkingOut.emit(true);
     if (!this.paymentType && !this.orderRef) {
       this.toastrService.error(
         this.translateService.instant('WIZARD.CHECKOUT.ERROR.ATLEAST.PAYMENT')
@@ -177,6 +179,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
                 const x = screen.width / 2 - w / 2;
                 const y = screen.height / 2 - h / 2;
                 this.showPaymentDialog$.next(true);
+
                 this.currentWindow = window.open(
                   orderResult._links.payment.href,
                   'Resource',
@@ -226,6 +229,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
 
   public onWindowClosed(): void {
     this.showPaymentDialog$.next(false);
+    this.checkingOut.emit(false);
   }
 
   ngOnInit(): void {}

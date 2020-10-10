@@ -263,6 +263,7 @@
               (data)="updateData($event)"
               [orderRef]="request.orderRef"
               [paymentType]="request.paymentType"
+              (checkingOut)="disableButtons$.next($event)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-checkout>
@@ -364,13 +365,15 @@
             <div class="actions col-lg-12 col-12 col-sm-12" id="generic-ul">
               <ul aria-label="Pagination" role="menu">
                 <li>
-                  <a
-                    class=""
+                  <button
+                    [disabled]="disableButtons$ | async"
+                    [ngClass]="{ 'next-disabled': disableButtons$ | async }"
                     id="prev-btn"
                     *ngIf="isPreviousButtonShowed | async"
                     (click)="previous()"
-                    >{{ "WIZARD.PREVIOUS" | translate }}</a
                   >
+                    {{ "WIZARD.PREVIOUS" | translate }}
+                  </button>
                 </li>
                 <li>
                   <!-- <a
@@ -381,8 +384,13 @@
                     > -->
 
                   <button
-                    [disabled]="disableSubmit | async"
-                    [ngClass]="{ 'next-disabled': disableSubmit | async }"
+                    [disabled]="
+                      (disableSubmit | async) && (disableButtons$ | async)
+                    "
+                    [ngClass]="{
+                      'next-disabled':
+                        (disableSubmit | async) && (disableButtons$ | async)
+                    }"
                     type="submit"
                     id="next-btn"
                     *ngIf="isNextButtonShowed | async"

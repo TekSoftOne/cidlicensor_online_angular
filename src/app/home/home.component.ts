@@ -70,6 +70,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isApprovedRequest$: BehaviorSubject<boolean>;
   public isApprovedRequest: Observable<boolean>;
 
+  public disableButtons$: BehaviorSubject<boolean>;
+
   public nextButtonsOnScreens: string[] = [];
   constructor(
     private httpClient: HttpClient,
@@ -85,6 +87,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const url = `/checkout?orderRef=${orderRef}`;
       this.router.navigateByUrl(url);
     }
+
+    this.disableButtons$ = new BehaviorSubject<boolean>(false);
 
     this.steps = this.stateService.getSteps(this.request);
 
