@@ -1,4 +1,7 @@
-<ot-checkout-process-layer [popup]="currentWindow" [activated]="true">
+<ot-checkout-process-layer
+  [popup]="currentWindow"
+  [activated]="showPaymentDialog$.asObservable() | async"
+>
   <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
     <div class="row">
       <div class="col-lg-12 col-12 col-sm-12" id="last-div-2">

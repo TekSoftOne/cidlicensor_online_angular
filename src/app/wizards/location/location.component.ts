@@ -54,6 +54,7 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
   public areas$: Observable<Area[]>;
 
   public formLocation: FormGroup;
+  public loading = false;
 
   constructor(
     private httpClient: HttpClient,
@@ -74,6 +75,7 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
       })
     );
 
+    this.loading = true;
     const locationAll$ = this.httpClient
       .get(`${environment.licenseUrl}/api/ManageAreas/GetLocations`)
       .pipe(
@@ -85,9 +87,15 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
             agentId: d.agentId,
           }))
         ),
-        tap((d) => console.log(d))
+        tap((d) => (this.loading = false)),
+        catchError((error) => {
+          this.loading = false;
+          this.toastrService.error(error);
+          return undefined;
+        })
       );
 
+    this.loading = true;
     this.areas$ = this.httpClient
       .get(`${environment.licenseUrl}/api/ManageAreas/GetAreas`)
       .pipe(
@@ -97,8 +105,10 @@ export class LocationComponent implements OnInit, IFormWizard, OnChanges {
             name: d.areaName,
           }))
         ),
+        tap(() => (this.loading = false)),
         catchError((err) => {
           this.toastrService.error(err, 'Error when getting areas');
+          this.loading = false;
           return undefined;
         })
       );

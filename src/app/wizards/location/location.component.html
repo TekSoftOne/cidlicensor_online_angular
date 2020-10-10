@@ -8,7 +8,9 @@
       <div class="col-lg-12 col-12 col-sm-12" id="td-div">
         <div class="row">
           <div class="col-lg-12 col-12 col-sm-12">
-            <label class="form-label">YOUR AREA </label>
+            <label class="form-label"
+              >YOUR AREA <ot-loader [loading]="loading"></ot-loader
+            ></label>
             <select
               [(ngModel)]="areaId"
               name="areaId"

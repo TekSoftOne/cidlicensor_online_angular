@@ -85,6 +85,9 @@
         "ATLEAST": {
           "PAYMENT": "Please choose at least a payment type!"
         }
+      },
+      "SECURE": {
+        "NOTICE": "Don't see the secure Ngenius browser. We'ill help you relaunch the windowto complete your purchase"
       }
     }
   },
