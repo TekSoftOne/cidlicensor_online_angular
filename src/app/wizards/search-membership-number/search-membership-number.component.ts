@@ -83,10 +83,10 @@ export class SearchMembershipNumberComponent
                   (n) => n.name === membership.nationName
                 )?.id,
                 nationName: membership.nationName,
-                // emiratesIdBack: membership.attachment1,
                 // emiratesIdFront: membership.attachment2,
                 // passportAttachement: membership.attachment3,
                 profilePhoto: profilePic,
+                emiratesIdBackUrl: membership.attachment1,
                 // authorizationLetter: membership.visaAttachment,
                 // typeOfCustomer: membership.membershipTypeId,
                 membershipTypeId: membership.membershipTypeId,

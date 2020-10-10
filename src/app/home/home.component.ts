@@ -374,6 +374,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
               f.append('occupation', this.request[key]);
             }
 
+            if (key === 'emiratesIdBack') {
+              f.append('attachment1', this.request[key]);
+            }
+
             if (key === 'profilePhoto') {
               // file to string
               f.append('profilePic', photo); // string
