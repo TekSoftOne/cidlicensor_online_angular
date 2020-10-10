@@ -78,6 +78,7 @@ export class PersonalInformationAdvancedComponent
   public religions: Religion[] = [];
 
   @Input() fileEmirateBack: File;
+  @Input() emirateBackUrl: string;
   @Input() fileEmirateFront: File;
   @Input() fileAuthorizationLetter: File;
   @Input() fileProfilePic: File;

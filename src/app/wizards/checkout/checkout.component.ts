@@ -120,7 +120,6 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     return isControlValid(form, control);
   }
   next(f: NgForm): void {
-    this.checkingOut.emit(true);
     if (!this.paymentType && !this.orderRef) {
       this.toastrService.error(
         this.translateService.instant('WIZARD.CHECKOUT.ERROR.ATLEAST.PAYMENT')
@@ -143,7 +142,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
       });
       return;
     }
-
+    this.checkingOut.emit(true);
     this.loadingGateway = true;
     this.ngeniusPaymentService
       .signIn()

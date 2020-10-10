@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { isFormValid } from '../form';
 import { StateService } from '../state-service';
+import * as p from 'path';
 import {
   catchError,
   delay,
@@ -20,7 +21,7 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { blobToUrl } from '../constants';
+import { baseName, blobToUrl } from '../constants';
 
 @Component({
   selector: 'ot-track-your-progress',

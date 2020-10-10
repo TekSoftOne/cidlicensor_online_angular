@@ -314,3 +314,16 @@ export function blobToUrl(b64Data): string {
   const blobUrl = URL.createObjectURL(blob);
   return blobUrl;
 }
+
+export function baseName(str): string {
+  // tslint:disable-next-line: no-construct
+  let base = new String(str).substring(str.lastIndexOf('/') + 1);
+  if (base.lastIndexOf('.') !== -1) {
+    base = base.substring(0, base.lastIndexOf('.'));
+  }
+  return base;
+}
+
+export function truncate(str, n): string {
+  return str.length > n ? str.substr(0, n - 1) + '&hellip;' : str;
+}

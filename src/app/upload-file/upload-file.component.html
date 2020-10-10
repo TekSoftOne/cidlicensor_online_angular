@@ -7,26 +7,39 @@
   }"
   >{{ label }}<span *ngIf="isRequired">*</span></label
 >
-<input
-  class="inputfile inputfile-1"
-  id="emirateBackAttach"
-  (change)="onFileChange($event.target.files)"
-  name="emirateBackAttach"
-  type="file"
-  [ngClass]="{
-    'form-control': true,
-    'is-invalid': (lengthInvalid | async)
-  }"
-  style="margin-bottom: 2px"
-/>
+<ng-container *ngIf="wantToChange | async; else filePathTemplate">
+  <input
+    class="inputfile inputfile-1"
+    id="emirateBackAttach"
+    (change)="onFileChange($event.target.files)"
+    name="emirateBackAttach"
+    type="file"
+    [ngClass]="{
+      'form-control': true,
+      'is-invalid': (lengthInvalid | async)
+    }"
+    style="margin-bottom: 2px"
+  />
 
-<label
-  style="border: none; padding: 0 5px 5px 0"
-  for="file-1"
-  [ngClass]="{
-    'is-invalid-upload': (sizeInvalid | async)
-  }"
->
-  <span style="font-size: 0.7rem">Upload File – png only Max Size 2 MB</span>
-  <span *ngIf="file | async as emirateBack">{{ emirateBack?.name }}</span>
-</label>
+  <label
+    style="border: none; padding: 0 5px 5px 0"
+    for="file-1"
+    [ngClass]="{
+      'is-invalid-upload': (sizeInvalid | async)
+    }"
+  >
+    <span style="font-size: 0.7rem">Upload File – png only Max Size 2 MB</span>
+  </label>
+</ng-container>
+<ng-template #filePathTemplate>
+  <button
+    class="btn btn-secondary"
+    value="Change"
+    (click)="onWantToChange($event)"
+  >
+    Change
+  </button>
+  <label for="" class="form-label mt-2" style="font-size: 13px">{{
+    getTruncate(filePath)
+  }}</label>
+</ng-template>

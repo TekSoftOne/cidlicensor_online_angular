@@ -10,7 +10,7 @@ import { LICENSE_ROLE_NAME, LICENSE_USER } from 'src/app/constants';
   providedIn: 'root',
 })
 export class LicenseAuthenticationService {
-  private readonly LICENSE_TOKEN = 'OR_LICENSE_TOKEN';
+  private readonly LICENSE_TOKEN = 'LICENSE_TOKEN';
   constructor(
     // tslint:disable-next-line: no-shadowed-variable
     private httpClient: HttpClient

@@ -11,6 +11,7 @@ import {
 import { Observable, combineLatest, merge, BehaviorSubject } from 'rxjs';
 import { map, tap, skip, takeLast } from 'rxjs/operators';
 import { CustomValidation } from '../interfaces';
+import { truncate } from '../constants';
 
 @Component({
   selector: 'ot-upload-file',
@@ -23,6 +24,9 @@ export class UploadFileComponent implements OnInit, OnChanges {
   public lengthInvalid: Observable<boolean>;
   public submitChange: BehaviorSubject<boolean>;
   public isValid: Observable<boolean>;
+  public wantToChange$: BehaviorSubject<boolean>;
+  public wantToChange: Observable<boolean>;
+  public filePath$: BehaviorSubject<string>;
 
   @Output() data = new EventEmitter<File>();
   @Output() dataValidation = new EventEmitter<CustomValidation>();
@@ -30,9 +34,29 @@ export class UploadFileComponent implements OnInit, OnChanges {
   @Input() label: string;
   @Input() constrolName: string;
   @Input() isRequired = false;
+  @Input() filePath: string;
 
   constructor() {
     this.file = new BehaviorSubject<File>(undefined);
+    this.filePath$ = new BehaviorSubject<string>(undefined);
+    this.wantToChange$ = new BehaviorSubject<boolean>(false);
+    this.wantToChange = combineLatest([
+      this.wantToChange$.asObservable(),
+      this.filePath$.asObservable(),
+    ]).pipe(
+      map(([w, f]) => {
+        if (w === true) {
+          return true;
+        }
+
+        if (!f) {
+          return true;
+        }
+
+        return false;
+      })
+    );
+
     this.submitChange = new BehaviorSubject<boolean>(false);
     const submit = this.submitChange.asObservable();
     this.sizeInvalid = combineLatest([this.file, submit]).pipe(
@@ -87,6 +111,10 @@ export class UploadFileComponent implements OnInit, OnChanges {
     if (changes.formSubmited) {
       this.submitChange.next(changes.formSubmited.currentValue);
     }
+
+    if (changes.filePath) {
+      this.filePath$.next(changes.filePath.currentValue);
+    }
   }
 
   ngOnInit(): void {}
@@ -111,5 +139,14 @@ export class UploadFileComponent implements OnInit, OnChanges {
     const f = files.item(0);
     this.file.next(f);
     this.data.emit(f);
+  }
+
+  public onWantToChange(e: Event): void {
+    e.preventDefault();
+    this.wantToChange$.next(true);
+  }
+
+  public getTruncate(text: string): string {
+    return truncate(text, 50) + '...';
   }
 }
