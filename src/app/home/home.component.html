@@ -234,8 +234,17 @@
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [enabled]="!isApproved()"
-              [monthlyQuotaId]="request.monthlyQuotaId"
-              [monthlySalaryId]="request.monthlySalaryId"
+              [monthlyQuotaId]="
+                request.monthlyQuotaId <= monthlyQuotaIdMax
+                  ? request.monthlyQuotaId
+                  : 0
+              "
+              [monthlySalaryId]="
+                request.monthlySalaryId <= monthlySalaryIdMax
+                  ? request.monthlySalaryId
+                  : 0
+              "
+              [comment]="request.comment"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-work-information>

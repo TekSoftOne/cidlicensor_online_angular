@@ -15,6 +15,8 @@ import {
   getStatusFromId,
   statuses,
   toBase64FromFile,
+  monthlySalaryRanges,
+  monthlyQuotaRanges,
 } from './../constants';
 import {
   MembershipRequest,
@@ -171,6 +173,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     monthlyQuotaId: 0,
     monthlySalaryId: 0,
   };
+
+  // for compatibility between Licensor and Online
+  public monthlyQuotaIdMax = Math.max(...monthlySalaryRanges.map((s) => s.id));
+  public monthlySalaryIdMax = Math.max(...monthlyQuotaRanges.map((s) => s.id));
 
   public openType = 'New'; // Update
 
@@ -368,7 +374,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 statuses.find((s) => s.name === 'Pending')?.id.toString()
               );
             } else {
-              f.append(key, this.request[key]);
+              f.append(
+                key,
+                this.request[key] === 'null' || this.request[key] === null
+                  ? ''
+                  : this.request[key]
+              );
             }
 
             // Occupation = FullAddress
