@@ -1,7 +1,14 @@
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { isFormValid, isControlValid } from 'src/app/form';
-import { IFormWizard, MembershipRequest } from './../../interfaces';
+import {
+  IFormWizard,
+  MembershipRequest,
+  Salary,
+  Quota,
+} from './../../interfaces';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { monthlyQuotaRanges, monthlySalaryRanges } from 'src/app/constants';
 
 @Component({
   selector: 'ot-work-information',
@@ -9,14 +16,20 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./work-information.component.scss'],
 })
 export class WorkInformationComponent implements OnInit, IFormWizard {
-  constructor() {}
+  public monthlySalaries: Observable<Salary[]>;
+  public monthlyQuotas: Observable<Quota[]>;
+
+  constructor() {
+    this.monthlyQuotas = of(monthlyQuotaRanges);
+    this.monthlySalaries = of(monthlySalaryRanges);
+  }
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest
   >();
 
-  @Input() monthlySalary: number;
-  @Input() monthlyQuota: number;
+  @Input() monthlySalaryId: number;
+  @Input() monthlyQuotaId: number;
   @Input() comment: string;
   @Input() enabled: boolean;
 
@@ -28,8 +41,14 @@ export class WorkInformationComponent implements OnInit, IFormWizard {
   }
   next(f: NgForm): void {
     this.data.emit({
-      monthlyQuota: this.monthlyQuota,
-      monthlySalary: this.monthlySalary,
+      monthlyQuotaId: this.monthlyQuotaId,
+      monthlySalaryId: this.monthlySalaryId,
+      monthlyQuotaName: monthlyQuotaRanges.find(
+        (x) => x.id === Number(this.monthlyQuotaId)
+      )?.name,
+      monthlySalaryName: monthlySalaryRanges.find(
+        (x) => x.id === Number(this.monthlySalaryId)
+      )?.name,
       comment: this.comment,
     });
     this.nextStep.emit(f);

@@ -51,8 +51,10 @@ export interface MembershipRequest {
   religionId?: number;
   religionName?: string;
   // step
-  monthlySalary?: number;
-  monthlyQuota?: number;
+  monthlySalaryId?: number;
+  monthlyQuotaId?: number;
+  monthlyQuotaName?: string;
+  monthlySalaryName?: string;
   comment?: string;
   // step
   areaId?: string;
@@ -97,6 +99,16 @@ export interface Religion {
 }
 
 export interface Gender {
+  name: string;
+  id: number;
+}
+
+export interface Salary {
+  name: string;
+  id: number;
+}
+
+export interface Quota {
   name: string;
   id: number;
 }

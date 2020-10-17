@@ -11,24 +11,44 @@
           <div class="col-lg-12 col-12 col-sm-12">
             <div class="row">
               <div class="col-lg-6 col-12 col-sm-6">
-                <label class="form-label">Your Monthly Salary:</label>
-                <input
+                <label class="form-label">Your Monthly Salary</label>
+                <select
+                  class="sel"
+                  [(ngModel)]="monthlySalaryId"
                   name="monthlySalary"
-                  placeholder="5000 DHS"
-                  type="text"
-                  [(ngModel)]="monthlySalary"
-                />
+                  [ngClass]="{
+                    'form-control': true
+                  }"
+                >
+                  <option value="0">Choose a Salary Range</option>
+                  <option
+                    *ngFor="let monthlySalary of monthlySalaries | async"
+                    [value]="monthlySalary.id"
+                  >
+                    {{ monthlySalary.name }}
+                  </option>
+                </select>
               </div>
               <div class="col-lg-6 col-12 col-sm-6">
                 <label class="form-label"
                   >How much Monthly Quota you need:</label
                 >
-                <input
-                  name="monthlyQuota"
-                  placeholder="2000 DHS"
-                  type="text"
-                  [(ngModel)]="monthlyQuota"
-                />
+                <select
+                  class="sel"
+                  [(ngModel)]="monthlySalaryId"
+                  name="monthlySalary"
+                  [ngClass]="{
+                    'form-control': true
+                  }"
+                >
+                  <option value="0">Choose a Quota range</option>
+                  <option
+                    *ngFor="let monthlyQuota of monthlyQuotas | async"
+                    [value]="monthlyQuota.id"
+                  >
+                    {{ monthlyQuota.name }}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="row">

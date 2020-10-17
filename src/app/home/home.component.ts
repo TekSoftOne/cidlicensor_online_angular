@@ -168,6 +168,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     membershipNumber: '0',
     membershipRequestType: 2,
     status: statuses.find((s) => s.name === 'Pending')?.id,
+    monthlyQuotaId: 0,
+    monthlySalaryId: 0,
   };
 
   public openType = 'New'; // Update

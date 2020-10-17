@@ -339,3 +339,30 @@ export function readUrl(file: any): Observable<string> {
     reader.readAsDataURL(file);
   });
 }
+
+export const monthlySalaryRanges = [
+  { name: '2000 AED - 3500 AED', id: 1 },
+  { name: '3500 AED - 5000 AED', id: 2 },
+  { name: '5000 AED - 6500 AED', id: 3 },
+  { name: '6500 AED - 8000 AED', id: 4 },
+  { name: '8000 AED - 9500 AED', id: 5 },
+  { name: '9500 AED - 11000 AED', id: 6 },
+  { name: '11000 AED - 13500 AED', id: 7 },
+  { name: '13500 AED  - 15000 AED', id: 8 },
+  { name: '15000 AED - 16500 AED', id: 9 },
+  { name: '16500 AED - 18000 AED', id: 10 },
+  { name: '18000 AED - 19500 AED', id: 11 },
+  { name: '20000 AED &amp; Above', id: 12 },
+];
+
+export const monthlyQuotaRanges = [
+  { name: '2000 AED - 3500 AED', id: 1 },
+  { name: '3500 AED - 5000 AED', id: 2 },
+  { name: '5000 AED - 6500 AED', id: 3 },
+  { name: '6500 AED - 8000 AED', id: 4 },
+  { name: '8000 AED - 9500 AED', id: 5 },
+  { name: '9500 AED - 11000 AED', id: 6 },
+  { name: '11000 AED - 13500 AED', id: 7 },
+  { name: '13500 AED  - 15000 AED', id: 8 },
+  { name: '15000 AED - 16500 AED', id: 9 },
+];

@@ -234,6 +234,8 @@
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [enabled]="!isApproved()"
+              [monthlyQuotaId]="request.monthlyQuotaId"
+              [monthlySalaryId]="request.monthlySalaryId"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-work-information>
