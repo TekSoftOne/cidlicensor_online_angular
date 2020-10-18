@@ -51,8 +51,8 @@ export interface MembershipRequest {
   religionId?: number;
   religionName?: string;
   // step
-  monthlySalaryId?: number;
-  monthlyQuotaId?: number;
+  monthlySalary?: number;
+  monthlyQuota?: number;
   monthlyQuotaName?: string;
   monthlySalaryName?: string;
   comment?: string;

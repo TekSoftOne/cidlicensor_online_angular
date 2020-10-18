@@ -170,8 +170,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     membershipNumber: '0',
     membershipRequestType: 2,
     status: statuses.find((s) => s.name === 'Pending')?.id,
-    monthlyQuotaId: 0,
-    monthlySalaryId: 0,
+    monthlyQuota: 0,
+    monthlySalary: 0,
   };
 
   // for compatibility between Licensor and Online
@@ -394,6 +394,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (key === 'profilePhoto') {
               // file to string
               f.append('profilePic', photo); // string
+            }
+
+            if (key === 'monthlySalary') {
+              f.append('salary', this.request[key].toString());
+            }
+
+            if (key === 'monthlyQuota') {
+              f.append('limit', this.request[key].toString());
             }
           }
         }

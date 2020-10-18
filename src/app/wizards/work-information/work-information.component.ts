@@ -28,8 +28,8 @@ export class WorkInformationComponent implements OnInit, IFormWizard {
     MembershipRequest
   >();
 
-  @Input() monthlySalaryId: number;
-  @Input() monthlyQuotaId: number;
+  @Input() monthlySalary: number;
+  @Input() monthlyQuota: number;
   @Input() comment: string;
   @Input() enabled: boolean;
 
@@ -41,13 +41,13 @@ export class WorkInformationComponent implements OnInit, IFormWizard {
   }
   next(f: NgForm): void {
     this.data.emit({
-      monthlyQuotaId: this.monthlyQuotaId,
-      monthlySalaryId: this.monthlySalaryId,
+      monthlyQuota: this.monthlyQuota,
+      monthlySalary: this.monthlySalary,
       monthlyQuotaName: monthlyQuotaRanges.find(
-        (x) => x.id === Number(this.monthlyQuotaId)
+        (x) => x.id === Number(this.monthlyQuota)
       )?.name,
       monthlySalaryName: monthlySalaryRanges.find(
-        (x) => x.id === Number(this.monthlySalaryId)
+        (x) => x.id === Number(this.monthlySalary)
       )?.name,
       comment: this.comment,
     });
