@@ -121,6 +121,18 @@ export const statuses = [
   { id: 11, name: 'APPROVED_BY_AGENT_WAITING_FOR_ADMIN' },
 ];
 
+export const newRequest = {
+  nationId: 0,
+  religionId: 0,
+  gender: 0,
+  areaId: '0',
+  membershipNumber: '0',
+  membershipRequestType: 2,
+  status: statuses.find((s) => s.name === 'Pending')?.id,
+  monthlyQuota: 0,
+  monthlySalary: 0,
+};
+
 export function getStatusFromId(id: number): string {
   return statuses.find((s) => s.id === id)?.name;
 }
@@ -134,6 +146,16 @@ export function isAcceptingApplicationStatus(
     getStatusFromId(status) !== 'Rejected' &&
     applicationNumber !== undefined &&
     applicationNumber > 0
+  );
+}
+
+export function isAvailableToRenewOrReplace(
+  status: number,
+  applicationNumber?: number
+): boolean {
+  return (
+    getStatusFromId(status) === 'Approved' ||
+    getStatusFromId(status) === 'Rejected'
   );
 }
 

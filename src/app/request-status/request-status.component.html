@@ -1,4 +1,4 @@
-<ng-container [ngSwitch]="resolvedStatus()">
+<ng-container *ngIf="isAccepting() === true" [ngSwitch]="resolvedStatus()">
   <ng-template ngSwitchCase="Approved">
     <h3>Your request has been approved</h3>
   </ng-template>

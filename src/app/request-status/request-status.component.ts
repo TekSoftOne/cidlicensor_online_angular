@@ -1,4 +1,9 @@
-import { getStatusFromId, statuses } from './../constants';
+import { StateService } from './../state-service';
+import {
+  getStatusFromId,
+  isAcceptingApplicationStatus,
+  statuses,
+} from './../constants';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -9,11 +14,18 @@ import { Component, Input, OnInit } from '@angular/core';
 export class RequestStatusComponent implements OnInit {
   @Input() requestStatus: number;
 
-  constructor() {}
+  constructor(private stateService: StateService) {}
 
   ngOnInit(): void {}
 
   public resolvedStatus(): string {
     return getStatusFromId(this.requestStatus);
+  }
+
+  public isAccepting(): boolean {
+    return isAcceptingApplicationStatus(
+      this.stateService.data.request.status,
+      this.stateService.data.request.applicationNumber
+    );
   }
 }

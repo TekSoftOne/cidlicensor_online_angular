@@ -1,3 +1,4 @@
+import { StateService } from './../../state-service';
 import { UserToken } from './../interface';
 import { AuthenticationService } from './../authentication.service';
 import { NgForm } from '@angular/forms';
@@ -34,7 +35,8 @@ export class LoginComponent implements AfterViewInit {
     private toastrservice: ToastrService,
     private router: Router,
     private httpClient: HttpClient,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private stateService: StateService
   ) {
     this.codeSent$ = new BehaviorSubject<boolean>(false);
   }
@@ -50,6 +52,7 @@ export class LoginComponent implements AfterViewInit {
   }
   private login(phoneNumber: string): Observable<UserToken> {
     return this.authenticationService.login(phoneNumber, undefined).pipe(
+      tap(() => this.stateService.refresh()),
       catchError((err: HttpErrorResponse) => {
         this.error = err.error ?? err.message;
         if (this.error === 'Invalid phone number') {

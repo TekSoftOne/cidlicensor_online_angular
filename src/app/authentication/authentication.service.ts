@@ -57,6 +57,14 @@ export class AuthenticationService {
     return user;
   }
 
+  public getExistingRequest(): number {
+    return this.getUser()?.requests;
+  }
+
+  public getCustomerType(): number {
+    return this.getUser()?.requestType;
+  }
+
   public loginSilently(): UserToken | null {
     return this.getUser();
   }

@@ -18,6 +18,7 @@ import {
   monthlySalaryRanges,
   monthlyQuotaRanges,
   customerTypes,
+  newRequest,
 } from './../constants';
 import {
   MembershipRequest,
@@ -95,11 +96,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.disableButtons$ = new BehaviorSubject<boolean>(false);
 
-    this.steps = this.stateService.getSteps(
-      !this.stateService.data.request
-        ? this.request
-        : this.stateService.data.request
-    );
+    this.steps = this.stateService.getSteps(this.stateService.data.request);
 
     this.currentStep = this.stateService.currentStep$.asObservable();
 
@@ -132,11 +129,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.applicationNumber = this.applicationNumber$.asObservable().pipe(
       tap((application) => {
         if (
-          (!this.request.applicationNumber ||
-            this.request.applicationNumber < 0) &&
+          (!this.stateService.data.request.applicationNumber ||
+            this.stateService.data.request.applicationNumber < 0) &&
           this.stateService.data.request
         ) {
-          this.request = {
+          this.stateService.data.request = {
             ...this.stateService.data.request,
             membershipRequestType: 2, // always = 2 whatever,
           };
@@ -174,18 +171,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     zoom: 4,
   };
 
-  public request: MembershipRequestResult = {
-    nationId: 0,
-    religionId: 0,
-    gender: 0,
-    areaId: '0',
-    membershipNumber: '0',
-    membershipRequestType: 2,
-    status: statuses.find((s) => s.name === 'Pending')?.id,
-    monthlyQuota: 0,
-    monthlySalary: 0,
-  };
-
   // for compatibility between Licensor and Online
   public monthlyQuotaIdMax = Math.max(...monthlySalaryRanges.map((s) => s.id));
   public monthlySalaryIdMax = Math.max(...monthlyQuotaRanges.map((s) => s.id));
@@ -197,13 +182,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public requestValidation: CustomValidation[] = [];
 
   public updateData(request: MembershipRequestResult): void {
-    this.request = { ...this.request, ...request };
+    this.stateService.data.request = {
+      ...this.stateService.data.request,
+      ...request,
+    };
   }
 
   public updateSearchMembershipData(request: MembershipRequestResult): void {
     this.updateData({
       ...request,
-      requestCategory: this.request.requestCategory,
+      requestCategory: this.stateService.data.request.requestCategory,
     });
   }
 
@@ -260,7 +248,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public isApproved(): boolean {
-    return getStatusFromId(this.request.status) === 'Approved';
+    return (
+      getStatusFromId(this.stateService.data.request.status) === 'Approved'
+    );
   }
 
   public next(f: NgForm): void {
@@ -278,16 +268,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     let step = this.steps[index + 1];
 
-    if (!this.request.phoneNumber) {
+    if (!this.stateService.data.request.phoneNumber) {
       // user get to home page from last session
-      this.request.phoneNumber = this.authenticationService.getUser().email;
+      this.stateService.data.request.phoneNumber = this.authenticationService.getUser().email;
     }
 
     if (this.stateService.currentStep$.value === 'sReview') {
       if (
-        !this.request.email ||
-        !this.request.fullName ||
-        !this.request.phoneNumber
+        !this.stateService.data.request.email ||
+        !this.stateService.data.request.fullName ||
+        !this.stateService.data.request.phoneNumber
       ) {
         this.toastrservice.error('Email and PhoneNumber is required');
         return;
@@ -296,7 +286,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.updateStatus = this.processApplication();
     }
 
-    if (step === 'sSearch' && this.request.requestCategory === 'New') {
+    if (
+      step === 'sSearch' &&
+      this.stateService.data.request.requestCategory === 'New'
+    ) {
       // dont want to search if (New)
       step = this.steps[this.getIndex(step) + 1];
     }
@@ -321,7 +314,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private processApplication(): Observable<boolean | undefined> {
     return this.generateMembershipNumber().pipe(
-      tap((membershipNo) => (this.request.membershipNumber = membershipNo)),
+      tap(
+        (membershipNo) =>
+          (this.stateService.data.request.membershipNumber = membershipNo)
+      ),
       switchMap(() => this.createLicensorRequest()),
       switchMap((membershipInfo: LicenseMembershipInfo) =>
         this.createApplication(membershipInfo)
@@ -342,10 +338,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private generateMembershipNumber(): Observable<string> {
     if (
-      this.request.membershipNumber &&
-      this.request.membershipNumber.length > 1
+      this.stateService.data.request.membershipNumber &&
+      this.stateService.data.request.membershipNumber.length > 1
     ) {
-      return of(this.request.membershipNumber);
+      return of(this.stateService.data.request.membershipNumber);
     }
 
     return this.licenseAuthenticationService.get(
@@ -366,18 +362,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private createApplication(
     membershipInfo: LicenseMembershipInfo
   ): Observable<number> {
-    this.request.membershipNumber = membershipInfo.membershipNumber;
-    this.request.membershipId = membershipInfo.membershipId;
+    this.stateService.data.request.membershipNumber =
+      membershipInfo.membershipNumber;
+    this.stateService.data.request.membershipId = membershipInfo.membershipId;
     return this.createRequestMembership().pipe(
-      tap((appId) => (this.request.applicationNumber = appId))
+      tap((appId) => (this.stateService.data.request.applicationNumber = appId))
     );
   }
 
   private makeFormData(): Observable<FormData> {
-    return toBase64FromFile(this.request.profilePhoto).pipe(
+    return toBase64FromFile(this.stateService.data.request.profilePhoto).pipe(
       map((photo) => {
         const f = new FormData();
-        for (const key in this.request) {
+        for (const key in this.stateService.data.request) {
           if (key) {
             // alway change status to pendind whenever updating
             if (key === 'status') {
@@ -388,19 +385,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
             } else {
               f.append(
                 key,
-                this.request[key] === 'null' || this.request[key] === null
+                this.stateService.data.request[key] === 'null' ||
+                  this.stateService.data.request[key] === null
                   ? ''
-                  : this.request[key]
+                  : this.stateService.data.request[key]
               );
             }
 
             // Occupation = FullAddress
             if (key === 'fullAddress') {
-              f.append('occupation', this.request[key]);
+              f.append('occupation', this.stateService.data.request[key]);
             }
 
             if (key === 'emiratesIdBack') {
-              f.append('attachment1', this.request[key]);
+              f.append('attachment1', this.stateService.data.request[key]);
             }
 
             if (key === 'profilePhoto') {
@@ -409,11 +407,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
 
             if (key === 'monthlySalary') {
-              f.append('salary', this.request[key].toString());
+              f.append(
+                'salary',
+                this.stateService.data.request[key].toString()
+              );
             }
 
             if (key === 'monthlyQuota') {
-              f.append('limit', this.request[key].toString());
+              f.append('limit', this.stateService.data.request[key].toString());
             }
           }
         }

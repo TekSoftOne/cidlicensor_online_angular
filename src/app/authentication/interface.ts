@@ -5,6 +5,8 @@ export interface UserToken {
   auth_token: string;
   email: string;
   expires_in: number;
+  requests: number;
+  requestType: number;
 }
 
 export const WINDOW = new InjectionToken<Window>('window', {

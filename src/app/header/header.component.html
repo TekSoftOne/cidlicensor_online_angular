@@ -1,9 +1,15 @@
 <div class="row menu-bar">
   <div class="col-8 col-sm-6">
     <p>
-      <a href="#" (click)="loadHome($event)">{{
+      <a *ngIf="isNew() === true" href="#" (click)="loadHome($event)">{{
         "HEADER.HOME" | translate | uppercase
       }}</a>
+      <a
+        *ngIf="isAvailableToRenew() === true"
+        href="#"
+        (click)="newRequest()"
+        >{{ "New Request" | uppercase }}</a
+      >
       <a [routerLink]="['/track-your-request']">{{
         "TRACKYOURREQUEST.HEADER" | translate | uppercase
       }}</a>

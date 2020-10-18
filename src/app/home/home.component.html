@@ -11,118 +11,110 @@
           <ot-welcome></ot-welcome>
         </div>
         <div class="vertical" *ngIf="isStepsFlowShowed | async">
-          <ng-container
-            *ngIf="
-              request.applicationNumber &&
-                stateService.currentStep$.value === 'sTypeOfCustomer';
-              else steps
-            "
-          >
-            <ot-request-status [requestStatus]="request.status">
+          <div class="steps">
+            <ot-request-status
+              [requestStatus]="stateService.data.request.status"
+            >
             </ot-request-status>
-          </ng-container>
-          <ng-template #steps>
-            <div class="steps">
-              <ul class=" " id="sds-ul" role="tablist">
-                <li
-                  aria-disabled="false"
-                  aria-selected="true"
-                  class="first"
-                  [ngClass]="{
-                    current: isPersonalLeftStep(currentStep)
-                  }"
-                  id="ft-li"
-                  role="tab"
-                >
-                  <a id="steps-uid-0-t-0-0">
-                    <span
-                      *ngIf="isPersonalLeftStep(currentStep)"
-                      class="audible current-info"
-                    >
-                    </span>
-                    <div class="title">
-                      <span class="step-number">1</span
-                      ><span class="step-text">{{
-                        "STEPSIDE.PERSONAL" | translate | uppercase
-                      }}</span>
-                    </div>
-                  </a>
-                </li>
-
-                <li
-                  aria-disabled="true"
-                  class="disabled"
-                  [ngClass]="{
-                    current: isLimitLeftStep(currentStep)
-                  }"
-                  id="sd-li"
-                  role="tab"
-                >
+            <ul class=" " id="sds-ul" role="tablist">
+              <li
+                aria-disabled="false"
+                aria-selected="true"
+                class="first"
+                [ngClass]="{
+                  current: isPersonalLeftStep(currentStep)
+                }"
+                id="ft-li"
+                role="tab"
+              >
+                <a id="steps-uid-0-t-0-0">
                   <span
-                    *ngIf="isLimitLeftStep(currentStep)"
+                    *ngIf="isPersonalLeftStep(currentStep)"
                     class="audible current-info"
                   >
                   </span>
-                  <a id="steps-uid-0-t-1-1">
-                    <div class="title">
-                      <span class="step-number">2</span
-                      ><span class="step-text">{{
-                        "STEPSIDE.LIMIT" | translate | uppercase
-                      }}</span>
-                    </div>
-                  </a>
-                </li>
+                  <div class="title">
+                    <span class="step-number">1</span
+                    ><span class="step-text">{{
+                      "STEPSIDE.PERSONAL" | translate | uppercase
+                    }}</span>
+                  </div>
+                </a>
+              </li>
 
-                <li
-                  aria-disabled="true"
-                  class="disabled"
-                  [ngClass]="{
-                    current: isLocationLeftStep(currentStep)
-                  }"
-                  id="sd-li"
-                  role="tab"
+              <li
+                aria-disabled="true"
+                class="disabled"
+                [ngClass]="{
+                  current: isLimitLeftStep(currentStep)
+                }"
+                id="sd-li"
+                role="tab"
+              >
+                <span
+                  *ngIf="isLimitLeftStep(currentStep)"
+                  class="audible current-info"
                 >
-                  <span
-                    *ngIf="isLocationLeftStep(currentStep)"
-                    class="audible current-info"
-                  >
-                  </span>
-                  <a id="steps-uid-0-t-1-3">
-                    <div class="title">
-                      <span class="step-number">3</span
-                      ><span class="step-text">{{
-                        "STEPSIDE.LOCATION" | translate | uppercase
-                      }}</span>
-                    </div>
-                  </a>
-                </li>
+                </span>
+                <a id="steps-uid-0-t-1-1">
+                  <div class="title">
+                    <span class="step-number">2</span
+                    ><span class="step-text">{{
+                      "STEPSIDE.LIMIT" | translate | uppercase
+                    }}</span>
+                  </div>
+                </a>
+              </li>
 
-                <li
-                  aria-disabled="true"
-                  class="disabled"
-                  [ngClass]="{
-                    current: isSubmitLeftStep(currentStep)
-                  }"
-                  id="sd-li"
-                  role="tab"
+              <li
+                aria-disabled="true"
+                class="disabled"
+                [ngClass]="{
+                  current: isLocationLeftStep(currentStep)
+                }"
+                id="sd-li"
+                role="tab"
+              >
+                <span
+                  *ngIf="isLocationLeftStep(currentStep)"
+                  class="audible current-info"
                 >
-                  <span
-                    *ngIf="isSubmitLeftStep(currentStep)"
-                    class="audible current-info"
-                  >
-                  </span>
-                  <a id="steps-uid-0-t-1-4">
-                    <div class="title">
-                      <span class="step-number">4</span
-                      ><span class="step-text">{{
-                        "STEPSIDE.SUBMIT" | translate | uppercase
-                      }}</span>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </ng-template>
+                </span>
+                <a id="steps-uid-0-t-1-3">
+                  <div class="title">
+                    <span class="step-number">3</span
+                    ><span class="step-text">{{
+                      "STEPSIDE.LOCATION" | translate | uppercase
+                    }}</span>
+                  </div>
+                </a>
+              </li>
+
+              <li
+                aria-disabled="true"
+                class="disabled"
+                [ngClass]="{
+                  current: isSubmitLeftStep(currentStep)
+                }"
+                id="sd-li"
+                role="tab"
+              >
+                <span
+                  *ngIf="isSubmitLeftStep(currentStep)"
+                  class="audible current-info"
+                >
+                </span>
+                <a id="steps-uid-0-t-1-4">
+                  <div class="title">
+                    <span class="step-number">4</span
+                    ><span class="step-text">{{
+                      "STEPSIDE.SUBMIT" | translate | uppercase
+                    }}</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -130,7 +122,9 @@
 
   <div class="form-holder position n-form">
     <div class="container-fluid">
-      <ot-header [userImage]="request.profilePhoto"></ot-header>
+      <ot-header
+        [userImage]="stateService.data.request.profilePhoto"
+      ></ot-header>
     </div>
     <!-- Wizard part -->
     <div
@@ -143,7 +137,7 @@
           <ng-template #sPhoneNumber ngSwitchCase="sPhoneNumber">
             <ot-mobile
               (nextStep)="next($event)"
-              [phoneNumber]="request.phoneNumber"
+              [phoneNumber]="stateService.data.request.phoneNumber"
               (data)="updateData($event)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
@@ -153,8 +147,8 @@
           <ng-template #sVerifyPhone ngSwitchCase="sVerifyPhone">
             <ot-mobile-verification
               (data)="updateData($event)"
-              [verifyNumber]="request.verifyNumber"
-              [phoneNumber]="request.phoneNumber"
+              [verifyNumber]="stateService.data.request.verifyNumber"
+              [phoneNumber]="stateService.data.request.phoneNumber"
               (nextStep)="next($event)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
@@ -165,7 +159,7 @@
             <ot-type-of-customer
               (data)="updateData($event)"
               (nextStep)="next($event)"
-              [typeOfCustomer]="request.typeOfCustomer"
+              [typeOfCustomer]="stateService.data.request.typeOfCustomer"
               [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
@@ -176,7 +170,7 @@
             <ot-type-of-request
               (data)="updateData($event)"
               (nextStep)="next($event)"
-              [typeOfRequest]="request.requestCategory"
+              [typeOfRequest]="stateService.data.request.requestCategory"
               [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
@@ -187,17 +181,17 @@
             <ot-search-membership-number
               (data)="updateSearchMembershipData($event)"
               (nextStep)="next($event)"
-              [currentPhoneNumber]="request.phoneNumber"
+              [currentPhoneNumber]="stateService.data.request.phoneNumber"
             >
             </ot-search-membership-number>
           </ng-template>
 
           <ng-template #sPersonalBasic ngSwitchCase="sPersonalBasic">
             <ot-personal-information
-              [fullName]="request.fullName"
-              [email]="request.email"
-              [address]="request.address"
-              [fullAddress]="request.fullAddress"
+              [fullName]="stateService.data.request.fullName"
+              [email]="stateService.data.request.email"
+              [address]="stateService.data.request.address"
+              [fullAddress]="stateService.data.request.fullAddress"
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [enabled]="!isApproved()"
@@ -211,18 +205,20 @@
               (data)="updateData($event)"
               (dataValidation)="updateValidation($event)"
               (nextStep)="next($event)"
-              [nationId]="request.nationId"
-              [emirateIDNumber]="request.emiratesIDNumber"
-              [passportNumber]="request.passportNumber"
-              [birthday]="request.birthDate"
-              [gender]="request.gender"
-              [religionId]="request.religionId"
-              [fileEmirateBack]="request.emiratesIdBack"
-              [emirateBackUrl]="request.emiratesIdBackUrl"
-              [fileEmirateFront]="request.emiratesIdFront"
-              [fileAuthorizationLetter]="request.authorizationLetter"
-              [fileProfilePic]="request.profilePhoto"
-              [typeOfCustomer]="request.typeOfCustomer"
+              [nationId]="stateService.data.request.nationId"
+              [emirateIDNumber]="stateService.data.request.emiratesIDNumber"
+              [passportNumber]="stateService.data.request.passportNumber"
+              [birthday]="stateService.data.request.birthDate"
+              [gender]="stateService.data.request.gender"
+              [religionId]="stateService.data.request.religionId"
+              [fileEmirateBack]="stateService.data.request.emiratesIdBack"
+              [emirateBackUrl]="stateService.data.request.emiratesIdBackUrl"
+              [fileEmirateFront]="stateService.data.request.emiratesIdFront"
+              [fileAuthorizationLetter]="
+                stateService.data.request.authorizationLetter
+              "
+              [fileProfilePic]="stateService.data.request.profilePhoto"
+              [typeOfCustomer]="stateService.data.request.typeOfCustomer"
               [enabled]="!isApproved()"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
@@ -234,9 +230,9 @@
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [enabled]="!isApproved()"
-              [monthlyQuota]="request.monthlyQuota"
-              [monthlySalary]="request.monthlySalary"
-              [comment]="request.comment"
+              [monthlyQuota]="stateService.data.request.monthlyQuota"
+              [monthlySalary]="stateService.data.request.monthlySalary"
+              [comment]="stateService.data.request.comment"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-work-information>
@@ -246,8 +242,8 @@
             <ot-location
               (data)="updateData($event)"
               (nextStep)="next($event)"
-              [areaId]="request.areaId"
-              [locationId]="request.locationId"
+              [areaId]="stateService.data.request.areaId"
+              [locationId]="stateService.data.request.locationId"
               (dataValidation)="updateValidation($event)"
               [enabled]="!isApproved()"
             >
@@ -256,7 +252,10 @@
           </ng-template>
 
           <ng-template #lastDiv ngSwitchCase="lastDiv">
-            <ot-summary [request]="request" (nextStep)="next($event)">
+            <ot-summary
+              [request]="stateService.data.request"
+              (nextStep)="next($event)"
+            >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-summary>
           </ng-template>
@@ -265,8 +264,8 @@
             <ot-checkout
               (nextStep)="next($event)"
               (data)="updateData($event)"
-              [orderRef]="request.orderRef"
-              [paymentType]="request.paymentType"
+              [orderRef]="stateService.data.request.orderRef"
+              [paymentType]="stateService.data.request.paymentType"
               (checkingOut)="disableButtons$.next($event)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
@@ -319,7 +318,7 @@
                           "
                         >
                           Your Application Number is:
-                          {{ this.request.applicationNumber }}
+                          {{ this.stateService.data.request.applicationNumber }}
                         </h3>
                         <ng-template #creatingAppNumber>
                           <div *ngIf="!error; else errorCreatingApp">
@@ -340,8 +339,9 @@
                             else updatingAppNumber
                           "
                         >
-                          Application {{ request.applicationNumber }} has been
-                          updated success!
+                          Application
+                          {{ stateService.data.request.applicationNumber }} has
+                          been updated success!
                         </h3>
                         <ng-template #updatingAppNumber>
                           <div *ngIf="!error; else errorUpdatingApp">

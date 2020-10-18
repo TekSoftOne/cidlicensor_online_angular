@@ -4,8 +4,10 @@ import { Injectable } from '@angular/core';
 import { ApplicationState, MembershipRequest } from './interfaces';
 import {
   CURRENT_STEP_TOKEN,
+  customerTypes,
   getStatusFromId,
   isAcceptingApplicationStatus,
+  newRequest,
   stepsAll,
 } from './constants';
 import { map, tap } from 'rxjs/operators';
@@ -14,7 +16,7 @@ import { map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class StateService {
-  public data: ApplicationState = {};
+  public data: ApplicationState = { request: newRequest };
   public currentStep$: BehaviorSubject<string>;
   public steps: string[];
   constructor(private authenticationService: AuthenticationService) {
@@ -52,6 +54,18 @@ export class StateService {
     return this.steps[0];
   }
 
+  public refresh(): void {
+    if (
+      this.authenticationService.getCustomerType() !== undefined &&
+      this.authenticationService.getCustomerType() !== 0
+    ) {
+      this.data.request.membershipTypeId = this.authenticationService.getCustomerType();
+      this.data.request.typeOfCustomer = customerTypes.find(
+        (x) => x.id === this.data.request.membershipTypeId
+      ).name;
+    }
+  }
+
   public getSteps(request: MembershipRequest): string[] {
     const steps = this.steps.filter((s) => {
       if (
@@ -74,7 +88,11 @@ export class StateService {
 
       if (
         s === 'sTypeOfCustomer' &&
-        isAcceptingApplicationStatus(request.status, request.applicationNumber)
+        (isAcceptingApplicationStatus(
+          request.status,
+          request.applicationNumber
+        ) ||
+          this.authenticationService.getExistingRequest() > 0)
       ) {
         return false;
       }

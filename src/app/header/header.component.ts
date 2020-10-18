@@ -9,7 +9,13 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { CURRENT_STEP_TOKEN, readUrl } from '../constants';
+import {
+  CURRENT_STEP_TOKEN,
+  isAcceptingApplicationStatus,
+  isAvailableToRenewOrReplace,
+  newRequest,
+  readUrl,
+} from '../constants';
 import { Router } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -74,5 +80,21 @@ export class HeaderComponent implements OnInit, OnChanges {
     if (changes.userImage) {
       this.imageUrl$.next(changes.userImage.currentValue);
     }
+  }
+
+  public isNew(): boolean {
+    return !this.stateService.data.request.applicationNumber;
+  }
+
+  public isAvailableToRenew(): boolean {
+    return isAvailableToRenewOrReplace(
+      this.stateService.data.request.status,
+      this.stateService.data.request.applicationNumber
+    );
+  }
+
+  public newRequest(): void {
+    this.stateService.data.request = newRequest;
+    window.location.href = '/';
   }
 }
