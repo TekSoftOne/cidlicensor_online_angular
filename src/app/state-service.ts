@@ -64,21 +64,24 @@ export class StateService {
       if (
         s === 'sSearch' &&
         (request.membershipNumber.length > 1 ||
-          isAcceptingApplicationStatus(request.status))
+          isAcceptingApplicationStatus(
+            request.status,
+            request.applicationNumber
+          ))
       ) {
         return false;
       }
 
       if (
         s === 'sTypeOfCustomer' &&
-        isAcceptingApplicationStatus(request.status)
+        isAcceptingApplicationStatus(request.status, request.applicationNumber)
       ) {
         return false;
       }
 
       if (
         s === 'sTypeOfRequest' &&
-        isAcceptingApplicationStatus(request.status)
+        isAcceptingApplicationStatus(request.status, request.applicationNumber)
       ) {
         return false;
       }

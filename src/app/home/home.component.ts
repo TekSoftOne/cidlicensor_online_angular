@@ -95,7 +95,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.disableButtons$ = new BehaviorSubject<boolean>(false);
 
-    this.steps = this.stateService.getSteps(this.request);
+    this.steps = this.stateService.getSteps(
+      !this.stateService.data.request
+        ? this.request
+        : this.stateService.data.request
+    );
 
     this.currentStep = this.stateService.currentStep$.asObservable();
 

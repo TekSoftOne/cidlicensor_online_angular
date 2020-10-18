@@ -125,10 +125,15 @@ export function getStatusFromId(id: number): string {
   return statuses.find((s) => s.id === id)?.name;
 }
 
-export function isAcceptingApplicationStatus(status: number): boolean {
+export function isAcceptingApplicationStatus(
+  status: number,
+  applicationNumber?: number
+): boolean {
   return (
     getStatusFromId(status) !== 'Approved' &&
-    getStatusFromId(status) !== 'Rejected'
+    getStatusFromId(status) !== 'Rejected' &&
+    applicationNumber !== undefined &&
+    applicationNumber > 0
   );
 }
 
