@@ -1,3 +1,4 @@
+import { StateService } from './../../state-service';
 import { OnlineRequestService } from './../../authentication/online-request.service';
 import { Observable, of, throwError } from 'rxjs';
 import { environment } from './../../../environments/environment';
@@ -36,7 +37,8 @@ export class MobileVerificationComponent
   constructor(
     private toastrservice: ToastrService,
     private httpClient: HttpClient,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private stateService: StateService
   ) {}
 
   @Input() verifyNumber: string;
@@ -148,6 +150,7 @@ export class MobileVerificationComponent
 
   public login(phoneNumber: string): Observable<UserToken> {
     return this.authenticationService.login(phoneNumber, undefined).pipe(
+      tap(() => this.stateService.refresh()),
       catchError((err: HttpErrorResponse) => {
         return throwError(err);
       })
