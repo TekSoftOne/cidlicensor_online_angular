@@ -21,7 +21,7 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { baseName, blobToUrl } from '../constants';
+import { baseName, blobToUrl, customerTypes } from '../constants';
 
 @Component({
   selector: 'ot-track-your-progress',
@@ -71,6 +71,10 @@ export class TrackYourProgressComponent implements AfterViewInit {
       ),
       map(([appData, profileData]) => ({
         ...appData,
+        // this case is because when Search for existing application, we dont load Type Of Customer or Type of Request
+        membershipTypeId: appData.typeOfCustomer
+          ? customerTypes.find((x) => x.name === appData.typeOfCustomer)?.id
+          : undefined,
         profilePhoto: profileData,
       })),
       tap((app: any) => (this.stateService.data.request = app)),

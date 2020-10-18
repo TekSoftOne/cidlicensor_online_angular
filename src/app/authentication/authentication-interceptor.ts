@@ -10,12 +10,13 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { LicenseAuthenticationService } from './licensor/license-authentication.service';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
   constructor(
     private authenticationService: AuthenticationService,
-    private toastrservice: ToastrService
+    private licenseAuthenticationService: LicenseAuthenticationService
   ) {}
 
   intercept(
@@ -28,6 +29,10 @@ export class AuthenticationInterceptor implements HttpInterceptor {
           // auto logout if 401 response returned from api
           if (err.url.indexOf(environment.apiUrl) >= 0) {
             this.authenticationService.logout();
+          }
+
+          if (err.url.indexOf(environment.licenseUrl) >= 0) {
+            this.licenseAuthenticationService.getAccessForcely().subscribe();
           }
         }
 

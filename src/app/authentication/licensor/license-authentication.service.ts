@@ -16,11 +16,20 @@ export class LicenseAuthenticationService {
     private httpClient: HttpClient
   ) {}
 
-  public getAccess(): Observable<boolean> {
+  public getAccessSilently(): Observable<boolean> {
     if (localStorage.getItem(this.LICENSE_TOKEN)) {
       return of(true);
     }
 
+    return this.connect();
+  }
+
+  public getAccessForcely(): Observable<boolean> {
+    this.removeAccessCache();
+    return this.connect();
+  }
+
+  private connect(): Observable<boolean> {
     return this.httpClient
       .post(`${environment.licenseUrl}/api/Auth/login`, {
         username: LICENSE_USER,

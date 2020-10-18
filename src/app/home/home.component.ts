@@ -17,6 +17,7 @@ import {
   toBase64FromFile,
   monthlySalaryRanges,
   monthlyQuotaRanges,
+  customerTypes,
 } from './../constants';
 import {
   MembershipRequest,
@@ -83,6 +84,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private authenticationService: AuthenticationService,
     private router: Router
   ) {
+    this.licenseAuthenticationService.getAccessSilently().subscribe();
+
     const state: RouterStateSnapshot = router.routerState.snapshot;
     if (state.url.indexOf('?ref=') > 0) {
       const orderRef = state.url.replace('/?ref=', '');
@@ -144,7 +147,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
 
     this.isPreviousButtonShowed = this.currentStep.pipe(
-      map((s) => showPreviousButtonScreens.includes(s))
+      map((s) => {
+        return (
+          showPreviousButtonScreens.includes(s) &&
+          this.previousSteps$.value.length > 0
+        );
+      })
     );
 
     this.isStepsFlowShowed = this.currentStep.pipe(

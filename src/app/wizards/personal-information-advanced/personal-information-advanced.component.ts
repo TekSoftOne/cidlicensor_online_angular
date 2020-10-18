@@ -1,11 +1,6 @@
 import { UploadFileComponent } from './../../upload-file/upload-file.component';
-import { nationalities, religions, statuses } from './../../constants';
-import {
-  isFormValid,
-  isControlValid,
-  requireFileSizeValidator,
-  requireFileSizeFormValidator,
-} from 'src/app/form';
+import { nationalities, religions } from './../../constants';
+import { isFormValid, isControlValid } from 'src/app/form';
 import {
   IFormWizard,
   Religion,
@@ -26,11 +21,10 @@ import {
 } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MembershipRequest, Nationality } from 'src/app/interfaces';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { dateFormat } from 'src/app/constants';
-import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
 import { environment } from 'src/environments/environment';
 import { UploadImageComponent } from 'src/app/upload-image/upload-image.component';
 
@@ -122,9 +116,7 @@ export class PersonalInformationAdvancedComponent
   checkControlInvalid(form: NgForm, control: any): boolean {
     return isControlValid(form, control);
   }
-  public test(e: Event): void {
-    console.log();
-  }
+
   next(f: NgForm): void {
     if (environment.enableValidation) {
       if (
@@ -180,7 +172,7 @@ export class PersonalInformationAdvancedComponent
 
         this.isHideEnable = false;
       })
-      .on('show', (e) => {
+      .on('show', () => {
         this.isHideEnable = true;
       });
   }

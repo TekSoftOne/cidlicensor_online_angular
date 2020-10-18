@@ -3,7 +3,7 @@ export const environment = {
   apiUrl: 'http://localhost:5900',
   licenseUrl: 'http://localhost:5000',
   ngeniousRedirectUrl: 'https://local.teksoft1.com:4900',
-  enableTestData: true,
+  enableTestData: false,
   enableValidation: false,
   firebase: {
     apiKey: 'AIzaSyDSm0uOqyUUbbtVdEunRE6TXF2JKnIudxY',

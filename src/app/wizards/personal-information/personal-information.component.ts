@@ -16,7 +16,6 @@ import {
 import { NgForm } from '@angular/forms';
 import { MembershipRequest } from 'src/app/interfaces';
 import * as scripts from './google-map-helper.js';
-import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
 
 @Component({
   selector: 'ot-personal-information',

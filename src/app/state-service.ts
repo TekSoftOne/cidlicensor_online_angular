@@ -2,7 +2,12 @@ import { AuthenticationService } from './authentication/authentication.service';
 import { BehaviorSubject, combineLatest, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ApplicationState, MembershipRequest } from './interfaces';
-import { CURRENT_STEP_TOKEN, stepsAll } from './constants';
+import {
+  CURRENT_STEP_TOKEN,
+  getStatusFromId,
+  isAcceptingApplicationStatus,
+  stepsAll,
+} from './constants';
 import { map, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -48,7 +53,7 @@ export class StateService {
   }
 
   public getSteps(request: MembershipRequest): string[] {
-    return this.steps.filter((s) => {
+    const steps = this.steps.filter((s) => {
       if (
         this.authenticationService.getUser() &&
         (s === 'sPhoneNumber' || s === 'sVerifyPhone')
@@ -56,11 +61,33 @@ export class StateService {
         return false;
       }
 
-      if (s === 'sSearch' && request.membershipNumber.length > 1) {
+      if (
+        s === 'sSearch' &&
+        (request.membershipNumber.length > 1 ||
+          isAcceptingApplicationStatus(request.status))
+      ) {
+        return false;
+      }
+
+      if (
+        s === 'sTypeOfCustomer' &&
+        isAcceptingApplicationStatus(request.status)
+      ) {
+        return false;
+      }
+
+      if (
+        s === 'sTypeOfRequest' &&
+        isAcceptingApplicationStatus(request.status)
+      ) {
         return false;
       }
 
       return true;
     });
+
+    this.currentStep$.next(steps[0]);
+
+    return steps;
   }
 }

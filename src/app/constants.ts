@@ -125,6 +125,13 @@ export function getStatusFromId(id: number): string {
   return statuses.find((s) => s.id === id)?.name;
 }
 
+export function isAcceptingApplicationStatus(status: number): boolean {
+  return (
+    getStatusFromId(status) !== 'Approved' &&
+    getStatusFromId(status) !== 'Rejected'
+  );
+}
+
 export const nationalities = [
   { name: 'Afghanistan', id: 1 },
   { name: 'Albania', id: 2 },
