@@ -23,27 +23,37 @@
           <div class="col-lg-12 col-12 col-sm-12">
             <div class="row">
               <ng-container *ngIf="!loadingGateway; else loadingGatewayMessage">
-                <ng-container *ngIf="orderStatus$ | async as orderState">
-                  <ng-container
-                    *ngIf="
-                      orderState.status === 'SUCCESS' || paymentType === 'cash';
-                      else paymentChoices
-                    "
-                  >
-                    <div class="col-lg-12 col-12 col-sm-12 text-center">
-                      <h3>Checked out successfully</h3>
-                      <h5
-                        *ngIf="
-                          orderRef !== 'null' &&
-                          orderRef !== null &&
-                          orderRef.length > 0
-                        "
-                      >
-                        Order ref: {{ orderRef }}
-                      </h5>
-                    </div>
-                  </ng-container>
+                <ng-container
+                  *ngIf="paymentType === 'cash'; else PaymentOnlineResult"
+                >
+                  <h3>Checked out successfully</h3>
                 </ng-container>
+                <ng-template #PaymentOnlineResult>
+                  <ng-container *ngIf="orderStatus$ | async as orderState">
+                    <ng-container
+                      *ngIf="
+                        orderState.status === 'SUCCESS' ||
+                          (orderRef !== 'null' &&
+                            orderRef !== null &&
+                            orderRef.length > 0);
+                        else paymentChoices
+                      "
+                    >
+                      <div class="col-lg-12 col-12 col-sm-12 text-center">
+                        <h3>Checked out successfully</h3>
+                        <h5
+                          *ngIf="
+                            orderRef !== 'null' &&
+                            orderRef !== null &&
+                            orderRef.length > 0
+                          "
+                        >
+                          Order ref: {{ orderRef }}
+                        </h5>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ng-template>
                 <ng-template #paymentChoices>
                   <div class="col-lg-4 m-left la text-center col-12 col-sm-6">
                     <label name="">
