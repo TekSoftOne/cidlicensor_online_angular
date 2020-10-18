@@ -19,6 +19,8 @@ import {
   monthlyQuotaRanges,
   customerTypes,
   newRequest,
+  paymentTypes,
+  requestCategories,
 } from './../constants';
 import {
   MembershipRequest,
@@ -26,11 +28,18 @@ import {
   CreateUserResult,
   LicenseMembershipInfo,
   MembershipRequestResult,
+  PaymentInfoLicensor,
 } from './../interfaces';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  of,
+  combineLatest,
+  observable,
+} from 'rxjs';
 import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { createRandomPass } from '../authentication/password-generator';
 import {
@@ -137,7 +146,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
             ...this.stateService.data.request,
             membershipRequestType: 2, // always = 2 whatever,
           };
-          this.openType = 'Update';
+
+          if (application > 0) {
+            this.openType = 'Update';
+          }
         }
       }),
       tap(() => this.isApprovedRequest$.next(this.isApproved()))
@@ -227,14 +239,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return JSON.parse(cacheSteps);
   }
 
-  public loadCurrentData(): MembershipRequest {
-    const cacheData = localStorage.getItem(CURRENT_DATA_TOKEN);
-    if (cacheData) {
-      return JSON.parse(cacheData);
-    }
-    return {};
-  }
-
   public isFormValid(form: NgForm): boolean {
     return form.invalid && (form.dirty || form.touched || form.submitted);
   }
@@ -318,6 +322,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         (membershipNo) =>
           (this.stateService.data.request.membershipNumber = membershipNo)
       ),
+
       switchMap(() => this.createLicensorRequest()),
       switchMap((membershipInfo: LicenseMembershipInfo) =>
         this.createApplication(membershipInfo)
@@ -325,6 +330,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       map((appResult) => {
         this.applicationNumber$.next(appResult);
       }),
+      switchMap(() => this.logCashPaymentInLicensor()),
       tap(() => this.licenseAuthenticationService.removeAccessCache()),
       map(() => true),
       catchError((err) => {
@@ -334,6 +340,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return of(false);
       })
     );
+  }
+
+  private logCashPaymentInLicensor(): Observable<any> {
+    if (this.stateService.data.request.paymentType === 'cash') {
+      return this.licenseAuthenticationService.post(
+        `${environment.licenseUrl}/api/membershipsPayment/addMembershipPaymentInfo`,
+        {
+          membershipId: this.stateService.data.request.membershipId,
+          membershipNumber: this.stateService.data.request.membershipNumber,
+          paymentType: paymentTypes.find((p) => p.name === 'cash').id,
+          requestCategory: requestCategories.find(
+            (r) => r.name === this.stateService.data.request.requestCategory
+          ).id,
+          orderRefNumber: this.stateService.data.request.orderRef,
+          amount: 270,
+        } as PaymentInfoLicensor
+      );
+    } else {
+      of(true);
+    }
   }
 
   private generateMembershipNumber(): Observable<string> {

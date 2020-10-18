@@ -1,10 +1,23 @@
+import { paymentTypes } from './../../constants';
 import { TranslateService } from '@ngx-translate/core';
 import { StateService } from './../../state-service';
 import { HttpHeaders } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
-import { catchError, map, switchMap, tap, timestamp } from 'rxjs/operators';
-import { IFormWizard, MembershipRequest, WINDOW } from './../../interfaces';
+import {
+  catchError,
+  map,
+  startWith,
+  switchMap,
+  tap,
+  timestamp,
+} from 'rxjs/operators';
+import {
+  IFormWizard,
+  MembershipRequest,
+  PaymentInfoLicensor,
+  WINDOW,
+} from './../../interfaces';
 import {
   Component,
   EventEmitter,
@@ -31,6 +44,8 @@ import {
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
+import { requestCategories } from 'src/app/constants';
 
 @Component({
   selector: 'ot-checkout',
@@ -48,10 +63,10 @@ export class CheckoutComponent implements OnInit, IFormWizard {
   constructor(
     private ngeniusPaymentService: NgeniusPaymentService,
     private toastrService: ToastrService,
-    private stateService: StateService,
+    public stateService: StateService,
     private db: AngularFirestore,
     private translateService: TranslateService,
-
+    private licenseAuthenticationService: LicenseAuthenticationService,
     @Inject(WINDOW) private window: Window
   ) {
     this.showPaymentDialog$ = new BehaviorSubject<boolean>(false);
@@ -64,6 +79,8 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     ]).pipe(
       switchMap(([currentOrderRef, orderRef]) => {
         if (currentOrderRef) {
+          console.log('checkout success online');
+
           return of({
             order: currentOrderRef,
             lastAccess: new Date(),
@@ -73,7 +90,13 @@ export class CheckoutComponent implements OnInit, IFormWizard {
 
         return of(orderRef);
       }),
+      tap((order) => {
+        if (order && order.status === 'CAPTURED') {
+          this.logPaymentSuccessInLicensor(order.order).subscribe();
+        }
+      }),
       tap(() => (this.loading = false)),
+      tap(() => this.checkingOut.emit(false)),
       catchError((err) => {
         this.toastrService.error(err);
         this.loading = false;
@@ -282,5 +305,21 @@ export class CheckoutComponent implements OnInit, IFormWizard {
           status: s?.status,
         }))
       );
+  }
+
+  private logPaymentSuccessInLicensor(orderRef: string): Observable<any> {
+    return this.licenseAuthenticationService.post(
+      `${environment.licenseUrl}/api/membershipsPayment/addMembershipPaymentInfo`,
+      {
+        membershipId: this.stateService.data.request.membershipId,
+        membershipNumber: this.stateService.data.request.membershipNumber,
+        paymentType: paymentTypes.find((p) => p.name === this.paymentType).id,
+        requestCategory: requestCategories.find(
+          (r) => r.name === this.stateService.data.request.requestCategory
+        ).id,
+        orderRefNumber: orderRef,
+        amount: 270,
+      } as PaymentInfoLicensor
+    );
   }
 }

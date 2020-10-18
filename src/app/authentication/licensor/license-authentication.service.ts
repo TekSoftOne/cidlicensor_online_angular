@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { LICENSE_ROLE_NAME, LICENSE_USER } from 'src/app/constants';
+import { HttpRequestOptions } from 'src/app/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -52,15 +53,26 @@ export class LicenseAuthenticationService {
     localStorage.removeItem(this.LICENSE_TOKEN);
   }
 
-  public request(url: string, body: any): Observable<any> {
-    return this.httpClient.post(url, body, this.getOptions());
+  public request(url: string, body: any, options?: any): Observable<any> {
+    return this.httpClient.post(url, body, this.getOptions(options));
+  }
+
+  public post(url: string, body: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      }),
+    };
+
+    return this.httpClient.post(url, body, this.getOptions(httpOptions));
   }
 
   public get(url: string): Observable<any> {
     return this.httpClient.get(url, this.getOptions());
   }
 
-  private getOptions(): any {
+  private getOptions(options?: HttpRequestOptions): any {
     let token = '';
     const cacheData = localStorage.getItem(this.LICENSE_TOKEN);
 
@@ -68,10 +80,15 @@ export class LicenseAuthenticationService {
       token = JSON.parse(cacheData).auth_token;
     }
 
-    return {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + token,
-      }),
-    };
+    if (options == null) {
+      options = {};
+    }
+
+    if (options.headers == null) {
+      options.headers = new HttpHeaders();
+    }
+
+    options.headers = options.headers.set('Authorization', `Bearer ${token}`);
+    return options;
   }
 }

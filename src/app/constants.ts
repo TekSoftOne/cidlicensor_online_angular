@@ -374,17 +374,40 @@ export function readUrl(file: any): Observable<string> {
   });
 }
 
-export const monthlySalaryRanges = [
-  { name: '2000', id: 2000 },
-  { name: '3500', id: 3500 },
-  { name: '5000', id: 5000 },
-  { name: '6500', id: 6500 },
-  { name: '8000', id: 8000 },
-  { name: '9500', id: 9500 },
+export const paymentTypes = [
+  { name: 'cash', id: 1 },
+  { name: 'payonline', id: 2 },
 ];
 
-export const monthlyQuotaRanges = [
+// need in licensor
+export const requestCategories = [
+  { name: 'New', id: 1 },
+  { name: 'Renewal', id: 2 },
+  { name: 'Replacement', id: 3 },
+  { name: 'RequestUpdate', id: 4 },
+];
+
+export const monthlySalaryRanges = [
   { name: '2000 AED - 3500 AED', id: 3500 },
   { name: '3500 AED - 5000 AED', id: 5000 },
   { name: '5000 AED - 6500 AED', id: 6500 },
+  { name: '6500 AED - 8000 AED', id: 8000 },
+  { name: '8000 AED - 9500 AED', id: 9500 },
+  { name: '9500 AED - 11000 AED', id: 11000 },
+  { name: '11000 AED - 13500 AED', id: 13500 },
+  { name: '13500 AED  - 15000 AED', id: 15000 },
+  { name: '15000 AED - 16500 AED', id: 16500 },
+  { name: '16500 AED - 18000 AED', id: 18000 },
+  { name: '18000 AED - 19500 AED', id: 19500 },
+  { name: '20000 AED &amp; Above', id: 20000 },
+];
+
+export const monthlyQuotaRanges = [
+  { name: '1000', id: 1000 },
+  { name: '1500', id: 1500 },
+  { name: '2500', id: 2500 },
+  { name: '3000', id: 3000 },
+  { name: '3500', id: 3500 },
+  { name: '4000', id: 4000 },
+  { name: '4500', id: 4500 },
 ];

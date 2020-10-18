@@ -161,3 +161,12 @@ export interface VerificationCheckCodeResult {
   isValid: boolean;
   errors: any;
 }
+
+export interface PaymentInfoLicensor {
+  membershipId: number;
+  membershipNumber: string;
+  paymentType: number;
+  requestCategory: number;
+  orderRefNumber: string;
+  amount: number;
+}
