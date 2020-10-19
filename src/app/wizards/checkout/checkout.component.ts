@@ -90,11 +90,6 @@ export class CheckoutComponent implements OnInit, IFormWizard {
 
         return of(orderRef);
       }),
-      tap((order) => {
-        if (order && order.status === 'CAPTURED') {
-          this.logPaymentSuccessInLicensor(order.order).subscribe();
-        }
-      }),
       tap(() => (this.loading = false)),
       tap(() => this.checkingOut.emit(false)),
       catchError((err) => {
@@ -108,11 +103,11 @@ export class CheckoutComponent implements OnInit, IFormWizard {
       map((s) => {
         switch (s.status) {
           case 'CAPTURED':
-            this.nextStep.emit();
             this.data.emit({
               orderRef: s.order,
               paymentType: this.paymentType,
             });
+            this.submitRequest.emit();
             break;
           case 'FAILED':
             this.toastrService.error(
@@ -129,6 +124,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     this.width$ = new BehaviorSubject<number>(this.getWidth());
   }
   @Output() nextStep = new EventEmitter<NgForm>();
+  @Output() submitRequest = new EventEmitter<NgForm>();
   @Output() data = new EventEmitter<MembershipRequest>();
   @Output() checkingOut = new EventEmitter<boolean>();
 
@@ -305,21 +301,5 @@ export class CheckoutComponent implements OnInit, IFormWizard {
           status: s?.status,
         }))
       );
-  }
-
-  private logPaymentSuccessInLicensor(orderRef: string): Observable<any> {
-    return this.licenseAuthenticationService.post(
-      `${environment.licenseUrl}/api/membershipsPayment/addMembershipPaymentInfo`,
-      {
-        membershipId: this.stateService.data.request.membershipId,
-        membershipNumber: this.stateService.data.request.membershipNumber,
-        paymentType: paymentTypes.find((p) => p.name === this.paymentType).id,
-        requestCategory: requestCategories.find(
-          (r) => r.name === this.stateService.data.request.requestCategory
-        ).id,
-        orderRefNumber: orderRef,
-        amount: 270,
-      } as PaymentInfoLicensor
-    );
   }
 }

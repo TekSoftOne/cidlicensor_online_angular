@@ -51,6 +51,7 @@ import {
 
 import { ToastrService } from 'ngx-toastr';
 import { Router, RouterStateSnapshot } from '@angular/router';
+import { OnlineRequestService } from '../authentication/online-request.service';
 
 @Component({
   selector: 'ot-home',
@@ -92,9 +93,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private licenseAuthenticationService: LicenseAuthenticationService,
     public stateService: StateService,
     private authenticationService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private onlineRequestService: OnlineRequestService
   ) {
     this.licenseAuthenticationService.getAccessSilently().subscribe();
+
+    this.openType =
+      this.stateService.data.request.applicationNumber > 0 ? 'Update' : 'New';
+
+    this.onlineRequestService
+      .get(`${environment.apiUrl}/api/common/countries`)
+      .subscribe();
 
     const state: RouterStateSnapshot = router.routerState.snapshot;
     if (state.url.indexOf('?ref=') > 0) {
@@ -308,6 +317,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.requestValidation = [];
   }
 
+  public submitRequest(): void {
+    this.stateService.currentStep$.next('sApplicationIdNotice');
+    this.updateStatus = this.processApplication();
+  }
+
   private checkSubmitAllowance(step: string): void {
     if (step === 'lastDiv') {
       this.reachSubmitStep$.next(true);
@@ -324,13 +338,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
       ),
 
       switchMap(() => this.createLicensorRequest()),
+      switchMap((membershipInfo) => {
+        this.stateService.data.request.membershipNumber =
+          membershipInfo.membershipNumber;
+        this.stateService.data.request.membershipId =
+          membershipInfo.membershipId;
+        return of(membershipInfo);
+      }),
       switchMap((membershipInfo: LicenseMembershipInfo) =>
         this.createApplication(membershipInfo)
       ),
       map((appResult) => {
         this.applicationNumber$.next(appResult);
       }),
-      switchMap(() => this.logCashPaymentInLicensor()),
+      switchMap(() => this.logPaymentInLicensor()),
       tap(() => this.licenseAuthenticationService.removeAccessCache()),
       map(() => true),
       catchError((err) => {
@@ -342,14 +363,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private logCashPaymentInLicensor(): Observable<any> {
-    if (this.stateService.data.request.paymentType === 'cash') {
+  private logPaymentInLicensor(): Observable<any> {
+    if (this.openType === 'New') {
       return this.licenseAuthenticationService.post(
         `${environment.licenseUrl}/api/membershipsPayment/addMembershipPaymentInfo`,
         {
           membershipId: this.stateService.data.request.membershipId,
           membershipNumber: this.stateService.data.request.membershipNumber,
-          paymentType: paymentTypes.find((p) => p.name === 'cash').id,
+          paymentType: paymentTypes.find(
+            (p) => p.name === this.stateService.data.request.paymentType
+          ).id,
           requestCategory: requestCategories.find(
             (r) => r.name === this.stateService.data.request.requestCategory
           ).id,
@@ -357,9 +380,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
           amount: 270,
         } as PaymentInfoLicensor
       );
-    } else {
-      of(true);
     }
+
+    return of(true);
   }
 
   private generateMembershipNumber(): Observable<string> {

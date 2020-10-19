@@ -32,13 +32,8 @@ export class TypeOfCustomerComponent implements OnInit, IFormWizard {
   public formCustomerType: FormGroup;
   constructor(
     private toastrservice: ToastrService,
-    private onlineRequestService: OnlineRequestService,
     private translateService: TranslateService
-  ) {
-    this.onlineRequestService
-      .get(`${environment.apiUrl}/api/common/countries`)
-      .subscribe();
-  }
+  ) {}
 
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<

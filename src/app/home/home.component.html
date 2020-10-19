@@ -267,6 +267,7 @@
               [orderRef]="stateService.data.request.orderRef"
               [paymentType]="stateService.data.request.paymentType"
               (checkingOut)="disableButtons$.next($event)"
+              (submitRequest)="submitRequest($event)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-checkout>
