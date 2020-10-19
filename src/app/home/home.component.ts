@@ -78,11 +78,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public applicationNumber: Observable<number>;
   public error: string;
   public steps: string[] = [];
+  public isApprovedOrRejected$: Observable<boolean>;
 
   public disableSubmit: Observable<boolean>;
   public reachSubmitStep$: BehaviorSubject<boolean>;
-  public isApprovedRequest$: BehaviorSubject<boolean>;
-  public isApprovedRequest: Observable<boolean>;
 
   public disableButtons$: BehaviorSubject<boolean>;
 
@@ -101,9 +100,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.openType =
       this.stateService.data.request.applicationNumber > 0 ? 'Update' : 'New';
 
-    this.onlineRequestService
-      .get(`${environment.apiUrl}/api/common/countries`)
-      .subscribe();
+    // this.onlineRequestService
+    //   .get(`${environment.apiUrl}/api/common/countries`)
+    //   .subscribe();
 
     const state: RouterStateSnapshot = router.routerState.snapshot;
     if (state.url.indexOf('?ref=') > 0) {
@@ -113,6 +112,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     this.disableButtons$ = new BehaviorSubject<boolean>(false);
+
+    this.isApprovedOrRejected$ = this.stateService.request$.pipe(
+      map((r) => {
+        console.log(getStatusFromId(r.status));
+        return (
+          getStatusFromId(r.status) === 'Approved' ||
+          getStatusFromId(r.status) === 'Rejected'
+        );
+      })
+    );
 
     this.steps = this.stateService.getSteps(this.stateService.data.request);
 
@@ -125,11 +134,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
 
     this.reachSubmitStep$ = new BehaviorSubject<boolean>(false);
-    this.isApprovedRequest$ = new BehaviorSubject<boolean>(false);
-    this.isApprovedRequest = this.isApprovedRequest$.asObservable();
+
     this.disableSubmit = combineLatest([
       this.reachSubmitStep$,
-      this.isApprovedRequest$,
+      this.isApprovedOrRejected$,
     ]).pipe(
       map(([submit, approved]) => {
         if (submit && approved) {
@@ -160,8 +168,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.openType = 'Update';
           }
         }
-      }),
-      tap(() => this.isApprovedRequest$.next(this.isApproved()))
+      })
     );
 
     this.isNextButtonShowed = this.currentStep.pipe(
@@ -260,12 +267,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
-  public isApproved(): boolean {
-    return (
-      getStatusFromId(this.stateService.data.request.status) === 'Approved'
-    );
-  }
-
   public next(f: NgForm): void {
     if (environment.enableValidation) {
       if (
@@ -323,7 +324,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private checkSubmitAllowance(step: string): void {
-    if (step === 'lastDiv') {
+    if (step === 'sReview') {
       this.reachSubmitStep$.next(true);
     } else {
       this.reachSubmitStep$.next(false);

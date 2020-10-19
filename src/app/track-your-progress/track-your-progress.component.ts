@@ -77,7 +77,7 @@ export class TrackYourProgressComponent implements AfterViewInit {
           : undefined,
         profilePhoto: profileData,
       })),
-      tap((app: any) => (this.stateService.data.request = app)),
+      tap((app: any) => this.stateService.request$.next(app)),
       tap(() => this.router.navigateByUrl('home'))
     );
   }

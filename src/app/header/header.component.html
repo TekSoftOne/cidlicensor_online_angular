@@ -7,7 +7,7 @@
       <a
         *ngIf="isAvailableToRenew() === true"
         href="#"
-        (click)="newRequest()"
+        (click)="newRequest($event)"
         >{{ "New Request" | uppercase }}</a
       >
       <a [routerLink]="['/track-your-request']">{{

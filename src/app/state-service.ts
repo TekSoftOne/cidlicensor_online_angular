@@ -1,5 +1,5 @@
 import { AuthenticationService } from './authentication/authentication.service';
-import { BehaviorSubject, combineLatest, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ApplicationState, MembershipRequest } from './interfaces';
 import {
@@ -10,7 +10,7 @@ import {
   newRequest,
   stepsAll,
 } from './constants';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -19,11 +19,24 @@ export class StateService {
   public data: ApplicationState = { request: newRequest };
   public currentStep$: BehaviorSubject<string>;
   public steps: string[];
+  public request$: BehaviorSubject<MembershipRequest>;
+  public request: Observable<MembershipRequest>;
   constructor(private authenticationService: AuthenticationService) {
     this.currentStep$ = new BehaviorSubject<string>(
       this.initializeCurrentStep()
     );
     this.steps = stepsAll;
+
+    this.request$ = new BehaviorSubject<MembershipRequest>(this.data.request);
+
+    this.request = this.request$.asObservable().pipe(
+      switchMap((r) => {
+        this.data.request = r;
+        return of(r);
+      })
+    );
+
+    this.request.subscribe();
 
     combineLatest([of(stepsAll), this.authenticationService.user])
       .pipe(

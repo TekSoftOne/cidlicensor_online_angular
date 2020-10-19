@@ -1,4 +1,4 @@
-import { Observable, BehaviorSubject, observable } from 'rxjs';
+import { Observable, BehaviorSubject, observable, of } from 'rxjs';
 import { StateService } from './../state-service';
 import {
   Component,
@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../authentication/authentication.service';
 import {
   CURRENT_STEP_TOKEN,
+  customerTypes,
   isAcceptingApplicationStatus,
   isAvailableToRenewOrReplace,
   newRequest,
@@ -37,9 +38,11 @@ export class HeaderComponent implements OnInit, OnChanges {
     private router: Router
   ) {
     this.imageUrl$ = new BehaviorSubject<string>(undefined);
-    this.imageUrl = this.imageUrl$
-      .asObservable()
-      .pipe(switchMap((url) => readUrl(url)));
+    this.imageUrl = this.imageUrl$.asObservable().pipe(
+      switchMap((url) => {
+        return of(undefined);
+      })
+    );
   }
 
   ngOnInit(): void {}
@@ -70,9 +73,6 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   public loadHome(e: Event): void {
     e.preventDefault();
-    if (this.stateService.steps) {
-      this.stateService.currentStep$.next(this.stateService.steps[0]);
-    }
     this.router.navigateByUrl('/');
   }
 
@@ -93,8 +93,27 @@ export class HeaderComponent implements OnInit, OnChanges {
     );
   }
 
-  public newRequest(): void {
-    this.stateService.data.request = newRequest;
-    window.location.href = '/';
+  public newRequest(e: Event): void {
+    e.preventDefault();
+    const membershipTypeId = this.authentication.getCustomerType();
+    let typeOfCustomer = '';
+    if (membershipTypeId && membershipTypeId > 0) {
+      typeOfCustomer = customerTypes.find(
+        (x) => x.id === this.stateService.data.request.membershipId
+      )?.name;
+    }
+
+    const req = {
+      ...newRequest,
+      membershipTypeId,
+      typeOfCustomer,
+    };
+    this.stateService.request$.next(req);
+
+    if (this.stateService.steps) {
+      this.stateService.currentStep$.next(this.stateService.getSteps(req)[0]);
+    }
+
+    this.router.navigateByUrl('/');
   }
 }

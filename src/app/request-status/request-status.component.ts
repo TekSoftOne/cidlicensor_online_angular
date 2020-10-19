@@ -22,10 +22,11 @@ export class RequestStatusComponent implements OnInit {
     return getStatusFromId(this.requestStatus);
   }
 
-  public isAccepting(): boolean {
-    return isAcceptingApplicationStatus(
-      this.stateService.data.request.status,
-      this.stateService.data.request.applicationNumber
+  public isEditMode(): boolean {
+    return (
+      this.stateService.data.request &&
+      this.stateService.data.request.applicationNumber &&
+      this.stateService.data.request.applicationNumber > 0
     );
   }
 }

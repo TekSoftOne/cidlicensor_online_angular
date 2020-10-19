@@ -59,7 +59,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
   public loadingGateway = false;
   public currentWindow: any;
   public showPaymentDialog$: BehaviorSubject<boolean>;
-
+  @Input() enabled = true;
   constructor(
     private ngeniusPaymentService: NgeniusPaymentService,
     private toastrService: ToastrService,
@@ -67,6 +67,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     private db: AngularFirestore,
     private translateService: TranslateService,
     private licenseAuthenticationService: LicenseAuthenticationService,
+
     @Inject(WINDOW) private window: Window
   ) {
     this.showPaymentDialog$ = new BehaviorSubject<boolean>(false);

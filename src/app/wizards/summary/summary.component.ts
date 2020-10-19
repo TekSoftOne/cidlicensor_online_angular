@@ -17,6 +17,7 @@ export class SummaryComponent implements OnInit, IFormWizard {
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
     MembershipRequest
   >();
+  @Input() enabled = true;
   checkFormInvalid(form: NgForm): boolean {
     return false;
   }

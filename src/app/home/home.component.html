@@ -160,7 +160,7 @@
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [typeOfCustomer]="stateService.data.request.typeOfCustomer"
-              [enabled]="!isApproved()"
+              [enabled]="!(isApprovedOrRejected$ | async)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-type-of-customer>
@@ -171,7 +171,7 @@
               (data)="updateData($event)"
               (nextStep)="next($event)"
               [typeOfRequest]="stateService.data.request.requestCategory"
-              [enabled]="!isApproved()"
+              [enabled]="(isApprovedOrRejected$ | async) === false"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-type-of-request>
@@ -194,7 +194,7 @@
               [fullAddress]="stateService.data.request.fullAddress"
               (data)="updateData($event)"
               (nextStep)="next($event)"
-              [enabled]="!isApproved()"
+              [enabled]="!(isApprovedOrRejected$ | async)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container
             ></ot-personal-information>
@@ -219,7 +219,7 @@
               "
               [fileProfilePic]="stateService.data.request.profilePhoto"
               [typeOfCustomer]="stateService.data.request.typeOfCustomer"
-              [enabled]="!isApproved()"
+              [enabled]="!(isApprovedOrRejected$ | async)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-personal-information-advanced>
@@ -229,7 +229,7 @@
             <ot-work-information
               (data)="updateData($event)"
               (nextStep)="next($event)"
-              [enabled]="!isApproved()"
+              [enabled]="!(isApprovedOrRejected$ | async)"
               [monthlyQuota]="stateService.data.request.monthlyQuota"
               [monthlySalary]="stateService.data.request.monthlySalary"
               [comment]="stateService.data.request.comment"
@@ -245,7 +245,7 @@
               [areaId]="stateService.data.request.areaId"
               [locationId]="stateService.data.request.locationId"
               (dataValidation)="updateValidation($event)"
-              [enabled]="!isApproved()"
+              [enabled]="!(isApprovedOrRejected$ | async)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-location>
@@ -255,6 +255,7 @@
             <ot-summary
               [request]="stateService.data.request"
               (nextStep)="next($event)"
+              [enabled]="!(isApprovedOrRejected$ | async)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-summary>
@@ -268,6 +269,7 @@
               [paymentType]="stateService.data.request.paymentType"
               (checkingOut)="disableButtons$.next($event)"
               (submitRequest)="submitRequest($event)"
+              [enabled]="!(isApprovedOrRejected$ | async)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-checkout>
@@ -275,27 +277,29 @@
 
           <ng-template #sReview ngSwitchCase="sReview">
             <form #membershipForm="ngForm" (ngSubmit)="next(membershipForm)">
-              <div class="row">
-                <div class="col-lg-12 col-12 col-sm-12" id="last-div-3">
-                  <div class="row">
-                    <div class="col-lg-12 col-12 col-sm-12 text-center">
-                      <h3>Review & Submit</h3>
+              <ot-layer-disable [activated]="isApprovedOrRejected$ | async">
+                <div class="row">
+                  <div class="col-lg-12 col-12 col-sm-12" id="last-div-3">
+                    <div class="row">
+                      <div class="col-lg-12 col-12 col-sm-12 text-center">
+                        <h3>Review & Submit</h3>
+                      </div>
                     </div>
-                  </div>
-                  <div class="row tp">
-                    <div class="col-lg-12 text-center col-12 col-sm-12">
-                      <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries
-                      </p>
+                    <div class="row tp">
+                      <div class="col-lg-12 text-center col-12 col-sm-12">
+                        <p>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry. Lorem Ipsum has been the
+                          industry's standard dummy text ever since the 1500s,
+                          when an unknown printer took a galley of type and
+                          scrambled it to make a type specimen book. It has
+                          survived not only five centuries
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </ot-layer-disable>
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </form>
           </ng-template>
@@ -390,11 +394,11 @@
 
                   <button
                     [disabled]="
-                      (disableSubmit | async) && (disableButtons$ | async)
+                      (disableSubmit | async) || (disableButtons$ | async)
                     "
                     [ngClass]="{
                       'next-disabled':
-                        (disableSubmit | async) && (disableButtons$ | async)
+                        (disableSubmit | async) || (disableButtons$ | async)
                     }"
                     type="submit"
                     id="next-btn"
