@@ -21,6 +21,7 @@ export class StateService {
   public steps: string[];
   public request$: BehaviorSubject<MembershipRequest>;
   public request: Observable<MembershipRequest>;
+
   constructor(private authenticationService: AuthenticationService) {
     this.currentStep$ = new BehaviorSubject<string>(
       this.initializeCurrentStep()
@@ -37,6 +38,61 @@ export class StateService {
     );
 
     this.request.subscribe();
+
+    const steps$ = this.request
+      .pipe(
+        map((request) => {
+          return stepsAll.filter((s) => {
+            if (
+              this.authenticationService.getUser() &&
+              (s === 'sPhoneNumber' || s === 'sVerifyPhone')
+            ) {
+              return false;
+            }
+
+            if (
+              s === 'sSearch' &&
+              (request.membershipNumber.length > 1 ||
+                isAcceptingApplicationStatus(
+                  request.status,
+                  request.applicationNumber
+                ))
+            ) {
+              return false;
+            }
+
+            if (
+              s === 'sTypeOfCustomer' &&
+              (isAcceptingApplicationStatus(
+                request.status,
+                request.applicationNumber
+              ) ||
+                this.authenticationService.getExistingRequest() > 0)
+            ) {
+              return false;
+            }
+
+            if (
+              s === 'sTypeOfRequest' &&
+              isAcceptingApplicationStatus(
+                request.status,
+                request.applicationNumber
+              )
+            ) {
+              return false;
+            }
+
+            return true;
+          });
+        }),
+        tap((steps) => {
+          this.steps = steps;
+        }),
+        tap(() => {
+          this.currentStep$.next(this.steps[0]);
+        })
+      )
+      .subscribe();
 
     combineLatest([of(stepsAll), this.authenticationService.user])
       .pipe(
@@ -77,51 +133,5 @@ export class StateService {
         (x) => x.id === this.data.request.membershipTypeId
       ).name;
     }
-  }
-
-  public getSteps(request: MembershipRequest): string[] {
-    const steps = this.steps.filter((s) => {
-      if (
-        this.authenticationService.getUser() &&
-        (s === 'sPhoneNumber' || s === 'sVerifyPhone')
-      ) {
-        return false;
-      }
-
-      if (
-        s === 'sSearch' &&
-        (request.membershipNumber.length > 1 ||
-          isAcceptingApplicationStatus(
-            request.status,
-            request.applicationNumber
-          ))
-      ) {
-        return false;
-      }
-
-      if (
-        s === 'sTypeOfCustomer' &&
-        (isAcceptingApplicationStatus(
-          request.status,
-          request.applicationNumber
-        ) ||
-          this.authenticationService.getExistingRequest() > 0)
-      ) {
-        return false;
-      }
-
-      if (
-        s === 'sTypeOfRequest' &&
-        isAcceptingApplicationStatus(request.status, request.applicationNumber)
-      ) {
-        return false;
-      }
-
-      return true;
-    });
-
-    this.currentStep$.next(steps[0]);
-
-    return steps;
   }
 }

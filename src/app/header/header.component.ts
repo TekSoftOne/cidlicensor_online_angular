@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.imageUrl$ = new BehaviorSubject<string>(undefined);
     this.imageUrl = this.imageUrl$.asObservable().pipe(
       switchMap((url) => {
-        return of(undefined);
+        return readUrl(url);
       })
     );
   }
@@ -109,10 +109,6 @@ export class HeaderComponent implements OnInit, OnChanges {
       typeOfCustomer,
     };
     this.stateService.request$.next(req);
-
-    if (this.stateService.steps) {
-      this.stateService.currentStep$.next(this.stateService.getSteps(req)[0]);
-    }
 
     this.router.navigateByUrl('/');
   }

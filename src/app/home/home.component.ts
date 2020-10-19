@@ -77,7 +77,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public applicationNumber$: BehaviorSubject<number>;
   public applicationNumber: Observable<number>;
   public error: string;
-  public steps: string[] = [];
   public isApprovedOrRejected$: Observable<boolean>;
 
   public disableSubmit: Observable<boolean>;
@@ -123,9 +122,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       })
     );
 
-    this.steps = this.stateService.getSteps(this.stateService.data.request);
-
-    this.currentStep = this.stateService.currentStep$.asObservable();
+    this.currentStep = this.stateService.currentStep$.asObservable().pipe(
+      tap((s) => {
+        console.log(s);
+      })
+    );
 
     this.nextButtonsOnScreens = showNextButtonScreensAll;
 
@@ -280,7 +281,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     const index = this.getIndex(this.stateService.currentStep$.value);
 
-    let step = this.steps[index + 1];
+    let step = this.stateService.steps[index + 1];
 
     if (!this.stateService.data.request.phoneNumber) {
       // user get to home page from last session
@@ -305,7 +306,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.stateService.data.request.requestCategory === 'New'
     ) {
       // dont want to search if (New)
-      step = this.steps[this.getIndex(step) + 1];
+      step = this.stateService.steps[this.getIndex(step) + 1];
     }
 
     const previousSteps = this.previousSteps$.value;
@@ -485,7 +486,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private getIndex(value: string): number {
-    return this.steps.findIndex((x) => x === value);
+    return this.stateService.steps.findIndex((x) => x === value);
   }
 
   public previous(): void {
