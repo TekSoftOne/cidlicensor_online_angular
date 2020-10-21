@@ -332,7 +332,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private processApplication(): Observable<boolean | undefined> {
+  private processApplication(): Observable<any> {
     return this.generateMembershipNumber().pipe(
       tap(
         (membershipNo) =>
@@ -354,6 +354,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.applicationNumber$.next(appResult);
       }),
       switchMap(() => this.logPaymentInLicensor()),
+      tap(() => {
+        this.authenticationService.updateCustomerType(
+          this.stateService.data.request.membershipTypeId
+        );
+      }),
       tap(() => this.licenseAuthenticationService.removeAccessCache()),
       map(() => true),
       catchError((err) => {
