@@ -17,6 +17,8 @@ import {
 } from '@angular/core';
 import { NgForm, FormGroup, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { OnlineRequestService } from 'src/app/authentication/online-request.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'ot-type-of-request',
@@ -26,8 +28,13 @@ import { ToastrService } from 'ngx-toastr';
 export class TypeOfRequestComponent implements OnInit, IFormWizard {
   constructor(
     private toastrservice: ToastrService,
-    private translateService: TranslateService
-  ) {}
+    private translateService: TranslateService,
+    private onlineRequestService: OnlineRequestService
+  ) {
+    this.onlineRequestService
+      .get(`${environment.apiUrl}/api/common/countries`)
+      .subscribe();
+  }
 
   @Output() nextStep: EventEmitter<NgForm> = new EventEmitter<NgForm>();
   @Output() data: EventEmitter<MembershipRequest> = new EventEmitter<
