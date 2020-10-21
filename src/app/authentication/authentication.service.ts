@@ -20,7 +20,7 @@ export class AuthenticationService {
     private router: Router,
     @Inject(WINDOW) private window: Window
   ) {
-    this.user$ = new BehaviorSubject<UserToken>(undefined);
+    this.user$ = new BehaviorSubject<UserToken>(this.getUser());
     this.user = this.user$.asObservable();
   }
 
@@ -51,9 +51,6 @@ export class AuthenticationService {
 
     const user = JSON.parse(cachedUser).token;
 
-    if (this.user$.value === undefined) {
-      this.user$.next(user);
-    }
     return user;
   }
 
@@ -63,6 +60,12 @@ export class AuthenticationService {
 
   public getCustomerType(): number {
     return this.getUser()?.requestType;
+  }
+
+  public updateCustomerType(requestType: number): void {
+    const token = this.getUser();
+    token.requestType = requestType;
+    localStorage.setItem(USERTOKEN, JSON.stringify({ token }));
   }
 
   public loginSilently(): UserToken | null {
