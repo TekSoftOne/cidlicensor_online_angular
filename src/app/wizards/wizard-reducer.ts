@@ -1,4 +1,6 @@
-import { MembershipRequest } from './../interfaces';
+import { UserToken } from './../authentication/interface';
+import { customerTypes } from 'src/app/constants';
+import { MembershipRequest, MembershipRequestResult } from './../interfaces';
 import { WizardState } from './interfaces';
 import { WizardAction } from './wizard-actions';
 import {
@@ -21,7 +23,7 @@ export function wizardReducer(
 ): WizardState {
   switch (action.type) {
     case WizardAction.Next.type:
-      const steps = getSteps(state);
+      const steps = state.steps;
       const index = steps.findIndex((x) => x === state.currentStep);
 
       let step = steps[index + 1];
@@ -75,15 +77,39 @@ export function wizardReducer(
       };
 
     case WizardAction.Login.type:
+      let req = state.request;
+
+      if (action.payload.requestType > 0) {
+        req = {
+          ...state.request,
+          membershipTypeId: action.payload.requestType,
+          typeOfCustomer: customerTypes.find(
+            (c) => c.id === action.payload.requestType
+          ).name,
+        };
+      }
+
+      const refreshedSteps = refreshSteps(state.steps, req, action.payload);
+
       return {
         ...state,
         user: action.payload,
+        request: req,
+        steps: refreshedSteps,
+        currentStep: refreshedSteps[0],
       };
 
     case WizardAction.LoadRequest.type:
+      const refreshedReq = refreshSteps(
+        state.steps,
+        action.payload,
+        state.user
+      );
       return {
         ...state,
         request: action.payload,
+        steps: refreshedReq,
+        currentStep: refreshedReq[0],
       };
 
     case WizardAction.LoadSteps.type:
@@ -126,13 +152,23 @@ export function wizardReducer(
       return { ...state, currentStep: 'sPersonalBasic' };
 
     case WizardAction.NewRequest.type:
+      const newReq = {
+        ...state.request,
+        membershipTypeId: action.membershipTypeId,
+        typeOfCustomer: action.typeOfCustomer,
+      };
+
+      const refreshedStepsForNew = refreshSteps(
+        state.steps,
+        newReq,
+        state.user
+      );
+
       return {
         ...state,
-        request: {
-          ...state.request,
-          membershipTypeId: action.membershipTypeId,
-          typeOfCustomer: action.typeOfCustomer,
-        },
+        request: newReq,
+        steps: refreshedStepsForNew,
+        currentStep: refreshedStepsForNew[0],
       };
 
     default:
@@ -140,19 +176,20 @@ export function wizardReducer(
   }
 }
 
-export function getSteps(state: WizardState): string[] {
-  return state.steps.filter((s) => {
-    if (state.user && (s === 'sPhoneNumber' || s === 'sVerifyPhone')) {
+export function refreshSteps(
+  steps: string[],
+  request: MembershipRequestResult,
+  user: UserToken
+): string[] {
+  return steps.filter((s) => {
+    if (user && (s === 'sPhoneNumber' || s === 'sVerifyPhone')) {
       return false;
     }
 
     if (
       s === 'sSearch' &&
-      (state.request.membershipNumber.length > 1 ||
-        isAcceptingApplicationStatus(
-          state.request.status,
-          state.request.applicationNumber
-        ))
+      (request.membershipNumber.length > 1 ||
+        isAcceptingApplicationStatus(request.status, request.applicationNumber))
     ) {
       return false;
     }
@@ -160,20 +197,17 @@ export function getSteps(state: WizardState): string[] {
     if (
       s === 'sTypeOfCustomer' &&
       (isAcceptingApplicationStatus(
-        state.request.status,
-        state.request.applicationNumber
+        request.status,
+        request.applicationNumber
       ) ||
-        state.user?.requestType > 0)
+        user?.requestType > 0)
     ) {
       return false;
     }
 
     if (
       s === 'sTypeOfRequest' &&
-      isAcceptingApplicationStatus(
-        state.request.status,
-        state.request.applicationNumber
-      )
+      isAcceptingApplicationStatus(request.status, request.applicationNumber)
     ) {
       return false;
     }

@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   public imageUrl$: BehaviorSubject<string>;
   public isNew$: Observable<boolean>;
   public isAvailableToRenew$: Observable<boolean>;
+
   constructor(
     private authentication: AuthenticationService,
     private translate: TranslateService,

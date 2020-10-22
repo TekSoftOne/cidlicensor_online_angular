@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { getUser, USERTOKEN } from '../constants';
 import { select, Store } from '@ngrx/store';
 import { getUserState } from '../wizards/wizard-selectors';
+import { WizardAction } from '../wizards/wizard-actions';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,11 @@ export class AuthenticationService {
     this.user$ = this.store
       .pipe(select(getUserState))
       .pipe(tap((u) => (this.user = u)));
+
+    const existingUser = getUser();
+    if (existingUser) {
+      this.store.dispatch(new WizardAction.Login(existingUser));
+    }
   }
 
   public login(phoneNumber: string, password: string): Observable<UserToken> {
