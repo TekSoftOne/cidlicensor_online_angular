@@ -41,3 +41,8 @@ export const getUserState = createSelector(
   getWizardState,
   (state) => state.user
 );
+
+export const getPaymentType = createSelector(
+  getRequest,
+  (request) => request.paymentType
+);

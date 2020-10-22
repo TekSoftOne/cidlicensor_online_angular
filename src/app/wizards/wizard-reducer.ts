@@ -28,11 +28,6 @@ export function wizardReducer(
 
       let step = steps[index + 1];
 
-      if (!state.request.phoneNumber) {
-        // user get to home page from last session
-        state.request.phoneNumber = state.user.email;
-      }
-
       if (state.currentStep === 'sReview') {
         if (
           !state.request.email ||
@@ -82,6 +77,7 @@ export function wizardReducer(
       if (action.payload.requestType > 0) {
         req = {
           ...state.request,
+          phoneNumber: action.payload.email,
           membershipTypeId: action.payload.requestType,
           typeOfCustomer: customerTypes.find(
             (c) => c.id === action.payload.requestType

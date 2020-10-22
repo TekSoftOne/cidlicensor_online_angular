@@ -1,3 +1,4 @@
+import { getApplicationNumber, getPaymentType } from './../wizard-selectors';
 import { paymentTypes } from './../../constants';
 import { TranslateService } from '@ngx-translate/core';
 import { StateService } from './../../state-service';
@@ -46,6 +47,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
 import { requestCategories } from 'src/app/constants';
+import { select, Store } from '@ngrx/store';
+import { WizardState } from '../interfaces';
 
 @Component({
   selector: 'ot-checkout',
@@ -59,6 +62,17 @@ export class CheckoutComponent implements OnInit, IFormWizard {
   public loadingGateway = false;
   public currentWindow: any;
   public showPaymentDialog$: BehaviorSubject<boolean>;
+  public applicationNumber$: Observable<number>;
+  public paymentType$: Observable<string>;
+  public orderStatus$: Observable<OrderTrackerResult>;
+
+  @Output() nextStep = new EventEmitter<NgForm>();
+  @Output() submitRequest = new EventEmitter<NgForm>();
+  @Output() data = new EventEmitter<MembershipRequest>();
+  @Output() checkingOut = new EventEmitter<boolean>();
+
+  @Input() paymentType: string;
+  @Input() orderRef: string;
   @Input() enabled = true;
   constructor(
     private ngeniusPaymentService: NgeniusPaymentService,
@@ -67,10 +81,12 @@ export class CheckoutComponent implements OnInit, IFormWizard {
     private db: AngularFirestore,
     private translateService: TranslateService,
     private licenseAuthenticationService: LicenseAuthenticationService,
-
+    private store: Store<WizardState>,
     @Inject(WINDOW) private window: Window
   ) {
     this.showPaymentDialog$ = new BehaviorSubject<boolean>(false);
+    this.applicationNumber$ = this.store.pipe(select(getApplicationNumber));
+    this.paymentType$ = this.store.pipe(select(getPaymentType));
     this.guid = uuidv4();
 
     this.loading = true;
@@ -124,15 +140,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
 
     this.width$ = new BehaviorSubject<number>(this.getWidth());
   }
-  @Output() nextStep = new EventEmitter<NgForm>();
-  @Output() submitRequest = new EventEmitter<NgForm>();
-  @Output() data = new EventEmitter<MembershipRequest>();
-  @Output() checkingOut = new EventEmitter<boolean>();
 
-  public orderStatus$: Observable<OrderTrackerResult>;
-  @Input() paymentType: string;
-
-  @Input() orderRef: string;
   checkFormInvalid(form: NgForm): boolean {
     return isFormValid(form);
   }

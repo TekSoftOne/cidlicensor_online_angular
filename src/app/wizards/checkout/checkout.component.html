@@ -42,7 +42,7 @@
                   <ng-template #paymentChoices>
                     <ng-container
                       *ngIf="
-                        !stateService.data.request.applicationNumber;
+                        !(applicationNumber$ | async);
                         else paymentEditMode
                       "
                     >
@@ -86,7 +86,7 @@
                     <ng-template #paymentEditMode>
                       <ng-container
                         *ngIf="
-                          stateService.data.request.paymentType === 'cash';
+                          (paymentType$ | async) === 'cash';
                           else paymentEditModeOnline
                         "
                       >
