@@ -69,39 +69,53 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isHomeShowed: Observable<boolean>;
   public isSearchStep: Observable<boolean>;
 
-  private readonly defaultStep = 'sPhoneNumber';
   public currentStep: Observable<string>;
   public previousSteps$: BehaviorSubject<string[]>;
-  public isMobileSend = false;
-  public googleApiLoad: any;
   public applicationNumber$: BehaviorSubject<number>;
   public applicationNumber: Observable<number>;
-  public error: string;
   public isApprovedOrRejected$: Observable<boolean>;
-
   public disableSubmit: Observable<boolean>;
   public reachSubmitStep$: BehaviorSubject<boolean>;
-
   public disableButtons$: BehaviorSubject<boolean>;
 
+  public isMobileSend = false;
+  public googleApiLoad: any;
+  public error: string;
   public nextButtonsOnScreens: string[] = [];
+  options = {
+    center: { lat: 40, lng: -20 },
+    zoom: 4,
+  };
+
+  // for compatibility between Licensor and Online
+  public monthlyQuotaIdMax = Math.max(...monthlySalaryRanges.map((s) => s.id));
+  public monthlySalaryIdMax = Math.max(...monthlyQuotaRanges.map((s) => s.id));
+
+  public openType = 'New'; // Update
+  public updateStatus: Observable<boolean>;
+  public requestValidation: CustomValidation[] = [];
+
   constructor(
     private httpClient: HttpClient,
     private toastrservice: ToastrService,
     private licenseAuthenticationService: LicenseAuthenticationService,
     public stateService: StateService,
     private authenticationService: AuthenticationService,
-    private router: Router,
-    private onlineRequestService: OnlineRequestService
+    private router: Router
   ) {
+    this.disableButtons$ = new BehaviorSubject<boolean>(false);
+    this.previousSteps$ = new BehaviorSubject<string[]>(
+      this.loadPreviousSteps()
+    );
+    this.reachSubmitStep$ = new BehaviorSubject<boolean>(false);
+    this.applicationNumber$ = new BehaviorSubject<number>(
+      this.stateService.data.request?.applicationNumber
+    );
+
     this.licenseAuthenticationService.getAccessSilently().subscribe();
 
     this.openType =
       this.stateService.data.request.applicationNumber > 0 ? 'Update' : 'New';
-
-    // this.onlineRequestService
-    //   .get(`${environment.apiUrl}/api/common/countries`)
-    //   .subscribe();
 
     const state: RouterStateSnapshot = router.routerState.snapshot;
     if (state.url.indexOf('?ref=') > 0) {
@@ -109,8 +123,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const url = `/checkout?orderRef=${orderRef}`;
       this.router.navigateByUrl(url);
     }
-
-    this.disableButtons$ = new BehaviorSubject<boolean>(false);
 
     this.isApprovedOrRejected$ = this.stateService.request$.pipe(
       map((r) => {
@@ -130,12 +142,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.nextButtonsOnScreens = showNextButtonScreensAll;
 
-    this.previousSteps$ = new BehaviorSubject<string[]>(
-      this.loadPreviousSteps()
-    );
-
-    this.reachSubmitStep$ = new BehaviorSubject<boolean>(false);
-
     this.disableSubmit = combineLatest([
       this.reachSubmitStep$,
       this.isApprovedOrRejected$,
@@ -147,10 +153,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
         return false;
       })
-    );
-
-    this.applicationNumber$ = new BehaviorSubject<number>(
-      this.stateService.data.request?.applicationNumber
     );
 
     this.applicationNumber = this.applicationNumber$.asObservable().pipe(
@@ -195,20 +197,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.isSearchStep = this.currentStep.pipe(map((s) => s === 'sSearch'));
   }
-  options = {
-    center: { lat: 40, lng: -20 },
-    zoom: 4,
-  };
-
-  // for compatibility between Licensor and Online
-  public monthlyQuotaIdMax = Math.max(...monthlySalaryRanges.map((s) => s.id));
-  public monthlySalaryIdMax = Math.max(...monthlyQuotaRanges.map((s) => s.id));
-
-  public openType = 'New'; // Update
-
-  public updateStatus: Observable<boolean>;
-
-  public requestValidation: CustomValidation[] = [];
 
   public updateData(request: MembershipRequestResult): void {
     this.stateService.data.request = {
