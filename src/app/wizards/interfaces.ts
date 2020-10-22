@@ -7,4 +7,5 @@ export interface WizardState {
   steps: string[];
   request: MembershipRequest;
   user: UserToken;
+  submitRequest: string;
 }

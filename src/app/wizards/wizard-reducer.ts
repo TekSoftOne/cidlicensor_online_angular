@@ -9,6 +9,7 @@ import {
   newRequest,
   stepsAll,
 } from '../constants';
+import ShortUniqueId from 'short-unique-id';
 
 const initialState: WizardState = {
   currentStep: stepsAll[0],
@@ -16,6 +17,7 @@ const initialState: WizardState = {
   steps: stepsAll,
   request: newRequest,
   user: getUser(),
+  submitRequest: '',
 };
 export function wizardReducer(
   state = initialState,
@@ -27,19 +29,6 @@ export function wizardReducer(
       const index = steps.findIndex((x) => x === state.currentStep);
 
       let step = steps[index + 1];
-
-      if (state.currentStep === 'sReview') {
-        if (
-          !state.request.email ||
-          !state.request.fullName ||
-          !state.request.phoneNumber
-        ) {
-          this.toastrservice.error('Email and PhoneNumber is required');
-          return;
-        }
-
-        this.updateStatus = this.processApplication();
-      }
 
       if (step === 'sSearch' && state.request.requestCategory === 'New') {
         // dont want to search if (New)
@@ -72,12 +61,14 @@ export function wizardReducer(
       };
 
     case WizardAction.Login.type:
-      let req = state.request;
+      let req = {
+        ...state.request,
+        phoneNumber: action.payload.email,
+      };
 
       if (action.payload.requestType > 0) {
         req = {
-          ...state.request,
-          phoneNumber: action.payload.email,
+          ...req,
           membershipTypeId: action.payload.requestType,
           typeOfCustomer: customerTypes.find(
             (c) => c.id === action.payload.requestType
@@ -85,7 +76,7 @@ export function wizardReducer(
         };
       }
 
-      const refreshedSteps = refreshSteps(state.steps, req, action.payload);
+      const refreshedSteps = refreshSteps(req, action.payload);
 
       return {
         ...state,
@@ -96,11 +87,7 @@ export function wizardReducer(
       };
 
     case WizardAction.LoadRequest.type:
-      const refreshedReq = refreshSteps(
-        state.steps,
-        action.payload,
-        state.user
-      );
+      const refreshedReq = refreshSteps(action.payload, state.user);
       return {
         ...state,
         request: action.payload,
@@ -130,6 +117,7 @@ export function wizardReducer(
       };
 
     case WizardAction.SubmitRequest.type:
+      const uniqueId = new ShortUniqueId();
       return {
         ...state,
         currentStep: 'sApplicationIdNotice',
@@ -154,11 +142,7 @@ export function wizardReducer(
         typeOfCustomer: action.typeOfCustomer,
       };
 
-      const refreshedStepsForNew = refreshSteps(
-        state.steps,
-        newReq,
-        state.user
-      );
+      const refreshedStepsForNew = refreshSteps(newReq, state.user);
 
       return {
         ...state,
@@ -167,17 +151,43 @@ export function wizardReducer(
         currentStep: refreshedStepsForNew[0],
       };
 
+    case WizardAction.CreateMembershipNumberSuccess.type:
+      return {
+        ...state,
+        request: {
+          ...state.request,
+          membershipNumber: action.payload,
+        },
+      };
+
+    case WizardAction.CreateMembershipIdSuccess.type:
+      return {
+        ...state,
+        request: {
+          ...state.request,
+          membershipId: action.payload,
+        },
+      };
+
+    case WizardAction.CreateApplicationNumberSuccess.type:
+      return {
+        ...state,
+        request: {
+          ...state.request,
+          applicationNumber: action.payload,
+        },
+      };
+
     default:
       return state;
   }
 }
 
 export function refreshSteps(
-  steps: string[],
   request: MembershipRequestResult,
   user: UserToken
 ): string[] {
-  return steps.filter((s) => {
+  return stepsAll.filter((s) => {
     if (user && (s === 'sPhoneNumber' || s === 'sVerifyPhone')) {
       return false;
     }

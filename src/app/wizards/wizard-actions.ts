@@ -72,6 +72,24 @@ export namespace WizardAction {
       public typeOfCustomer: string
     ) {}
   }
+
+  export class CreateMembershipNumberSuccess {
+    static readonly type = '[WizardAction] CreateMembershipNumberSuccess';
+    readonly type = CreateMembershipNumberSuccess.type;
+    constructor(public payload: string) {}
+  }
+
+  export class CreateMembershipIdSuccess {
+    static readonly type = '[WizardAction] CreateMembershipIdSuccess';
+    readonly type = CreateMembershipIdSuccess.type;
+    constructor(public payload: number) {}
+  }
+
+  export class CreateApplicationNumberSuccess {
+    static readonly type = '[WizardAction] CreateApplicationNumberSuccess';
+    readonly type = CreateApplicationNumberSuccess.type;
+    constructor(public payload: number) {}
+  }
 }
 
 export type WizardAction =
@@ -85,4 +103,7 @@ export type WizardAction =
   | WizardAction.SubmitRequest
   | WizardAction.CreateApplicationSuccess
   | WizardAction.Search
-  | WizardAction.NewRequest;
+  | WizardAction.NewRequest
+  | WizardAction.CreateMembershipNumberSuccess
+  | WizardAction.CreateMembershipIdSuccess
+  | WizardAction.CreateApplicationNumberSuccess;

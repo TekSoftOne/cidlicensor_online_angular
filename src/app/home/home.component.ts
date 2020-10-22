@@ -49,7 +49,7 @@ import {
   observable,
   VirtualTimeScheduler,
 } from 'rxjs';
-import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, last, map, skip, switchMap, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { createRandomPass } from '../authentication/password-generator';
@@ -64,6 +64,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { OnlineRequestService } from '../authentication/online-request.service';
 import { select, Store } from '@ngrx/store';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'ot-home',
@@ -108,6 +109,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public requestValidation: CustomValidation[] = [];
   public requestStatus$: Observable<number>;
   public request$: Observable<MembershipRequestResult>;
+  public submit$: Observable<string>;
 
   constructor(
     private httpClient: HttpClient,
@@ -285,6 +287,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     this.store.dispatch(new WizardAction.Next());
+
+    if (this.stateService.state.currentStep === 'sApplicationIdNotice') {
+      if (
+        !this.stateService.state.request.email ||
+        !this.stateService.state.request.fullName ||
+        !this.stateService.state.request.phoneNumber
+      ) {
+        this.toastrservice.error('Email and PhoneNumber is required');
+        return;
+      }
+
+      this.updateStatus = this.processApplication();
+      return;
+    }
+
     this.requestValidation = [];
   }
 
@@ -299,22 +316,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private processApplication(): Observable<any> {
     return this.generateMembershipNumber().pipe(
-      tap(
-        (membershipNo) =>
-          (this.stateService.state.request.membershipNumber = membershipNo)
+      tap((membershipNo) =>
+        this.store.dispatch(
+          new WizardAction.CreateMembershipNumberSuccess(membershipNo)
+        )
       ),
 
       switchMap(() => this.createLicensorRequest()),
       switchMap((membershipInfo) => {
-        this.stateService.state.request.membershipNumber =
-          membershipInfo.membershipNumber;
-        this.stateService.state.request.membershipId =
-          membershipInfo.membershipId;
+        this.store.dispatch(
+          new WizardAction.CreateMembershipNumberSuccess(
+            membershipInfo.membershipNumber
+          )
+        );
+        this.store.dispatch(
+          new WizardAction.CreateMembershipIdSuccess(
+            membershipInfo.membershipId
+          )
+        );
         return of(membershipInfo);
       }),
-      switchMap((membershipInfo: LicenseMembershipInfo) =>
-        this.createApplication(membershipInfo)
-      ),
+      switchMap(() => {
+        return this.createApplication();
+      }),
       map((appNumber) => {
         this.store.dispatch(
           new WizardAction.CreateApplicationSuccess(appNumber)
@@ -329,6 +353,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       tap(() => this.licenseAuthenticationService.removeAccessCache()),
       map(() => true),
       catchError((err) => {
+        console.log(err);
         err.error
           ? this.toastrservice.error(err.error)
           : this.toastrservice.error(err);
@@ -382,15 +407,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private createApplication(
-    membershipInfo: LicenseMembershipInfo
-  ): Observable<number> {
-    this.stateService.state.request.membershipNumber =
-      membershipInfo.membershipNumber;
-    this.stateService.state.request.membershipId = membershipInfo.membershipId;
+  private createApplication(): Observable<number> {
     return this.createRequestMembership().pipe(
-      tap(
-        (appId) => (this.stateService.state.request.applicationNumber = appId)
+      tap((appId) =>
+        this.store.dispatch(
+          new WizardAction.CreateApplicationNumberSuccess(appId)
+        )
       )
     );
   }

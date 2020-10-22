@@ -92,6 +92,7 @@ export interface ApplicationState {
   currentOrderRef?: string;
   currentOrderGUID?: string;
   openType: string;
+  currentStep: string;
 }
 
 export interface Religion {

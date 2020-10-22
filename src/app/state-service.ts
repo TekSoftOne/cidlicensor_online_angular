@@ -14,13 +14,21 @@ import {
 } from './constants';
 import { map, tap, switchMap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
-import { getRequest, getApplicationNumber } from './wizards/wizard-selectors';
+import {
+  getRequest,
+  getApplicationNumber,
+  getCurrentStep,
+} from './wizards/wizard-selectors';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StateService {
-  public state: ApplicationState = { request: newRequest, openType: 'New' };
+  public state: ApplicationState = {
+    request: newRequest,
+    openType: 'New',
+    currentStep: '',
+  };
   // public currentStep$: BehaviorSubject<string>;
   // public steps: string[];
   // public request$: BehaviorSubject<MembershipRequest>;
@@ -38,6 +46,11 @@ export class StateService {
     this.store
       .pipe(select(getApplicationNumber))
       .pipe(tap((appNumber) => (this.state.openType = getOpenType(appNumber))))
+      .subscribe();
+
+    this.store
+      .pipe(select(getCurrentStep))
+      .pipe(tap((currentStep) => (this.state.currentStep = currentStep)))
       .subscribe();
   }
 }
