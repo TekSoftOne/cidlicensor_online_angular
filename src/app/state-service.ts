@@ -20,7 +20,7 @@ import { getRequest, getApplicationNumber } from './wizards/wizard-selectors';
   providedIn: 'root',
 })
 export class StateService {
-  public data: ApplicationState = { request: newRequest, openType: 'New' };
+  public state: ApplicationState = { request: newRequest, openType: 'New' };
   // public currentStep$: BehaviorSubject<string>;
   // public steps: string[];
   // public request$: BehaviorSubject<MembershipRequest>;
@@ -32,12 +32,12 @@ export class StateService {
   ) {
     this.store
       .pipe(select(getRequest))
-      .pipe(tap((request) => (this.data.request = request)))
+      .pipe(tap((request) => (this.state.request = request)))
       .subscribe();
 
     this.store
       .pipe(select(getApplicationNumber))
-      .pipe(tap((appNumber) => (this.data.openType = getOpenType(appNumber))))
+      .pipe(tap((appNumber) => (this.state.openType = getOpenType(appNumber))))
       .subscribe();
   }
 }

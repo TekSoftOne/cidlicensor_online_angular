@@ -101,7 +101,7 @@ export class TrackYourProgressComponent implements AfterViewInit {
         `${environment.apiUrl}/api/MembershipRequests/search`,
         {
           applicationNumber: Number(applicationNumber),
-          phoneNumber: this.authenticationService.getUser().email,
+          phoneNumber: this.authenticationService.user.email,
         },
         httpOptions
       )

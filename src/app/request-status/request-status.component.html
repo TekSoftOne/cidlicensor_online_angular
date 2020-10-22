@@ -1,4 +1,7 @@
-<ng-container *ngIf="isEditMode() === true" [ngSwitch]="resolvedStatus()">
+<ng-container
+  *ngIf="(isEditMode$ | async) === true"
+  [ngSwitch]="resolvedStatus()"
+>
   <ng-template ngSwitchCase="Approved">
     <h3>Your request has been approved</h3>
   </ng-template>

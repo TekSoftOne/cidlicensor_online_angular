@@ -1,6 +1,10 @@
+import {
+  getApplicationNumber,
+  getRequest,
+} from './../wizards/wizard-selectors';
 import { WizardAction } from './../wizards/wizard-actions';
 import { WizardState } from './../wizards/interfaces';
-import { Observable, BehaviorSubject, observable, of } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { StateService } from './../state-service';
 import {
   Component,
@@ -12,16 +16,14 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../authentication/authentication.service';
 import {
-  CURRENT_STEP_TOKEN,
   customerTypes,
-  isAcceptingApplicationStatus,
   isAvailableToRenewOrReplace,
   newRequest,
   readUrl,
 } from '../constants';
 import { Router } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'ot-header',
@@ -34,6 +36,8 @@ export class HeaderComponent implements OnInit, OnChanges {
   @Input() userImage: Blob = undefined;
   public imageUrl: Observable<any>;
   public imageUrl$: BehaviorSubject<string>;
+  public isNew$: Observable<boolean>;
+  public isAvailableToRenew$: Observable<boolean>;
   constructor(
     private authentication: AuthenticationService,
     private translate: TranslateService,
@@ -45,6 +49,21 @@ export class HeaderComponent implements OnInit, OnChanges {
     this.imageUrl = this.imageUrl$.asObservable().pipe(
       switchMap((url) => {
         return readUrl(url);
+      })
+    );
+
+    this.isNew$ = this.store.pipe(select(getApplicationNumber)).pipe(
+      map((appNumber) => {
+        return !appNumber;
+      })
+    );
+
+    this.isAvailableToRenew$ = this.store.pipe(select(getRequest)).pipe(
+      map((request) => {
+        return isAvailableToRenewOrReplace(
+          request.status,
+          request.applicationNumber
+        );
       })
     );
   }
@@ -86,33 +105,18 @@ export class HeaderComponent implements OnInit, OnChanges {
     }
   }
 
-  public isNew(): boolean {
-    return !this.stateService.data.request.applicationNumber;
-  }
-
-  public isAvailableToRenew(): boolean {
-    return isAvailableToRenewOrReplace(
-      this.stateService.data.request.status,
-      this.stateService.data.request.applicationNumber
-    );
-  }
-
   public newRequest(e: Event): void {
     e.preventDefault();
     const membershipTypeId = this.authentication.getCustomerType();
     let typeOfCustomer = '';
     if (membershipTypeId && membershipTypeId > 0) {
-      typeOfCustomer = customerTypes.find(
-        (x) => x.id === this.stateService.data.request.membershipId
-      )?.name;
+      typeOfCustomer = customerTypes.find((x) => x.id === membershipTypeId)
+        ?.name;
     }
 
-    const req = {
-      ...newRequest,
-      membershipTypeId,
-      typeOfCustomer,
-    };
-    this.store.dispatch(new WizardAction.LoadRequest(req));
+    this.store.dispatch(
+      new WizardAction.NewRequest(newRequest, membershipTypeId, typeOfCustomer)
+    );
 
     this.router.navigateByUrl('/');
   }

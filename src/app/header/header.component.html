@@ -1,11 +1,14 @@
 <div class="row menu-bar">
   <div class="col-8 col-sm-6">
     <p>
-      <a *ngIf="isNew() === true" href="#" (click)="loadHome($event)">{{
-        "HEADER.HOME" | translate | uppercase
-      }}</a>
       <a
-        *ngIf="isAvailableToRenew() === true"
+        *ngIf="(isNew$ | async) === true"
+        href="#"
+        (click)="loadHome($event)"
+        >{{ "HEADER.HOME" | translate | uppercase }}</a
+      >
+      <a
+        *ngIf="(isAvailableToRenew$ | async) === true"
         href="#"
         (click)="newRequest($event)"
         >{{ "New Request" | uppercase }}</a

@@ -1,5 +1,6 @@
 import { observable, Observable, Subscriber } from 'rxjs';
 import { environment } from './../environments/environment';
+import { UserToken } from './authentication/interface';
 export const stepsAll = [
   'sPhoneNumber',
   'sVerifyPhone',
@@ -161,6 +162,17 @@ export function isAvailableToRenewOrReplace(
     getStatusFromId(status) === 'Approved' ||
     getStatusFromId(status) === 'Rejected'
   );
+}
+
+export function getUser(): UserToken | null {
+  const cachedUser = localStorage.getItem(USERTOKEN);
+  if (!cachedUser) {
+    return null;
+  }
+
+  const user = JSON.parse(cachedUser).token;
+
+  return user;
 }
 
 export const nationalities = [

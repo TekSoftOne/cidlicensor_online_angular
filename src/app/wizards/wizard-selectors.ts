@@ -8,50 +8,8 @@ export const getWizardState = createFeatureSelector<WizardState>(
   wizardStoreName
 );
 
-export const getSteps = createSelector(getWizardState, (state) => {
-  return state.steps.filter((s) => {
-    if (state.user && (s === 'sPhoneNumber' || s === 'sVerifyPhone')) {
-      return false;
-    }
-
-    if (
-      s === 'sSearch' &&
-      (state.request.membershipNumber.length > 1 ||
-        isAcceptingApplicationStatus(
-          state.request.status,
-          state.request.applicationNumber
-        ))
-    ) {
-      return false;
-    }
-
-    if (
-      s === 'sTypeOfCustomer' &&
-      (isAcceptingApplicationStatus(
-        state.request.status,
-        state.request.applicationNumber
-      ) ||
-        state.user.requestType > 0)
-    ) {
-      return false;
-    }
-
-    if (
-      s === 'sTypeOfRequest' &&
-      isAcceptingApplicationStatus(
-        state.request.status,
-        state.request.applicationNumber
-      )
-    ) {
-      return false;
-    }
-
-    return true;
-  });
-});
-
 export const getCurrentStep = createSelector(getWizardState, (state) => {
-  return state.steps[0];
+  return state.currentStep;
 });
 
 export const getRequest = createSelector(
@@ -67,4 +25,19 @@ export const getApplicationNumber = createSelector(
 export const getRequestStatus = createSelector(
   getRequest,
   (request) => request.status
+);
+
+export const getRequestCustomerType = createSelector(
+  getRequest,
+  (request) => request.membershipTypeId
+);
+
+export const getPreviousSteps = createSelector(
+  getWizardState,
+  (state) => state.previousSteps
+);
+
+export const getUserState = createSelector(
+  getWizardState,
+  (state) => state.user
 );

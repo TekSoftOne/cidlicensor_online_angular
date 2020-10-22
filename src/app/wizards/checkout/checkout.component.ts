@@ -186,7 +186,7 @@ export class CheckoutComponent implements OnInit, IFormWizard {
         ),
         switchMap((orderResult: CreateOrderResult) => {
           if (orderResult._links?.payment) {
-            this.stateService.data.currentOrderGUID = this.guid;
+            this.stateService.state.currentOrderGUID = this.guid;
             return this.insertGuidLink(orderResult.reference).pipe(
               switchMap(() =>
                 this.insertOrderTrackingRecord(orderResult.reference)

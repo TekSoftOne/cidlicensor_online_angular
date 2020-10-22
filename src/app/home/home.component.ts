@@ -2,6 +2,8 @@ import { WizardAction } from './../wizards/wizard-actions';
 import {
   getRequestStatus,
   getCurrentStep,
+  getRequest,
+  getPreviousSteps,
 } from './../wizards/wizard-selectors';
 import { WizardState } from './../wizards/interfaces';
 import { LicenseAuthenticationService } from './../authentication/licensor/license-authentication.service';
@@ -79,8 +81,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isHomeShowed: Observable<boolean>;
   public isSearchStep: Observable<boolean>;
 
+  public previousSteps$: Observable<string[]>;
   public currentStep$: Observable<string>;
-  public previousSteps$: BehaviorSubject<string[]>;
   public applicationNumber$: Observable<number>;
   // public applicationNumber: Observable<number>;
   public isApprovedOrRejected$: Observable<boolean>;
@@ -105,6 +107,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public updateStatus: Observable<boolean>;
   public requestValidation: CustomValidation[] = [];
   public requestStatus$: Observable<number>;
+  public request$: Observable<MembershipRequestResult>;
 
   constructor(
     private httpClient: HttpClient,
@@ -116,11 +119,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private store: Store<WizardState>
   ) {
     this.disableButtons$ = new BehaviorSubject<boolean>(false);
-    this.previousSteps$ = new BehaviorSubject<string[]>(
-      this.loadPreviousSteps()
-    );
+    this.previousSteps$ = this.store.pipe(select(getPreviousSteps));
     this.requestStatus$ = this.store.pipe(select(getRequestStatus));
     this.applicationNumber$ = this.store.pipe(select(getApplicationNumber));
+    this.request$ = this.store.pipe(select(getRequest));
 
     this.licenseAuthenticationService.getAccessSilently().subscribe();
 
@@ -195,11 +197,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
       map((s) => this.nextButtonsOnScreens.includes(s))
     );
 
-    this.isPreviousButtonShowed = this.currentStep$.pipe(
-      map((s) => {
+    this.isPreviousButtonShowed = combineLatest([
+      this.currentStep$,
+      this.previousSteps$,
+    ]).pipe(
+      map(([currentStep, previousSteps]) => {
         return (
-          showPreviousButtonScreens.includes(s) &&
-          this.previousSteps$.value.length > 0
+          showPreviousButtonScreens.includes(currentStep) &&
+          previousSteps.length > 0
         );
       })
     );
@@ -283,6 +288,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.requestValidation = [];
   }
 
+  public previous(): void {
+    this.store.dispatch(new WizardAction.Previous());
+  }
+
   public submitRequest(): void {
     this.store.dispatch(new WizardAction.SubmitRequest());
     this.updateStatus = this.processApplication();
@@ -292,14 +301,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return this.generateMembershipNumber().pipe(
       tap(
         (membershipNo) =>
-          (this.stateService.data.request.membershipNumber = membershipNo)
+          (this.stateService.state.request.membershipNumber = membershipNo)
       ),
 
       switchMap(() => this.createLicensorRequest()),
       switchMap((membershipInfo) => {
-        this.stateService.data.request.membershipNumber =
+        this.stateService.state.request.membershipNumber =
           membershipInfo.membershipNumber;
-        this.stateService.data.request.membershipId =
+        this.stateService.state.request.membershipId =
           membershipInfo.membershipId;
         return of(membershipInfo);
       }),
@@ -314,7 +323,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       switchMap(() => this.logPaymentInLicensor()),
       tap(() => {
         this.authenticationService.updateCustomerType(
-          this.stateService.data.request.membershipTypeId
+          this.stateService.state.request.membershipTypeId
         );
       }),
       tap(() => this.licenseAuthenticationService.removeAccessCache()),
@@ -329,19 +338,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private logPaymentInLicensor(): Observable<any> {
-    if (this.stateService.data.openType === 'New') {
+    if (this.stateService.state.openType === 'New') {
       return this.licenseAuthenticationService.post(
         `${environment.licenseUrl}/api/membershipsPayment/addMembershipPaymentInfo`,
         {
-          membershipId: this.stateService.data.request.membershipId,
-          membershipNumber: this.stateService.data.request.membershipNumber,
+          membershipId: this.stateService.state.request.membershipId,
+          membershipNumber: this.stateService.state.request.membershipNumber,
           paymentType: paymentTypes.find(
-            (p) => p.name === this.stateService.data.request.paymentType
+            (p) => p.name === this.stateService.state.request.paymentType
           ).id,
           requestCategory: requestCategories.find(
-            (r) => r.name === this.stateService.data.request.requestCategory
+            (r) => r.name === this.stateService.state.request.requestCategory
           ).id,
-          orderRefNumber: this.stateService.data.request.orderRef,
+          orderRefNumber: this.stateService.state.request.orderRef,
           amount: 270,
         } as PaymentInfoLicensor
       );
@@ -352,10 +361,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private generateMembershipNumber(): Observable<string> {
     if (
-      this.stateService.data.request.membershipNumber &&
-      this.stateService.data.request.membershipNumber.length > 1
+      this.stateService.state.request.membershipNumber &&
+      this.stateService.state.request.membershipNumber.length > 1
     ) {
-      return of(this.stateService.data.request.membershipNumber);
+      return of(this.stateService.state.request.membershipNumber);
     }
 
     return this.licenseAuthenticationService.get(
@@ -376,19 +385,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private createApplication(
     membershipInfo: LicenseMembershipInfo
   ): Observable<number> {
-    this.stateService.data.request.membershipNumber =
+    this.stateService.state.request.membershipNumber =
       membershipInfo.membershipNumber;
-    this.stateService.data.request.membershipId = membershipInfo.membershipId;
+    this.stateService.state.request.membershipId = membershipInfo.membershipId;
     return this.createRequestMembership().pipe(
-      tap((appId) => (this.stateService.data.request.applicationNumber = appId))
+      tap(
+        (appId) => (this.stateService.state.request.applicationNumber = appId)
+      )
     );
   }
 
   private makeFormData(): Observable<FormData> {
-    return toBase64FromFile(this.stateService.data.request.profilePhoto).pipe(
+    return toBase64FromFile(this.stateService.state.request.profilePhoto).pipe(
       map((photo) => {
         const f = new FormData();
-        for (const key in this.stateService.data.request) {
+        for (const key in this.stateService.state.request) {
           if (key) {
             // alway change status to pendind whenever updating
             if (key === 'status') {
@@ -399,20 +410,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
             } else {
               f.append(
                 key,
-                this.stateService.data.request[key] === 'null' ||
-                  this.stateService.data.request[key] === null
+                this.stateService.state.request[key] === 'null' ||
+                  this.stateService.state.request[key] === null
                   ? ''
-                  : this.stateService.data.request[key]
+                  : this.stateService.state.request[key]
               );
             }
 
             // Occupation = FullAddress
             if (key === 'fullAddress') {
-              f.append('occupation', this.stateService.data.request[key]);
+              f.append('occupation', this.stateService.state.request[key]);
             }
 
             if (key === 'emiratesIdBack') {
-              f.append('attachment1', this.stateService.data.request[key]);
+              f.append('attachment1', this.stateService.state.request[key]);
             }
 
             if (key === 'profilePhoto') {
@@ -423,12 +434,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (key === 'monthlySalary') {
               f.append(
                 'salary',
-                this.stateService.data.request[key].toString()
+                this.stateService.state.request[key].toString()
               );
             }
 
             if (key === 'monthlyQuota') {
-              f.append('limit', this.stateService.data.request[key].toString());
+              f.append(
+                'limit',
+                this.stateService.state.request[key].toString()
+              );
             }
           }
         }

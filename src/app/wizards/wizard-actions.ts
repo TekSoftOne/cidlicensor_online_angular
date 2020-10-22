@@ -58,9 +58,19 @@ export namespace WizardAction {
   }
 
   export class Search {
-    static readonly type = '[WizardAction] CreatApplicationSuccess';
-    readonly type = CreateApplicationSuccess.type;
+    static readonly type = '[WizardAction] Search';
+    readonly type = Search.type;
     constructor() {}
+  }
+
+  export class NewRequest {
+    static readonly type = '[WizardAction] NewRequest';
+    readonly type = NewRequest.type;
+    constructor(
+      public payload: MembershipRequest,
+      public membershipTypeId: number,
+      public typeOfCustomer: string
+    ) {}
   }
 }
 
@@ -74,4 +84,5 @@ export type WizardAction =
   | WizardAction.MergeRequestData
   | WizardAction.SubmitRequest
   | WizardAction.CreateApplicationSuccess
-  | WizardAction.Search;
+  | WizardAction.Search
+  | WizardAction.NewRequest;
