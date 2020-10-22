@@ -1,3 +1,4 @@
+import { WizardAction } from './../wizard-actions';
 import { StateService } from './../../state-service';
 import { OnlineRequestService } from './../../authentication/online-request.service';
 import { Observable, of, throwError } from 'rxjs';
@@ -25,6 +26,8 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { UserToken } from 'src/app/authentication/interface';
 import { AuthenticationService } from 'src/app/authentication/authentication.service';
+import { Store } from '@ngrx/store';
+import { WizardState } from '../interfaces';
 
 @Component({
   selector: 'ot-mobile-verification',
@@ -38,7 +41,8 @@ export class MobileVerificationComponent
     private toastrservice: ToastrService,
     private httpClient: HttpClient,
     private authenticationService: AuthenticationService,
-    private stateService: StateService
+    private stateService: StateService,
+    private store: Store<WizardState>
   ) {}
 
   @Input() verifyNumber: string;
@@ -150,7 +154,7 @@ export class MobileVerificationComponent
 
   public login(phoneNumber: string): Observable<UserToken> {
     return this.authenticationService.login(phoneNumber, undefined).pipe(
-      tap(() => this.stateService.refresh()),
+      tap((user) => this.store.dispatch(new WizardAction.Login(user))),
       catchError((err: HttpErrorResponse) => {
         return throwError(err);
       })

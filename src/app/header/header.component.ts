@@ -1,3 +1,5 @@
+import { WizardAction } from './../wizards/wizard-actions';
+import { WizardState } from './../wizards/interfaces';
 import { Observable, BehaviorSubject, observable, of } from 'rxjs';
 import { StateService } from './../state-service';
 import {
@@ -19,6 +21,7 @@ import {
 } from '../constants';
 import { Router } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'ot-header',
@@ -35,7 +38,8 @@ export class HeaderComponent implements OnInit, OnChanges {
     private authentication: AuthenticationService,
     private translate: TranslateService,
     private stateService: StateService,
-    private router: Router
+    private router: Router,
+    private store: Store<WizardState>
   ) {
     this.imageUrl$ = new BehaviorSubject<string>(undefined);
     this.imageUrl = this.imageUrl$.asObservable().pipe(
@@ -108,7 +112,7 @@ export class HeaderComponent implements OnInit, OnChanges {
       membershipTypeId,
       typeOfCustomer,
     };
-    this.stateService.request$.next(req);
+    this.store.dispatch(new WizardAction.LoadRequest(req));
 
     this.router.navigateByUrl('/');
   }

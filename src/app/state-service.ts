@@ -1,3 +1,4 @@
+import { WizardState } from './wizards/interfaces';
 import { AuthenticationService } from './authentication/authentication.service';
 import { BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -5,133 +6,38 @@ import { ApplicationState, MembershipRequest } from './interfaces';
 import {
   CURRENT_STEP_TOKEN,
   customerTypes,
+  getOpenType,
   getStatusFromId,
   isAcceptingApplicationStatus,
   newRequest,
   stepsAll,
 } from './constants';
 import { map, tap, switchMap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { getRequest, getApplicationNumber } from './wizards/wizard-selectors';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StateService {
-  public data: ApplicationState = { request: newRequest };
-  public currentStep$: BehaviorSubject<string>;
-  public steps: string[];
-  public request$: BehaviorSubject<MembershipRequest>;
-  public request: Observable<MembershipRequest>;
+  public data: ApplicationState = { request: newRequest, openType: 'New' };
+  // public currentStep$: BehaviorSubject<string>;
+  // public steps: string[];
+  // public request$: BehaviorSubject<MembershipRequest>;
+  // public request: Observable<MembershipRequest>;
 
-  constructor(private authenticationService: AuthenticationService) {
-    this.currentStep$ = new BehaviorSubject<string>(
-      this.initializeCurrentStep()
-    );
-    this.steps = stepsAll;
-
-    this.request$ = new BehaviorSubject<MembershipRequest>(this.data.request);
-
-    this.request = this.request$.asObservable().pipe(
-      switchMap((r) => {
-        this.data.request = r;
-        return of(r);
-      })
-    );
-
-    this.request.subscribe();
-
-    const steps$ = this.request
-      .pipe(
-        map((request) => {
-          return stepsAll.filter((s) => {
-            if (
-              this.authenticationService.getUser() &&
-              (s === 'sPhoneNumber' || s === 'sVerifyPhone')
-            ) {
-              return false;
-            }
-
-            if (
-              s === 'sSearch' &&
-              (request.membershipNumber.length > 1 ||
-                isAcceptingApplicationStatus(
-                  request.status,
-                  request.applicationNumber
-                ))
-            ) {
-              return false;
-            }
-
-            if (
-              s === 'sTypeOfCustomer' &&
-              (isAcceptingApplicationStatus(
-                request.status,
-                request.applicationNumber
-              ) ||
-                this.authenticationService.getExistingRequest() > 0)
-            ) {
-              return false;
-            }
-
-            if (
-              s === 'sTypeOfRequest' &&
-              isAcceptingApplicationStatus(
-                request.status,
-                request.applicationNumber
-              )
-            ) {
-              return false;
-            }
-
-            return true;
-          });
-        }),
-        tap((steps) => {
-          this.steps = steps;
-        }),
-        tap(() => {
-          this.currentStep$.next(this.steps[0]);
-        })
-      )
+  constructor(
+    private authenticationService: AuthenticationService,
+    private store: Store<WizardState>
+  ) {
+    this.store
+      .pipe(select(getRequest))
+      .pipe(tap((request) => (this.data.request = request)))
       .subscribe();
 
-    combineLatest([of(stepsAll), this.authenticationService.user])
-      .pipe(
-        map(([steps, user]) => {
-          return steps.filter((s) => {
-            if (user && (s === 'sPhoneNumber' || s === 'sVerifyPhone')) {
-              return false;
-            }
-
-            return true;
-          });
-        }),
-        tap((s) => (this.steps = s))
-      )
+    this.store
+      .pipe(select(getApplicationNumber))
+      .pipe(tap((appNumber) => (this.data.openType = getOpenType(appNumber))))
       .subscribe();
-  }
-
-  public initializeCurrentStep(): string {
-    const cacheStep = localStorage.getItem(CURRENT_STEP_TOKEN);
-    if (cacheStep) {
-      return cacheStep;
-    }
-
-    if (!this.steps) {
-      return stepsAll[0];
-    }
-
-    return this.steps[0];
-  }
-
-  public refresh(): void {
-    if (
-      this.authenticationService.getCustomerType() !== undefined &&
-      this.authenticationService.getCustomerType() !== 0
-    ) {
-      this.data.request.membershipTypeId = this.authenticationService.getCustomerType();
-      this.data.request.typeOfCustomer = customerTypes.find(
-        (x) => x.id === this.data.request.membershipTypeId
-      ).name;
-    }
   }
 }

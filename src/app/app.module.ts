@@ -50,6 +50,7 @@ import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { CheckoutSuccessComponent } from './checkout-success/checkout-completed.component';
 import { CheckoutProcessLayerComponent } from './checkout-process-layer/checkout-process-layer.component';
+import { StoreModule } from '@ngrx/store';
 // tslint:disable-next-line: typedef
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -88,10 +89,12 @@ export function createTranslateLoader(http: HttpClient) {
     AppRoutingModule,
     GoogleMapsModule,
     HttpClientJsonpModule,
+
     FormsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
+    StoreModule.forRoot({}),
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {

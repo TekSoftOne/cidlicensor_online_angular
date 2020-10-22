@@ -1,3 +1,4 @@
+import { WizardAction } from './../wizards/wizard-actions';
 import { ImageService } from 'src/app/image-service';
 import { OnlineRequestService } from './../authentication/online-request.service';
 import { MembershipRequestResult } from './../interfaces';
@@ -11,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { isFormValid } from '../form';
 import { StateService } from '../state-service';
-import * as p from 'path';
+
 import {
   catchError,
   delay,
@@ -22,6 +23,8 @@ import {
 } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { baseName, blobToUrl, customerTypes } from '../constants';
+import { WizardState } from '../wizards/interfaces';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'ot-track-your-progress',
@@ -43,7 +46,8 @@ export class TrackYourProgressComponent implements AfterViewInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private onlineRequestService: OnlineRequestService,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private store: Store<WizardState>
   ) {
     this.appResult$ = new BehaviorSubject<any>(undefined);
     this.appResult = this.appResult$.asObservable();
@@ -77,7 +81,7 @@ export class TrackYourProgressComponent implements AfterViewInit {
           : undefined,
         profilePhoto: profileData,
       })),
-      tap((app: any) => this.stateService.request$.next(app)),
+      tap((app: any) => this.store.dispatch(new WizardAction.LoadRequest(app))),
       tap(() => this.router.navigateByUrl('home'))
     );
   }

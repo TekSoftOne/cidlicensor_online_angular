@@ -137,6 +137,10 @@ export function getStatusFromId(id: number): string {
   return statuses.find((s) => s.id === id)?.name;
 }
 
+export function getOpenType(appNumber: number | undefined): string {
+  return appNumber && appNumber > 0 ? 'Update' : 'New';
+}
+
 export function isAcceptingApplicationStatus(
   status: number,
   applicationNumber?: number

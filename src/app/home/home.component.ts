@@ -1,8 +1,15 @@
+import { WizardAction } from './../wizards/wizard-actions';
+import {
+  getRequestStatus,
+  getCurrentStep,
+} from './../wizards/wizard-selectors';
+import { WizardState } from './../wizards/interfaces';
 import { LicenseAuthenticationService } from './../authentication/licensor/license-authentication.service';
 import { AuthenticationService } from './../authentication/authentication.service';
 import { LoginComponent } from './../authentication/login/login.component';
 import { StateService } from './../state-service';
 import { environment } from 'src/environments/environment';
+import { getApplicationNumber } from '../wizards/wizard-selectors';
 import {
   CURRENT_DATA_TOKEN,
   CURRENT_STEP_TOKEN,
@@ -21,6 +28,7 @@ import {
   newRequest,
   paymentTypes,
   requestCategories,
+  getOpenType,
 } from './../constants';
 import {
   MembershipRequest,
@@ -37,6 +45,7 @@ import {
   of,
   combineLatest,
   observable,
+  VirtualTimeScheduler,
 } from 'rxjs';
 import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -52,6 +61,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { OnlineRequestService } from '../authentication/online-request.service';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'ot-home',
@@ -69,13 +79,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isHomeShowed: Observable<boolean>;
   public isSearchStep: Observable<boolean>;
 
-  public currentStep: Observable<string>;
+  public currentStep$: Observable<string>;
   public previousSteps$: BehaviorSubject<string[]>;
-  public applicationNumber$: BehaviorSubject<number>;
-  public applicationNumber: Observable<number>;
+  public applicationNumber$: Observable<number>;
+  // public applicationNumber: Observable<number>;
   public isApprovedOrRejected$: Observable<boolean>;
   public disableSubmit: Observable<boolean>;
-  public reachSubmitStep$: BehaviorSubject<boolean>;
+  public reachSubmitStep$: Observable<boolean>;
   public disableButtons$: BehaviorSubject<boolean>;
 
   public isMobileSend = false;
@@ -91,9 +101,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public monthlyQuotaIdMax = Math.max(...monthlySalaryRanges.map((s) => s.id));
   public monthlySalaryIdMax = Math.max(...monthlyQuotaRanges.map((s) => s.id));
 
-  public openType = 'New'; // Update
+  public openType$: Observable<string>; // Update
   public updateStatus: Observable<boolean>;
   public requestValidation: CustomValidation[] = [];
+  public requestStatus$: Observable<number>;
 
   constructor(
     private httpClient: HttpClient,
@@ -101,21 +112,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private licenseAuthenticationService: LicenseAuthenticationService,
     public stateService: StateService,
     private authenticationService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private store: Store<WizardState>
   ) {
     this.disableButtons$ = new BehaviorSubject<boolean>(false);
     this.previousSteps$ = new BehaviorSubject<string[]>(
       this.loadPreviousSteps()
     );
-    this.reachSubmitStep$ = new BehaviorSubject<boolean>(false);
-    this.applicationNumber$ = new BehaviorSubject<number>(
-      this.stateService.data.request?.applicationNumber
-    );
+    this.requestStatus$ = this.store.pipe(select(getRequestStatus));
+    this.applicationNumber$ = this.store.pipe(select(getApplicationNumber));
 
     this.licenseAuthenticationService.getAccessSilently().subscribe();
 
-    this.openType =
-      this.stateService.data.request.applicationNumber > 0 ? 'Update' : 'New';
+    this.openType$ = this.store.pipe(select(getApplicationNumber)).pipe(
+      map((appNumber) => {
+        return getOpenType(appNumber);
+      })
+    );
 
     const state: RouterStateSnapshot = router.routerState.snapshot;
     if (state.url.indexOf('?ref=') > 0) {
@@ -124,19 +137,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.router.navigateByUrl(url);
     }
 
-    this.isApprovedOrRejected$ = this.stateService.request$.pipe(
-      map((r) => {
-        console.log(getStatusFromId(r.status));
+    this.isApprovedOrRejected$ = this.requestStatus$.pipe(
+      map((status) => {
         return (
-          getStatusFromId(r.status) === 'Approved' ||
-          getStatusFromId(r.status) === 'Rejected'
+          getStatusFromId(status) === 'Approved' ||
+          getStatusFromId(status) === 'Rejected'
         );
       })
     );
 
-    this.currentStep = this.stateService.currentStep$.asObservable().pipe(
-      tap((s) => {
-        console.log(s);
+    this.currentStep$ = this.store.pipe(select(getCurrentStep));
+
+    this.reachSubmitStep$ = this.currentStep$.pipe(
+      map((step) => {
+        if (step === 'sReview') {
+          return true;
+        }
+        return false;
       })
     );
 
@@ -155,30 +172,30 @@ export class HomeComponent implements OnInit, AfterViewInit {
       })
     );
 
-    this.applicationNumber = this.applicationNumber$.asObservable().pipe(
-      tap((application) => {
-        if (
-          (!this.stateService.data.request.applicationNumber ||
-            this.stateService.data.request.applicationNumber < 0) &&
-          this.stateService.data.request
-        ) {
-          this.stateService.data.request = {
-            ...this.stateService.data.request,
-            membershipRequestType: 2, // always = 2 whatever,
-          };
+    // this.applicationNumber = this.applicationNumber$.asObservable().pipe(
+    //   tap((application) => {
+    //     if (
+    //       (!this.stateService.data.request.applicationNumber ||
+    //         this.stateService.data.request.applicationNumber < 0) &&
+    //       this.stateService.data.request
+    //     ) {
+    //       this.stateService.data.request = {
+    //         ...this.stateService.data.request,
+    //         membershipRequestType: 2, // always = 2 whatever,
+    //       };
 
-          if (application > 0) {
-            this.openType = 'Update';
-          }
-        }
-      })
-    );
+    //       if (application > 0) {
+    //         this.openType = 'Update';
+    //       }
+    //     }
+    //   })
+    // );
 
-    this.isNextButtonShowed = this.currentStep.pipe(
+    this.isNextButtonShowed = this.currentStep$.pipe(
       map((s) => this.nextButtonsOnScreens.includes(s))
     );
 
-    this.isPreviousButtonShowed = this.currentStep.pipe(
+    this.isPreviousButtonShowed = this.currentStep$.pipe(
       map((s) => {
         return (
           showPreviousButtonScreens.includes(s) &&
@@ -187,29 +204,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
       })
     );
 
-    this.isStepsFlowShowed = this.currentStep.pipe(
+    this.isStepsFlowShowed = this.currentStep$.pipe(
       map((s) => showStepsFlowScreens.includes(s))
     );
 
-    this.isHomeShowed = this.currentStep.pipe(
+    this.isHomeShowed = this.currentStep$.pipe(
       map((s) => showHomeScreens.includes(s))
     );
 
-    this.isSearchStep = this.currentStep.pipe(map((s) => s === 'sSearch'));
+    this.isSearchStep = this.currentStep$.pipe(map((s) => s === 'sSearch'));
   }
 
   public updateData(request: MembershipRequestResult): void {
-    this.stateService.data.request = {
-      ...this.stateService.data.request,
-      ...request,
-    };
+    this.store.dispatch(new WizardAction.MergeRequestData(request));
   }
 
   public updateSearchMembershipData(request: MembershipRequestResult): void {
-    this.updateData({
-      ...request,
-      requestCategory: this.stateService.data.request.requestCategory,
-    });
+    this.updateData(request);
   }
 
   public updateValidation(validation: CustomValidation): void {
@@ -228,7 +239,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (!f.form.valid) {
       return;
     }
-    this.setCurrentStep('sPersonalBasic');
+
+    this.store.dispatch(new WizardAction.Search());
   }
 
   public sendMobile(): void {
@@ -267,57 +279,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     }
 
-    const index = this.getIndex(this.stateService.currentStep$.value);
-
-    let step = this.stateService.steps[index + 1];
-
-    if (!this.stateService.data.request.phoneNumber) {
-      // user get to home page from last session
-      this.stateService.data.request.phoneNumber = this.authenticationService.getUser().email;
-    }
-
-    if (this.stateService.currentStep$.value === 'sReview') {
-      if (
-        !this.stateService.data.request.email ||
-        !this.stateService.data.request.fullName ||
-        !this.stateService.data.request.phoneNumber
-      ) {
-        this.toastrservice.error('Email and PhoneNumber is required');
-        return;
-      }
-
-      this.updateStatus = this.processApplication();
-    }
-
-    if (
-      step === 'sSearch' &&
-      this.stateService.data.request.requestCategory === 'New'
-    ) {
-      // dont want to search if (New)
-      step = this.stateService.steps[this.getIndex(step) + 1];
-    }
-
-    const previousSteps = this.previousSteps$.value;
-    previousSteps.push(this.stateService.currentStep$.value);
-
-    this.previousSteps$.next(previousSteps);
-    this.stateService.currentStep$.next(step);
-    this.checkSubmitAllowance(step);
-    this.cacheCurrentStep(step, this.previousSteps$.value);
+    this.store.dispatch(new WizardAction.Next());
     this.requestValidation = [];
   }
 
   public submitRequest(): void {
-    this.stateService.currentStep$.next('sApplicationIdNotice');
+    this.store.dispatch(new WizardAction.SubmitRequest());
     this.updateStatus = this.processApplication();
-  }
-
-  private checkSubmitAllowance(step: string): void {
-    if (step === 'sReview') {
-      this.reachSubmitStep$.next(true);
-    } else {
-      this.reachSubmitStep$.next(false);
-    }
   }
 
   private processApplication(): Observable<any> {
@@ -338,8 +306,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       switchMap((membershipInfo: LicenseMembershipInfo) =>
         this.createApplication(membershipInfo)
       ),
-      map((appResult) => {
-        this.applicationNumber$.next(appResult);
+      map((appNumber) => {
+        this.store.dispatch(
+          new WizardAction.CreateApplicationSuccess(appNumber)
+        );
       }),
       switchMap(() => this.logPaymentInLicensor()),
       tap(() => {
@@ -359,7 +329,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private logPaymentInLicensor(): Observable<any> {
-    if (this.openType === 'New') {
+    if (this.stateService.data.openType === 'New') {
       return this.licenseAuthenticationService.post(
         `${environment.licenseUrl}/api/membershipsPayment/addMembershipPaymentInfo`,
         {
@@ -476,25 +446,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         )
       )
     );
-  }
-
-  private getIndex(value: string): number {
-    return this.stateService.steps.findIndex((x) => x === value);
-  }
-
-  public previous(): void {
-    let lastOne = this.previousSteps$.value.pop();
-    if (lastOne === 'sSearch') {
-      lastOne = this.previousSteps$.value.pop();
-    }
-    this.stateService.currentStep$.next(lastOne);
-    this.checkSubmitAllowance(lastOne);
-    this.requestValidation = [];
-  }
-
-  private setCurrentStep(step: string): void {
-    this.stateService.currentStep$.next(step);
-    this.cacheCurrentStep(step, this.previousSteps$.value);
   }
 
   private cacheCurrentStep(step: string, previousSteps: string[]): void {

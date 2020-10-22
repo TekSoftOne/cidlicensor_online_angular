@@ -91,6 +91,7 @@ export interface ApplicationState {
   request?: MembershipRequestResult;
   currentOrderRef?: string;
   currentOrderGUID?: string;
+  openType: string;
 }
 
 export interface Religion {
