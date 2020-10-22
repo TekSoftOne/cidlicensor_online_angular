@@ -48,6 +48,7 @@ import {
   combineLatest,
   observable,
   VirtualTimeScheduler,
+  forkJoin,
 } from 'rxjs';
 import { catchError, last, map, skip, switchMap, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -104,7 +105,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public monthlyQuotaIdMax = Math.max(...monthlySalaryRanges.map((s) => s.id));
   public monthlySalaryIdMax = Math.max(...monthlyQuotaRanges.map((s) => s.id));
 
-  public openType$: Observable<string>; // Update
+  public openType: string; // Update
   public updateStatus: Observable<boolean>;
   public requestValidation: CustomValidation[] = [];
   public requestStatus$: Observable<number>;
@@ -128,11 +129,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.licenseAuthenticationService.getAccessSilently().subscribe();
 
-    this.openType$ = this.store.pipe(select(getApplicationNumber)).pipe(
-      map((appNumber) => {
-        return getOpenType(appNumber);
-      })
-    );
+    this.openType =
+      this.stateService.state.request.applicationNumber > 0 ? 'Update' : 'New';
 
     const state: RouterStateSnapshot = router.routerState.snapshot;
     if (state.url.indexOf('?ref=') > 0) {
@@ -177,25 +175,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return false;
       })
     );
-
-    // this.applicationNumber = this.applicationNumber$.asObservable().pipe(
-    //   tap((application) => {
-    //     if (
-    //       (!this.stateService.data.request.applicationNumber ||
-    //         this.stateService.data.request.applicationNumber < 0) &&
-    //       this.stateService.data.request
-    //     ) {
-    //       this.stateService.data.request = {
-    //         ...this.stateService.data.request,
-    //         membershipRequestType: 2, // always = 2 whatever,
-    //       };
-
-    //       if (application > 0) {
-    //         this.openType = 'Update';
-    //       }
-    //     }
-    //   })
-    // );
 
     this.isNextButtonShowed = this.currentStep$.pipe(
       map((s) => this.nextButtonsOnScreens.includes(s))
@@ -339,15 +318,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return of(membershipInfo);
       }),
       switchMap(() => {
-        return this.createApplication();
+        return forkJoin([
+          this.createApplication(),
+          this.logPaymentInLicensor(),
+        ]).pipe(
+          map(([applicationNumber, _]) => {
+            return applicationNumber;
+          })
+        );
       }),
       map((appNumber) => {
         this.store.dispatch(
           new WizardAction.CreateApplicationSuccess(appNumber)
         );
-      }),
-      switchMap(() => {
-        return this.logPaymentInLicensor();
       }),
       tap(() => {
         this.authenticationService.updateCustomerType(

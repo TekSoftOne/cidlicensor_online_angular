@@ -308,10 +308,7 @@
                   <div class="row">
                     <div ngif class="col-lg-12 col-12 col-sm-12 text-center">
                       <ng-container
-                        *ngIf="
-                          (openType$ | async) === 'New';
-                          else applicationUpdate
-                        "
+                        *ngIf="openType === 'New'; else applicationUpdate"
                       >
                         <h3
                           *ngIf="
