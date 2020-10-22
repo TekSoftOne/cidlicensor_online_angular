@@ -150,7 +150,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       })
     );
 
-    this.currentStep$ = this.store.pipe(select(getCurrentStep));
+    this.currentStep$ = this.store
+      .pipe(select(getCurrentStep))
+      .pipe(tap(console.log));
 
     this.reachSubmitStep$ = this.currentStep$.pipe(
       map((step) => {
@@ -344,13 +346,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
           new WizardAction.CreateApplicationSuccess(appNumber)
         );
       }),
-      switchMap(() => this.logPaymentInLicensor()),
+      switchMap(() => {
+        return this.logPaymentInLicensor();
+      }),
       tap(() => {
         this.authenticationService.updateCustomerType(
           this.stateService.state.request.membershipTypeId
         );
       }),
-      tap(() => this.licenseAuthenticationService.removeAccessCache()),
+      tap(() => {
+        this.licenseAuthenticationService.removeAccessCache();
+      }),
       map(() => true),
       catchError((err) => {
         console.log(err);
@@ -408,13 +414,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private createApplication(): Observable<number> {
-    return this.createRequestMembership().pipe(
-      tap((appId) =>
-        this.store.dispatch(
-          new WizardAction.CreateApplicationNumberSuccess(appId)
-        )
-      )
-    );
+    return this.createRequestMembership();
   }
 
   private makeFormData(): Observable<FormData> {

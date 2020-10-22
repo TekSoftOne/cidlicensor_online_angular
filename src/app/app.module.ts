@@ -31,6 +31,7 @@ import { WorkInformationComponent } from './wizards/work-information/work-inform
 import { LocationComponent } from './wizards/location/location.component';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { UploadImageComponent } from './upload-image/upload-image.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { DatePipe } from '@angular/common';
 import { SummaryComponent } from './wizards/summary/summary.component';
 import { AuthenticationService } from './authentication/authentication.service';
@@ -106,6 +107,10 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
   ],
   providers: [
     DatePipe,

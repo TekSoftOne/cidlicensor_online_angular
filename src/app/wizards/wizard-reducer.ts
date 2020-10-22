@@ -76,7 +76,11 @@ export function wizardReducer(
         };
       }
 
-      const refreshedSteps = refreshSteps(req, action.payload);
+      const refreshedSteps = refreshSteps(
+        state.previousSteps,
+        req,
+        action.payload
+      );
 
       return {
         ...state,
@@ -87,7 +91,11 @@ export function wizardReducer(
       };
 
     case WizardAction.LoadRequest.type:
-      const refreshedReq = refreshSteps(action.payload, state.user);
+      const refreshedReq = refreshSteps(
+        state.previousSteps,
+        action.payload,
+        state.user
+      );
       return {
         ...state,
         request: action.payload,
@@ -142,7 +150,11 @@ export function wizardReducer(
         typeOfCustomer: action.typeOfCustomer,
       };
 
-      const refreshedStepsForNew = refreshSteps(newReq, state.user);
+      const refreshedStepsForNew = refreshSteps(
+        state.previousSteps,
+        newReq,
+        state.user
+      );
 
       return {
         ...state,
@@ -184,10 +196,11 @@ export function wizardReducer(
 }
 
 export function refreshSteps(
+  previousSteps: string[],
   request: MembershipRequestResult,
   user: UserToken
 ): string[] {
-  return stepsAll.filter((s) => {
+  const refreshedSteps = stepsAll.filter((s) => {
     if (user && (s === 'sPhoneNumber' || s === 'sVerifyPhone')) {
       return false;
     }
@@ -220,4 +233,8 @@ export function refreshSteps(
 
     return true;
   });
+
+  const k = [...previousSteps, ...refreshedSteps];
+
+  return k;
 }
