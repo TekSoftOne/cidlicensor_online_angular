@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://onlinerequest.cidlicensor.support',
+  apiUrl: 'http://onlinerequest-api.cidlicensor.support',
   licenseUrl: 'http://wms.teksoft1.com',
   ngeniousRedirectUrl: 'http://onlinerequest.cidlicensor.support',
   enableTestData: false,
