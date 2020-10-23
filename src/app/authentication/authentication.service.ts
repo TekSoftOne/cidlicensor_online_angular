@@ -74,4 +74,17 @@ export class AuthenticationService {
   public isTokenValid(): boolean {
     return !!localStorage.getItem(USERTOKEN);
   }
+
+  public getUser(): UserToken {
+    let user = this.user;
+    if (!user) {
+      user = getUser();
+    }
+
+    if (!user) {
+      this.router.navigateByUrl('/login');
+    }
+
+    return user;
+  }
 }
