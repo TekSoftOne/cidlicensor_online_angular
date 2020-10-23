@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://or-api-test.cidlicensor.com',
-  licenseUrl: 'http://localhost:5000',
-  ngeniousRedirectUrl: 'http://or.cidlicensor.com',
+  apiUrl: 'http://onlinerequest.cidlicensor.support',
+  licenseUrl: 'http://wms.teksoft1.com',
+  ngeniousRedirectUrl: 'http://onlinerequest.cidlicensor.support',
   enableTestData: false,
   enableValidation: true,
   firebase: {
