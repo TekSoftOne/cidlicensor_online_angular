@@ -1,6 +1,6 @@
+import { customerTypes } from './../constants';
 import { UserToken } from './../authentication/interface';
-import { customerTypes } from 'src/app/constants';
-import { MembershipRequest, MembershipRequestResult } from './../interfaces';
+import { MembershipRequestResult } from './../interfaces';
 import { WizardState } from './interfaces';
 import { WizardAction } from './wizard-actions';
 import {
@@ -125,7 +125,6 @@ export function wizardReducer(
       };
 
     case WizardAction.SubmitRequest.type:
-      const uniqueId = new ShortUniqueId();
       return {
         ...state,
         currentStep: 'sApplicationIdNotice',
@@ -140,6 +139,28 @@ export function wizardReducer(
         },
         previousSteps: [],
         steps: refreshSteps([], newRequest, state.user),
+      };
+
+    case WizardAction.ReloadHome.type:
+      const refreshedForHome = refreshSteps([], newRequest, state.user);
+
+      let r = newRequest as MembershipRequestResult;
+      if (state.user && state.user.requestType > 0) {
+        r = {
+          ...newRequest,
+          membershipTypeId: state.user.requestType,
+          typeOfCustomer: customerTypes.find(
+            (c) => c.id === state.user.requestType
+          ).name,
+          phoneNumber: state.user.email,
+        };
+      }
+
+      return {
+        ...state,
+        request: r,
+        steps: refreshedForHome,
+        currentStep: refreshedForHome[0],
       };
 
     case WizardAction.Search.type:

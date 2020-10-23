@@ -27,6 +27,12 @@ export namespace WizardAction {
     constructor(public payload: MembershipRequest) {}
   }
 
+  export class ReloadHome {
+    static readonly type = '[WizardAction] ReloadHome';
+    readonly type = ReloadHome.type;
+    constructor() {}
+  }
+
   export class LoadSteps {
     static readonly type = '[WizardAction] LoadSteps';
     readonly type = LoadSteps.type;
@@ -106,4 +112,5 @@ export type WizardAction =
   | WizardAction.NewRequest
   | WizardAction.CreateMembershipNumberSuccess
   | WizardAction.CreateMembershipIdSuccess
-  | WizardAction.CreateApplicationNumberSuccess;
+  | WizardAction.CreateApplicationNumberSuccess
+  | WizardAction.ReloadHome;

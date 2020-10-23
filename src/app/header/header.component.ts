@@ -99,6 +99,7 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   public loadHome(e: Event): void {
     e.preventDefault();
+    this.store.dispatch(new WizardAction.ReloadHome());
     this.router.navigateByUrl('/');
   }
 
