@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public monthlySalaryIdMax = Math.max(...monthlyQuotaRanges.map((s) => s.id));
 
   public openType: string; // Update
-  public updateStatus: Observable<boolean>;
+  public updating = false;
   public requestValidation: CustomValidation[] = [];
   public requestStatus$: Observable<number>;
   public request$: Observable<MembershipRequestResult>;
@@ -128,9 +128,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.request$ = this.store.pipe(select(getRequest));
 
     this.licenseAuthenticationService.getAccessSilently().subscribe();
-
-    this.openType =
-      this.stateService.state.request.applicationNumber > 0 ? 'Update' : 'New';
 
     const state: RouterStateSnapshot = router.routerState.snapshot;
     if (state.url.indexOf('?ref=') > 0) {
@@ -279,7 +276,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      this.updateStatus = this.processApplication();
+      this.processApplication().subscribe();
       return;
     }
 
@@ -292,10 +289,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public submitRequest(): void {
     this.store.dispatch(new WizardAction.SubmitRequest());
-    this.updateStatus = this.processApplication();
+    this.processApplication().subscribe();
   }
 
   private processApplication(): Observable<any> {
+    this.updating = true;
     return this.generateMembershipNumber().pipe(
       tap((membershipNo) =>
         this.store.dispatch(
@@ -327,11 +325,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
           })
         );
       }),
-      map((appNumber) => {
-        this.store.dispatch(
-          new WizardAction.CreateApplicationSuccess(appNumber)
-        );
-      }),
       tap(() => {
         this.authenticationService.updateCustomerType(
           this.stateService.state.request.membershipTypeId
@@ -340,9 +333,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
       tap(() => {
         this.licenseAuthenticationService.removeAccessCache();
       }),
+      tap(() => (this.updating = false)),
+      tap((appNumber) => {
+        this.store.dispatch(
+          new WizardAction.CreateApplicationSuccess(appNumber)
+        );
+      }),
       map(() => true),
       catchError((err) => {
         console.log(err);
+        this.updating = false;
         err.error
           ? this.toastrservice.error(err.error)
           : this.toastrservice.error(err);

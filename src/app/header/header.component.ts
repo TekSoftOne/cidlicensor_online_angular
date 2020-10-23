@@ -61,9 +61,11 @@ export class HeaderComponent implements OnInit, OnChanges {
 
     this.isAvailableToRenew$ = this.store.pipe(select(getRequest)).pipe(
       map((request) => {
-        return isAvailableToRenewOrReplace(
-          request.status,
-          request.applicationNumber
+        return (
+          isAvailableToRenewOrReplace(
+            request.status,
+            request.applicationNumber
+          ) && this.router.url === '/'
         );
       })
     );

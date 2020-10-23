@@ -138,6 +138,8 @@ export function wizardReducer(
           ...state.request,
           applicationNumber: action.payload,
         },
+        previousSteps: [],
+        steps: refreshSteps([], newRequest, state.user),
       };
 
     case WizardAction.Search.type:
@@ -145,16 +147,13 @@ export function wizardReducer(
 
     case WizardAction.NewRequest.type:
       const newReq = {
-        ...state.request,
+        ...newRequest,
         membershipTypeId: action.membershipTypeId,
         typeOfCustomer: action.typeOfCustomer,
+        phoneNumber: state.user.email,
       };
 
-      const refreshedStepsForNew = refreshSteps(
-        state.previousSteps,
-        newReq,
-        state.user
-      );
+      const refreshedStepsForNew = refreshSteps([], newReq, state.user);
 
       return {
         ...state,

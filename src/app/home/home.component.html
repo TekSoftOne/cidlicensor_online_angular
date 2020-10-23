@@ -308,14 +308,12 @@
                   <div class="row">
                     <div ngif class="col-lg-12 col-12 col-sm-12 text-center">
                       <ng-container
-                        *ngIf="openType === 'New'; else applicationUpdate"
+                        *ngIf="
+                          this.stateService.state.openType === 'New';
+                          else applicationUpdate
+                        "
                       >
-                        <h3
-                          *ngIf="
-                            updateStatus | async as status;
-                            else creatingAppNumber
-                          "
-                        >
+                        <h3 *ngIf="!updating; else creatingAppNumber">
                           Your Application Number is:
                           {{ this.request.applicationNumber }}
                         </h3>
@@ -332,12 +330,7 @@
                         </ng-template>
                       </ng-container>
                       <ng-template #applicationUpdate>
-                        <h3
-                          *ngIf="
-                            updateStatus | async as status;
-                            else updatingAppNumber
-                          "
-                        >
+                        <h3 *ngIf="!updating; else updatingAppNumber">
                           Application
                           {{ request.applicationNumber }} has been updated
                           success!
