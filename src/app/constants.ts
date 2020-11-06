@@ -1,6 +1,8 @@
+import { MembershipRequestResult } from './interfaces';
 import { observable, Observable, Subscriber } from 'rxjs';
 import { environment } from './../environments/environment';
 import { UserToken } from './authentication/interface';
+import { MembershipDetailInLicensor } from './licensor-interface';
 export const stepsAll = [
   'sPhoneNumber',
   'sVerifyPhone',
@@ -173,6 +175,18 @@ export function getUser(): UserToken | null {
   const user = JSON.parse(cachedUser).token;
 
   return user;
+}
+
+export function undefinedHandler(
+  request: MembershipRequestResult
+): MembershipRequestResult {
+  for (const key in request) {
+    if (request[key] === 'undefined') {
+      request[key] = undefined;
+    }
+  }
+
+  return request;
 }
 
 export const nationalities = [

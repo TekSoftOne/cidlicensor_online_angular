@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public monthlyQuotaIdMax = Math.max(...monthlySalaryRanges.map((s) => s.id));
   public monthlySalaryIdMax = Math.max(...monthlyQuotaRanges.map((s) => s.id));
 
-  public openType: string; // Update
+  public openType = 'New'; // Update/New
   public updating = false;
   public requestValidation: CustomValidation[] = [];
   public requestStatus$: Observable<number>;
@@ -294,6 +294,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private processApplication(): Observable<any> {
     this.updating = true;
+    // tslint:disable-next-line: max-line-length
+    this.openType = this.stateService.state.openType; // copy here to make sure open type should not be changed while creating/updating request
     return this.generateMembershipNumber().pipe(
       tap((membershipNo) =>
         this.store.dispatch(

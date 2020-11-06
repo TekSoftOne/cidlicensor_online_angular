@@ -308,10 +308,7 @@
                   <div class="row">
                     <div ngif class="col-lg-12 col-12 col-sm-12 text-center">
                       <ng-container
-                        *ngIf="
-                          this.stateService.state.openType === 'New';
-                          else applicationUpdate
-                        "
+                        *ngIf="this.openType === 'New'; else applicationUpdate"
                       >
                         <h3 *ngIf="!updating; else creatingAppNumber">
                           Your Application Number is:

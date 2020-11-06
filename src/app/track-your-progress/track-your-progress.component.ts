@@ -22,7 +22,12 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { baseName, blobToUrl, customerTypes } from '../constants';
+import {
+  baseName,
+  blobToUrl,
+  customerTypes,
+  undefinedHandler,
+} from '../constants';
 import { WizardState } from '../wizards/interfaces';
 import { Store } from '@ngrx/store';
 
@@ -73,14 +78,16 @@ export class TrackYourProgressComponent implements AfterViewInit {
           this.imageService.processImageUrl(blobToUrl(appData.profilePic)),
         ])
       ),
-      map(([appData, profileData]) => ({
-        ...appData,
-        // this case is because when Search for existing application, we dont load Type Of Customer or Type of Request
-        membershipTypeId: appData.typeOfCustomer
-          ? customerTypes.find((x) => x.name === appData.typeOfCustomer)?.id
-          : undefined,
-        profilePhoto: profileData,
-      })),
+      map(([appData, profileData]) => {
+        return {
+          ...undefinedHandler(appData),
+          // this case is because when Search for existing application, we dont load Type Of Customer or Type of Request
+          membershipTypeId: appData.typeOfCustomer
+            ? customerTypes.find((x) => x.name === appData.typeOfCustomer)?.id
+            : undefined,
+          profilePhoto: profileData,
+        };
+      }),
       tap((app: any) => this.store.dispatch(new WizardAction.LoadRequest(app))),
       tap(() => this.router.navigateByUrl('home'))
     );
