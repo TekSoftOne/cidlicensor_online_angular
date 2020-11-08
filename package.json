@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot --port 4900",
-    "build": "ng build --prod --configuration production --sourceMap=true",
+    "build": "ng build --prod --configuration production --sourceMap=false",
     "buildtest": "ng build --configuration test --sourceMap=true",
     "test": "ng test",
     "lint": "ng lint",

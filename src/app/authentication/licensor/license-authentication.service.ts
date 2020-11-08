@@ -19,7 +19,8 @@ export class LicenseAuthenticationService {
 
   public getAccessSilently(): Observable<boolean> {
     if (localStorage.getItem(this.LICENSE_TOKEN)) {
-      return of(true);
+      localStorage.removeItem(this.LICENSE_TOKEN);
+      return this.connect();
     }
 
     return this.connect();

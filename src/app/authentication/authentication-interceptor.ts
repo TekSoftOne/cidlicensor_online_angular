@@ -29,6 +29,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
           // auto logout if 401 response returned from api
           if (err.url.indexOf(environment.apiUrl) >= 0) {
             this.authenticationService.logout();
+            this.licenseAuthenticationService.removeAccessCache();
           }
 
           if (err.url.indexOf(environment.licenseUrl) >= 0) {
