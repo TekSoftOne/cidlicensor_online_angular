@@ -55,8 +55,8 @@ export class PersonalInformationAdvancedComponent
     this.emirateIdNumberExisting$ = this.emirateIdChanged$.pipe(
       switchMap((id) => {
         if (
-          !this.stateService.state.request.applicationNumber ||
-          this.stateService.state.request.applicationNumber <= 0
+          !this.stateService.state.request?.membershipNumber ||
+          this.stateService.state.request?.membershipNumber?.length === 1
         ) {
           if (this.emirateIDNumber && this.emirateIDNumber.length > 0) {
             this.checkingEmirateIdNumber = true;
