@@ -214,6 +214,7 @@
               [fileProfilePic]="request.profilePhoto"
               [typeOfCustomer]="request.typeOfCustomer"
               [enabled]="!(isApprovedOrRejected$ | async)"
+              (disableNext)="isCheckingEmirateIDNumber$.next($event)"
             >
               <ng-container [ngTemplateOutlet]="divButtons"></ng-container>
             </ot-personal-information-advanced>

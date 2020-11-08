@@ -67,8 +67,9 @@
                   <label
                     class="form-label"
                     [ngClass]="{ existing: emirateIdNumberExisting$ | async }"
-                    >Emirates ID Number*</label
-                  >
+                    >Emirates ID Number*
+                    <ot-loader [loading]="checkingEmirateIdNumber"></ot-loader>
+                  </label>
                   <input
                     name="emirateIDNumber"
                     placeholder="Enter your Emirates ID Number"

@@ -25,7 +25,7 @@ import {
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MembershipRequest, Nationality } from 'src/app/interfaces';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+import { tap, switchMap, catchError } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { dateFormat } from 'src/app/constants';
 import { environment } from 'src/environments/environment';
@@ -41,6 +41,9 @@ declare var $: any;
 export class PersonalInformationAdvancedComponent
   implements OnInit, IFormWizard, AfterViewInit, OnChanges {
   public emirateIdNumberExisting$: Observable<boolean>;
+  public checkingEmirateIdNumber = false;
+  @Output() disableNext: EventEmitter<boolean>;
+
   constructor(
     private datePipe: DatePipe,
     public stateService: StateService,
@@ -48,7 +51,7 @@ export class PersonalInformationAdvancedComponent
     private toastrService: ToastrService
   ) {
     this.emirateIdChanged$ = new BehaviorSubject<string>(this.emirateIDNumber);
-
+    this.disableNext = new EventEmitter<boolean>();
     this.emirateIdNumberExisting$ = this.emirateIdChanged$.pipe(
       switchMap((id) => {
         if (
@@ -56,6 +59,8 @@ export class PersonalInformationAdvancedComponent
           this.stateService.state.request.applicationNumber <= 0
         ) {
           if (this.emirateIDNumber && this.emirateIDNumber.length > 0) {
+            this.checkingEmirateIdNumber = true;
+            this.disableNext.emit(true);
             return this.licenseAuthenticationService.get(
               `${environment.licenseUrl}/api/common/EmiratesIDExisting?emiratesID=${id}`
             );
@@ -67,6 +72,14 @@ export class PersonalInformationAdvancedComponent
 
       tap((isExisting) => {
         this.emirateIdExising = isExisting;
+        this.checkingEmirateIdNumber = false;
+        this.disableNext.emit(false);
+      }),
+      catchError((err) => {
+        this.checkingEmirateIdNumber = false;
+        this.disableNext.emit(false);
+        console.log(err);
+        return undefined;
       })
     );
 

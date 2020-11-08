@@ -88,6 +88,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public applicationNumber$: Observable<number>;
   // public applicationNumber: Observable<number>;
   public isApprovedOrRejected$: Observable<boolean>;
+  public isCheckingEmirateIDNumber$: BehaviorSubject<boolean>;
   public disableSubmit: Observable<boolean>;
   public reachSubmitStep$: Observable<boolean>;
   public disableButtons$: BehaviorSubject<boolean>;
@@ -122,6 +123,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private store: Store<WizardState>
   ) {
     this.disableButtons$ = new BehaviorSubject<boolean>(false);
+    this.isCheckingEmirateIDNumber$ = new BehaviorSubject<boolean>(false);
     this.previousSteps$ = this.store.pipe(select(getPreviousSteps));
     this.requestStatus$ = this.store.pipe(select(getRequestStatus));
     this.applicationNumber$ = this.store.pipe(select(getApplicationNumber));
@@ -163,9 +165,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.disableSubmit = combineLatest([
       this.reachSubmitStep$,
       this.isApprovedOrRejected$,
+      this.isCheckingEmirateIDNumber$,
     ]).pipe(
-      map(([submit, approved]) => {
-        if (submit && approved) {
+      map(([submit, approved, checkingEmirateNumberId]) => {
+        if ((submit && approved) || checkingEmirateNumberId === true) {
           return true;
         }
 
