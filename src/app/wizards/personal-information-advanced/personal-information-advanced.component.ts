@@ -1,3 +1,6 @@
+import { ToastrService } from 'ngx-toastr';
+import { LicenseAuthenticationService } from 'src/app/authentication/licensor/license-authentication.service';
+import { StateService } from './../../state-service';
 import { UploadFileComponent } from './../../upload-file/upload-file.component';
 import { nationalities, religions } from './../../constants';
 import { isFormValid, isControlValid } from 'src/app/form';
@@ -21,8 +24,8 @@ import {
 } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MembershipRequest, Nationality } from 'src/app/interfaces';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { tap, switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { dateFormat } from 'src/app/constants';
 import { environment } from 'src/environments/environment';
@@ -37,7 +40,36 @@ declare var $: any;
 })
 export class PersonalInformationAdvancedComponent
   implements OnInit, IFormWizard, AfterViewInit, OnChanges {
-  constructor(private datePipe: DatePipe) {
+  public emirateIdNumberExisting$: Observable<boolean>;
+  constructor(
+    private datePipe: DatePipe,
+    private stateService: StateService,
+    private licenseAuthenticationService: LicenseAuthenticationService,
+    private toastrService: ToastrService
+  ) {
+    this.emirateIdChanged$ = new BehaviorSubject<string>(this.emirateIDNumber);
+
+    this.emirateIdNumberExisting$ = this.emirateIdChanged$.pipe(
+      switchMap((id) => {
+        if (
+          !this.stateService.state.request.applicationNumber ||
+          this.stateService.state.request.applicationNumber <= 0
+        ) {
+          if (this.emirateIDNumber && this.emirateIDNumber.length > 0) {
+            return this.licenseAuthenticationService.get(
+              `${environment.licenseUrl}/api/common/EmiratesIDExisting?emiratesID=${id}`
+            );
+          }
+
+          return of(false);
+        }
+      }),
+
+      tap((isExisting) => {
+        this.emirateIdExising = isExisting;
+      })
+    );
+
     this.genders$ = of([
       { id: 1, name: 'Male' },
       { id: 2, name: 'Female' },
@@ -83,6 +115,9 @@ export class PersonalInformationAdvancedComponent
   @Input() gender: number;
   @Input() religionId: number;
 
+  public emirateIdExising = false;
+  public emirateIdChanged$: BehaviorSubject<string>;
+
   @Input() nationId: number;
   @Input() typeOfCustomer: string;
   // disable hide event of datepicker when focus to the textbox
@@ -108,6 +143,10 @@ export class PersonalInformationAdvancedComponent
         dateFormat
       );
     }
+
+    if (changes.emirateIDNumber) {
+      this.emirateIdChanged$.next(changes.emirateIDNumber.currentValue);
+    }
   }
 
   checkFormInvalid(form: NgForm): boolean {
@@ -115,6 +154,10 @@ export class PersonalInformationAdvancedComponent
   }
   checkControlInvalid(form: NgForm, control: any): boolean {
     return isControlValid(form, control);
+  }
+
+  public emirateIdNumberChanged(): void {
+    this.emirateIdChanged$.next(this.emirateIDNumber);
   }
 
   next(f: NgForm): void {
@@ -126,6 +169,11 @@ export class PersonalInformationAdvancedComponent
       ) {
         return;
       }
+    }
+
+    if (this.emirateIdExising) {
+      this.toastrService.error('Emirate ID Number is already existed');
+      return;
     }
 
     this.data.emit({

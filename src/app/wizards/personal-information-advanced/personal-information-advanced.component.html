@@ -64,13 +64,18 @@
                   </select>
                 </div>
                 <div class="col-lg-6 col-12 col-sm-6">
-                  <label class="form-label">Emirates ID Number*</label>
+                  <label
+                    class="form-label"
+                    [ngClass]="{ existing: emirateIdNumberExisting$ | async }"
+                    >Emirates ID Number*</label
+                  >
                   <input
                     name="emirateIDNumber"
                     placeholder="Enter your Emirates ID Number"
                     type="text"
                     [(ngModel)]="emirateIDNumber"
                     formControlName="emirateIDNumber"
+                    (change)="emirateIdNumberChanged()"
                     [ngClass]="{
                       'form-control': true,
                       'is-invalid': checkControlInvalid(
