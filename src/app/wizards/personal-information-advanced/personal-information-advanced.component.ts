@@ -43,7 +43,7 @@ export class PersonalInformationAdvancedComponent
   public emirateIdNumberExisting$: Observable<boolean>;
   constructor(
     private datePipe: DatePipe,
-    private stateService: StateService,
+    public stateService: StateService,
     private licenseAuthenticationService: LicenseAuthenticationService,
     private toastrService: ToastrService
   ) {

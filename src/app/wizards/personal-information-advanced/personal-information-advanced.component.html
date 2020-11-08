@@ -76,6 +76,7 @@
                     [(ngModel)]="emirateIDNumber"
                     formControlName="emirateIDNumber"
                     (change)="emirateIdNumberChanged()"
+                    [readonly]="stateService.state.openType === 'Update'"
                     [ngClass]="{
                       'form-control': true,
                       'is-invalid': checkControlInvalid(
